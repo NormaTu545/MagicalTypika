@@ -33,11 +33,11 @@ class GameScene: SKScene, UITextFieldDelegate {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
-        //MARK: Reading into a word list text file and populating an array with the words~~~~~~~~~~~~~~
+        //~~~~~~~ Reading into a word list text file and populating an array with the words ~~~~~~~~~~//
         bundle = NSBundle.mainBundle()
         let path = bundle.pathForResource("wordsEn", ofType: "txt")!
         
-        //////////////////copies entire word list into array[0] only dang it///////////////////
+        //~~~~~~~ Copies entire word list into a super long string to split ~~~~~~~~~~~~~~~~~~~~~~~~~~//
         let contents: String?
         
         do {
@@ -46,14 +46,15 @@ class GameScene: SKScene, UITextFieldDelegate {
             contents = nil
         }
         
-        let tempArray = contents!.componentsSeparatedByString(" ")
-       
+        var tempArray: [String] = []
+        tempArray = contents!.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet())
+        
+        //~~~~~~~ Individual strings of the word list are now members of fullArray ~~~~~~~~~~~~~~~~~~~//
         for index in 0...tempArray.count-1 {
             fullArray.append(tempArray[index])
         }
-        print(fullArray[1])
-        ///////////////////////////////////////////////////////////////////////////////////////
-        
+        //MARK: ///////////// END OF WORD LIST READ & ARRAY-IFY PART //////////////////////////////////
+
         wordLabel = SKLabelNode(fontNamed: "Helvetica")
         addChild(wordLabel)
         wordLabel.position.x = view.frame.width - (view.frame.width / 3)
