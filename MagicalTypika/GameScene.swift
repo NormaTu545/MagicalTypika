@@ -14,13 +14,16 @@ class GameScene: SKScene, UITextFieldDelegate {
     var inputText: UITextField! //will be hidden
     var wordLabel: SKLabelNode!
     
+    var bundle: NSBundle!
+    var fullArray: [String] = []
+    
     var theWord = "" {
         didSet {
             wordLabel.text = theWord
         }
     }
     
-    //MARK: - TEXT FIELD DELEGATE
+    //MARK: - TEXT FIELD DELEGATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
     
     func textDidChange (textField: UITextField) {
@@ -30,10 +33,31 @@ class GameScene: SKScene, UITextFieldDelegate {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
+        //MARK: Reading into a word list text file and populating an array with the words~~~~~~~~~~~~~~
+        bundle = NSBundle.mainBundle()
+        let path = bundle.pathForResource("wordsEn", ofType: "txt")!
+        
+        //////////////////copies entire word list into array[0] only dang it///////////////////
+        let contents: String?
+        
+        do {
+            contents = try String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
+        } catch _ {
+            contents = nil
+        }
+        
+        let tempArray = contents!.componentsSeparatedByString(" ")
+       
+        for index in 0...tempArray.count-1 {
+            fullArray.append(tempArray[index])
+        }
+        print(fullArray[1])
+        ///////////////////////////////////////////////////////////////////////////////////////
+        
         wordLabel = SKLabelNode(fontNamed: "Helvetica")
         addChild(wordLabel)
-        wordLabel.position.x = view.frame.width - 20
-        wordLabel.position.y = view.frame.height - 200
+        wordLabel.position.x = view.frame.width - (view.frame.width / 3)
+        wordLabel.position.y = view.frame.height / 3
         //fix origin of label to right of label box:
         wordLabel.horizontalAlignmentMode = .Right
         
@@ -44,7 +68,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         inputText.hidden = true //hides the text field
         
         view.addSubview(inputText) //Same as addChild in SpriteKit
-        inputText.becomeFirstResponder()
+        inputText.becomeFirstResponder() //Makes Keyboard appear first
         
         inputText.addTarget(self, action: #selector(UITextInputDelegate.textDidChange(_:)), forControlEvents: .EditingChanged)
     }
