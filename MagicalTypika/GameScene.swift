@@ -7,36 +7,54 @@
 //
 
 import SpriteKit
+import UIKit
 
-class GameScene: SKScene {
+class GameScene: SKScene, UITextFieldDelegate {
+    
+    var inputText: UITextField! //will be hidden
+    var wordLabel: SKLabelNode!
+    
+    var theWord = "" {
+        didSet {
+            wordLabel.text = theWord
+        }
+    }
+    
+    //MARK: - TEXT FIELD DELEGATE
+  
+    
+    func textDidChange (textField: UITextField) {
+        theWord = textField.text!
+    }
+    
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
-        let myLabel = SKLabelNode(fontNamed:"Chalkduster")
-        myLabel.text = "Hello, World!"
-        myLabel.fontSize = 45
-        myLabel.position = CGPoint(x:CGRectGetMidX(self.frame), y:CGRectGetMidY(self.frame))
         
-        self.addChild(myLabel)
+        wordLabel = SKLabelNode(fontNamed: "Helvetica")
+        addChild(wordLabel)
+        wordLabel.position.x = view.frame.width - 20
+        wordLabel.position.y = view.frame.height - 200
+        //fix origin of label to right of label box:
+        wordLabel.horizontalAlignmentMode = .Right
+        
+        let frame = CGRect (x: 20, y: 20, width: view.frame.width-40, height: 40)
+        inputText = UITextField(frame: frame)
+        inputText.font = UIFont(name: "Helvetica", size: 16)
+        inputText.textColor = UIColor.blackColor()
+        inputText.hidden = true //hides the text field
+        
+        view.addSubview(inputText) //Same as addChild in SpriteKit
+        inputText.becomeFirstResponder()
+        
+        inputText.addTarget(self, action: #selector(UITextInputDelegate.textDidChange(_:)), forControlEvents: .EditingChanged)
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
        /* Called when a touch begins */
-        
+        /*
         for touch in touches {
-            let location = touch.locationInNode(self)
-            
-            let sprite = SKSpriteNode(imageNamed:"Spaceship")
-            
-            sprite.xScale = 0.5
-            sprite.yScale = 0.5
-            sprite.position = location
-            
-            let action = SKAction.rotateByAngle(CGFloat(M_PI), duration:1)
-            
-            sprite.runAction(SKAction.repeatActionForever(action))
-            
-            self.addChild(sprite)
-        }
+            //yada yada yada
+        }*/
     }
    
     override func update(currentTime: CFTimeInterval) {

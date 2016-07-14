@@ -16,8 +16,6 @@
 		AD5347721D2CB57B00FBF7B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD5347701D2CB57B00FBF7B1 /* LaunchScreen.storyboard */; };
 		AD8DD28F1D359ECA00A37369 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8DD28E1D359ECA00A37369 /* MainMenu.swift */; };
 		AD8DD2911D35A20900A37369 /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = AD8DD2901D35A20900A37369 /* MainMenu.sks */; };
-		AD8DD2931D35A26800A37369 /* BossScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = AD8DD2921D35A26800A37369 /* BossScene.sks */; };
-		AD8DD2951D35A27F00A37369 /* BossScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8DD2941D35A27F00A37369 /* BossScene.swift */; };
 		AD8DD2971D36B2BF00A37369 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */; };
 /* End PBXBuildFile section */
 
@@ -33,8 +31,6 @@
 		AD5347731D2CB57B00FBF7B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AD8DD28E1D359ECA00A37369 /* MainMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		AD8DD2901D35A20900A37369 /* MainMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainMenu.sks; sourceTree = "<group>"; };
-		AD8DD2921D35A26800A37369 /* BossScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = BossScene.sks; sourceTree = "<group>"; };
-		AD8DD2941D35A27F00A37369 /* BossScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BossScene.swift; sourceTree = "<group>"; };
 		AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSButtonNode.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -74,8 +70,6 @@
 				AD5347671D2CB57B00FBF7B1 /* GameScene.swift */,
 				AD8DD2901D35A20900A37369 /* MainMenu.sks */,
 				AD8DD28E1D359ECA00A37369 /* MainMenu.swift */,
-				AD8DD2921D35A26800A37369 /* BossScene.sks */,
-				AD8DD2941D35A27F00A37369 /* BossScene.swift */,
 				AD5347691D2CB57B00FBF7B1 /* GameViewController.swift */,
 				AD53476B1D2CB57B00FBF7B1 /* Main.storyboard */,
 				AD53476E1D2CB57B00FBF7B1 /* Assets.xcassets */,
@@ -117,6 +111,7 @@
 				TargetAttributes = {
 					AD53475F1D2CB57B00FBF7B1 = {
 						CreatedOnToolsVersion = 7.3.1;
+						DevelopmentTeam = 74LTR4YUNB;
 					};
 				};
 			};
@@ -144,7 +139,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				AD5347661D2CB57B00FBF7B1 /* GameScene.sks in Resources */,
-				AD8DD2931D35A26800A37369 /* BossScene.sks in Resources */,
 				AD5347721D2CB57B00FBF7B1 /* LaunchScreen.storyboard in Resources */,
 				AD53476F1D2CB57B00FBF7B1 /* Assets.xcassets in Resources */,
 				AD8DD2911D35A20900A37369 /* MainMenu.sks in Resources */,
@@ -164,7 +158,6 @@
 				AD5347641D2CB57B00FBF7B1 /* AppDelegate.swift in Sources */,
 				AD8DD2971D36B2BF00A37369 /* MSButtonNode.swift in Sources */,
 				AD8DD28F1D359ECA00A37369 /* MainMenu.swift in Sources */,
-				AD8DD2951D35A27F00A37369 /* BossScene.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -279,10 +272,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = MagicalTypika/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.normatu.MagicalTypika;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -290,10 +286,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = MagicalTypika/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.normatu.MagicalTypika;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
