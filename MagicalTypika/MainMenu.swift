@@ -19,6 +19,7 @@ class MainMenu: SKScene {
     //var backgroundMusic: SKAudioNode!
     
     override func didMoveToView(view: SKView) {
+        
         playButton = self.childNodeWithName("playButton") as! MSButtonNode
         
         playButton.selectedHandler =  {

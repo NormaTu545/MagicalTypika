@@ -15,6 +15,7 @@
 		AD53476F1D2CB57B00FBF7B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD53476E1D2CB57B00FBF7B1 /* Assets.xcassets */; };
 		AD5347721D2CB57B00FBF7B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD5347701D2CB57B00FBF7B1 /* LaunchScreen.storyboard */; };
 		AD5C62481D38563000224AEE /* wordsEn.txt in Resources */ = {isa = PBXBuildFile; fileRef = AD5C62471D38563000224AEE /* wordsEn.txt */; };
+		AD5C624A1D385FDE00224AEE /* WordsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5C62491D385FDE00224AEE /* WordsManager.swift */; };
 		AD8DD28F1D359ECA00A37369 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8DD28E1D359ECA00A37369 /* MainMenu.swift */; };
 		AD8DD2911D35A20900A37369 /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = AD8DD2901D35A20900A37369 /* MainMenu.sks */; };
 		AD8DD2971D36B2BF00A37369 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */; };
@@ -31,6 +32,7 @@
 		AD5347711D2CB57B00FBF7B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AD5347731D2CB57B00FBF7B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AD5C62471D38563000224AEE /* wordsEn.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wordsEn.txt; sourceTree = "<group>"; };
+		AD5C62491D385FDE00224AEE /* WordsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WordsManager.swift; path = ../WordsManager.swift; sourceTree = "<group>"; };
 		AD8DD28E1D359ECA00A37369 /* MainMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		AD8DD2901D35A20900A37369 /* MainMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainMenu.sks; sourceTree = "<group>"; };
 		AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSButtonNode.swift; sourceTree = "<group>"; };
@@ -67,6 +69,7 @@
 		AD5347621D2CB57B00FBF7B1 /* MagicalTypika */ = {
 			isa = PBXGroup;
 			children = (
+				AD5C62491D385FDE00224AEE /* WordsManager.swift */,
 				AD5347631D2CB57B00FBF7B1 /* AppDelegate.swift */,
 				AD5347651D2CB57B00FBF7B1 /* GameScene.sks */,
 				AD5347671D2CB57B00FBF7B1 /* GameScene.swift */,
@@ -160,6 +163,7 @@
 				AD5347681D2CB57B00FBF7B1 /* GameScene.swift in Sources */,
 				AD53476A1D2CB57B00FBF7B1 /* GameViewController.swift in Sources */,
 				AD5347641D2CB57B00FBF7B1 /* AppDelegate.swift in Sources */,
+				AD5C624A1D385FDE00224AEE /* WordsManager.swift in Sources */,
 				AD8DD2971D36B2BF00A37369 /* MSButtonNode.swift in Sources */,
 				AD8DD28F1D359ECA00A37369 /* MainMenu.swift in Sources */,
 			);

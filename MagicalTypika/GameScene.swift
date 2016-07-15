@@ -12,10 +12,7 @@ import UIKit
 class GameScene: SKScene, UITextFieldDelegate {
     
     var inputText: UITextField! //will be hidden
-    var wordLabel: SKLabelNode!
-    
-    var bundle: NSBundle!
-    var fullArray: [String] = []
+    var wordLabel: SKLabelNode! //will be user's typed word
     
     var theWord = "" {
         didSet {
@@ -24,37 +21,20 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     //MARK: - TEXT FIELD DELEGATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-  
+    
     
     func textDidChange (textField: UITextField) {
+        //Makes whatever user typed go into the SKLabel
         theWord = textField.text!
     }
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
-        //~~~~~~~ Reading into a word list text file and populating an array with the words ~~~~~~~~~~//
-        bundle = NSBundle.mainBundle()
-        let path = bundle.pathForResource("wordsEn", ofType: "txt")!
+        //print(WordsManager.sharedInstance.getWord())
         
-        //~~~~~~~ Copies entire word list into a super long string to split ~~~~~~~~~~~~~~~~~~~~~~~~~~//
-        let contents: String?
+        //MARK: ~~~~~~~~~~~~ Setting up UITextField -> SKLabel conversion ~~~~~~~~~~~~~~~~//
         
-        do {
-            contents = try String(contentsOfFile: path, encoding: NSUTF8StringEncoding)
-        } catch _ {
-            contents = nil
-        }
-        
-        var tempArray: [String] = []
-        tempArray = contents!.componentsSeparatedByCharactersInSet(NSCharacterSet.newlineCharacterSet())
-        
-        //~~~~~~~ Individual strings of the word list are now members of fullArray ~~~~~~~~~~~~~~~~~~~//
-        for index in 0...tempArray.count-1 {
-            fullArray.append(tempArray[index])
-        }
-        //MARK: ///////////// END OF WORD LIST READ & ARRAY-IFY PART //////////////////////////////////
-
         wordLabel = SKLabelNode(fontNamed: "Helvetica")
         addChild(wordLabel)
         wordLabel.position.x = view.frame.width - (view.frame.width / 3)
@@ -72,16 +52,19 @@ class GameScene: SKScene, UITextFieldDelegate {
         inputText.becomeFirstResponder() //Makes Keyboard appear first
         
         inputText.addTarget(self, action: #selector(UITextInputDelegate.textDidChange(_:)), forControlEvents: .EditingChanged)
+        
+        //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-       /* Called when a touch begins */
+        /* Called when a touch begins */
         /*
-        for touch in touches {
-            //yada yada yada
-        }*/
+         for touch in touches {
+         //yada yada yada
+         }*/
     }
-   
+    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
     }
