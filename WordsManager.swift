@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import GameplayKit //Just need it for shuffling an array's members
 
 class WordsManager {
     static let sharedInstance = WordsManager()
@@ -64,10 +65,13 @@ class WordsManager {
             }
         }
         
-        //Return the right array
+        //Randomly shuffle the words in the arrays & return the correct array.
+        
         if easyLevel {
+            easyArray = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(easyArray) as! [String]
             return easyArray
         } else {
+            hardArray = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(hardArray) as! [String]
             return hardArray
         }
     }
