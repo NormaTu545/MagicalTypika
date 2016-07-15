@@ -12,7 +12,9 @@ class WordsManager {
     static let sharedInstance = WordsManager()
     
     var bundle: NSBundle!
-    var fullArray: [String] = []
+    var fullArray: [String] = [] //every word in the wordsEn.txt file
+    var easyArray: [String] = [] //words 5 characters or less only
+    var hardArray: [String] = [] //words 10 characters or less only
     
     //let words = ["A", "B", ]
     //
@@ -46,17 +48,27 @@ class WordsManager {
         
         //MARK: ~~~~~~~~~~~~ Picking from full array to make Easy/Hard Array ~~~~~~~~~~~~~~~~~~~~~~~~~//
         
-        if easyLevel {
-        //return Easy Array (words of length 5 characters & under)
-        
-        } else {
-            
-        //return Hard Array (words of length 10 characters & under)
+        for index in 0...fullArray.count-1 {
+            if easyLevel {
+                //populate the easy level words array
+                if fullArray[index].characters.count <= 5 {
+                   easyArray.append(fullArray[index])
+                }
+                
+            } else {
+                //populate the hard level words array 
+                if fullArray[index].characters.count <= 10 {
+                    hardArray.append(fullArray[index])
+                }
+                
+            }
         }
         
-        
-        
-        return fullArray //To be deleted once the above is implemented
+        //Return the right array
+        if easyLevel {
+            return easyArray
+        } else {
+            return hardArray
+        }
     }
-
 } //End of WordsManager

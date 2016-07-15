@@ -31,7 +31,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
-        //print(WordsManager.sharedInstance.getWord())
+        print(WordsManager.sharedInstance.arrayOfWords(false))
         
         //MARK: ~~~~~~~~~~~~ Setting up UITextField -> SKLabel conversion ~~~~~~~~~~~~~~~~//
         
