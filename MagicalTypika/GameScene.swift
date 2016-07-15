@@ -31,21 +31,17 @@ class GameScene: SKScene, UITextFieldDelegate {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
-        print(WordsManager.sharedInstance.arrayOfWords(false))
+        //print(WordsManager.sharedInstance.arrayOfWords(true))
         
         //MARK: ~~~~~~~~~~~~ Setting up UITextField -> SKLabel conversion ~~~~~~~~~~~~~~~~//
+        wordLabel = self.childNodeWithName("userWord") as! SKLabelNode //connect label from .sks file
         
-        wordLabel = SKLabelNode(fontNamed: "Helvetica")
-        addChild(wordLabel)
-        wordLabel.position.x = view.frame.width - (view.frame.width / 3)
-        wordLabel.position.y = view.frame.height / 3
         //fix origin of label to right of label box:
         wordLabel.horizontalAlignmentMode = .Right
         
-        let frame = CGRect (x: 20, y: 20, width: view.frame.width-40, height: 40)
+        let frame = CGRect (x: 0, y: 0, width: view.frame.width-40, height: 40)
         inputText = UITextField(frame: frame)
         inputText.font = UIFont(name: "Helvetica", size: 16)
-        inputText.textColor = UIColor.blackColor()
         inputText.hidden = true //hides the text field
         
         view.addSubview(inputText) //Same as addChild in SpriteKit
