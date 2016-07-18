@@ -23,7 +23,11 @@ class MainMenu: SKScene {
         playButton = self.childNodeWithName("playButton") as! MSButtonNode
         
         playButton.selectedHandler =  {
-            if let scene = GameScene(fileNamed:"GameScene") {
+            let level = Level()
+            
+            if let scene = GameScene(fileNamed: level.sceneName()) {
+                scene.setLevel(level)
+
                 // Configure the view.
                 let skView = self.view!
                 skView.showsFPS = false

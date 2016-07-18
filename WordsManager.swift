@@ -16,16 +16,9 @@ class WordsManager {
     var fullArray: [String] = [] //every word in the wordsEn.txt file
     var easyArray: [String] = [] //words 5 characters or less only
     var hardArray: [String] = [] //words 10 characters or less only
+    var easyLevel: Bool = true //initialize to true
     
-    //let words = ["A", "B", ]
-    //
-    //func getWord() -> String {
-        
-    //}
-    
-    
-    func arrayOfWords(easyLevel: Bool) -> [String] {
-        
+    init() {
         //~~~~~~~ Reading into a word list text file and populating an array with the words ~~~~~~~~~~//
         bundle = NSBundle.mainBundle()
         let path = bundle.pathForResource("wordsEn", ofType: "txt")!
@@ -53,26 +46,34 @@ class WordsManager {
             if easyLevel {
                 //populate the easy level words array
                 if fullArray[index].characters.count <= 5 {
-                   easyArray.append(fullArray[index])
+                    easyArray.append(fullArray[index])
                 }
                 
             } else {
-                //populate the hard level words array 
+                //populate the hard level words array
                 if fullArray[index].characters.count <= 10 {
                     hardArray.append(fullArray[index])
                 }
-                
             }
         }
-        
-        //Randomly shuffle the words in the arrays & return the correct array.
-        
+    }
+    
+    func getArrayOfWords(easyLevel: Bool) -> [String] {
+        //Getter function to return the correct array
         if easyLevel {
-            easyArray = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(easyArray) as! [String]
             return easyArray
         } else {
-            hardArray = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(hardArray) as! [String]
             return hardArray
+        }
+    }
+    
+    
+    func getRandomWord(easyLevel: Bool) -> String {
+        //return a random string value in either easy or hard array
+        if (easyLevel) {
+            return easyArray[random() % (easyArray.count)]
+        } else {
+            return hardArray[random() % (hardArray.count)]
         }
     }
 } //End of WordsManager
