@@ -45,10 +45,12 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //MARK: ~~~~~~~~~~~~[Setting up UITextField -> SKLabel conversion]~~~~~~~~~~~~~~~~//
         
-        //[USER INPUT WORD LABEL HERE]
-        wordLabel = SKLabelNode(fontNamed: "Helvetica")  //REPOSITION WORDLABEL PROGRAMMATICALLY~~~~~~!!!!!!!!!
+        //[USER INPUT WORD LABEL HERE]***************************************
+        wordLabel = SKLabelNode(fontNamed: "Helvetica")
         wordLabel.position.x = view.frame.width - 20
-        wordLabel.position.y = view.frame.height / 2  //PUT WORD INPUT LABEL HALFWAY DOWN THE SCREEN
+        wordLabel.position.y = view.frame.height - (view.frame.height / 3)
+        //PUT WORD INPUT LABEL 2/3 DOWN THE SCREEN^
+        wordLabel.fontSize = 40
         addChild(wordLabel)
         
         //fix origin of label to right of label box:
@@ -70,8 +72,9 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //Spawn the first word so we don't have to wait for it
         spawnWord()
+        
         //set duration between calls to function test
-        _ = NSTimer.scheduledTimerWithTimeInterval(4, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
+        _ = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
         
         //getWordFromFirstLetter(inputText.text!)
         
@@ -106,28 +109,39 @@ class GameScene: SKScene, UITextFieldDelegate {
     func spawnWord() {
         //spawn a random word from easyArray
         //let wordArray = WordsManager.sharedInstance.getArrayOfWords(true);
-        let word = WordsManager.sharedInstance.getRandomWord(true);
-        let anotherWord = WordsManager.sharedInstance.getRandomWord(true);
-
+        let word = WordsManager.sharedInstance.getRandomWord(true)
+        let anotherWord = WordsManager.sharedInstance.getRandomWord(true)
+        let yetAnotherWord = WordsManager.sharedInstance.getRandomWord(true)
+        let oneMoreWord = WordsManager.sharedInstance.getRandomWord(true)
+        
+        let firstLetterF = word[word.startIndex]
+        let firstLetterN = anotherWord[anotherWord.startIndex]
         
         let fallingLabel = SKLabelNode(text: word)
         let nextLabel = SKLabelNode(text: anotherWord)
         
-        fallingLabel.text = word
-        nextLabel.text = anotherWord
-        
-        fallingLabel.position.y = view!.frame.height
-        nextLabel.position.y = view!.frame.height + 40
+        //Ensure the next falling Label won't have the same starting letter
+        if (firstLetterN != firstLetterF) {
+            fallingLabel.text = word
+            nextLabel.text = anotherWord
+        } else {
+            fallingLabel.text = yetAnotherWord
+            nextLabel.text = oneMoreWord
+        }
         
         //Constrict range for X from 0 to (width of scene - width of wordLabel)
         // let range = random() % Int(frame.width - fallingLabel.frame.size.width)
         let range = random() % Int(Int(view!.frame.width) / 2 ) //- Int(fallingLabel.frame.size.width))
-        let anotherRange = random() % Int(Int(view!.frame.width) / 2) + 20// - Int(fallingLabel.frame.size.width))
+        //let anotherRange = random() % Int(Int(view!.frame.width) / 4) // - Int(fallingLabel.frame.size.width))
+        let anotherRange = Int(arc4random_uniform(UInt32(view!.frame.width)/4) + 20)
         
         print("\(word) \(range) \(frame.width) \(fallingLabel.frame.size.width)")
         
         fallingLabel.position.x = CGFloat(range)
         nextLabel.position.x = CGFloat(anotherRange)
+        
+        fallingLabel.position.y = view!.frame.height
+        nextLabel.position.y = view!.frame.height / CGFloat(anotherRange)
 
         fallingLabel.horizontalAlignmentMode = .Left
         nextLabel.horizontalAlignmentMode = .Left
@@ -147,17 +161,10 @@ class GameScene: SKScene, UITextFieldDelegate {
         let remove = SKAction.removeFromParent()
         let seq = SKAction.sequence([fall, remove])
         
-        let firstLetterF = fallingLabel.text![fallingLabel.text!.startIndex]
-        let firstLetterN = nextLabel.text![nextLabel.text!.startIndex]
-        
         fallingLabel.runAction(seq)
         nextLabel.runAction(seq)
-        //Ensure the next falling Label won't have the same starting letter
-        if (firstLetterN != firstLetterF) {
-            print (nextLabel.text)
-        }
     }
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
     //Currently working on detecting attempted falling word, then moving it right above user input
     func getWordFromFirstLetter(word: String) -> String? {
         for c in children { //look through all children
@@ -175,7 +182,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         return nil
     }
     
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
     
     func setLevel(level: Level) {
         self.level = level //because Steve said so
@@ -197,9 +204,6 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //compares first letter user typed with first letter of falling words, returns text string of attempted falling word
         //getWordFromFirstLetter(inputText.text!)
-        
-        
-  
 
     }
 }
