@@ -25,7 +25,8 @@ class MainMenu: SKScene {
         playButton.selectedHandler =  {
             let level = Level()
             
-            if let scene = GameScene(fileNamed: level.sceneName()) {
+           // if let scene = GameScene(fileNamed: level.sceneName()) {
+            let scene = GameScene(size: view.frame.size)
                 scene.setLevel(level)
 
                 // Configure the view.
@@ -40,7 +41,7 @@ class MainMenu: SKScene {
                 scene.scaleMode = .AspectFill
                 
                 skView.presentScene(scene)
-            }
+            // }
         }
         
        /*
