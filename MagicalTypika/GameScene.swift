@@ -13,6 +13,10 @@ import UIKit
 
 let textColors = [ UIColor.whiteColor(), UIColor.whiteColor()] //,UIColor.redColor(), UIColor.cyanColor(), UIColor.greenColor(), UIColor.whiteColor(), UIColor.whiteColor()]
 
+class FallingLabelNode: SKLabelNode {
+    //used to differentiate between the user's input SKLabelNode
+}
+
 class GameScene: SKScene, UITextFieldDelegate {
     
     var inputText: UITextField! //will be hidden
@@ -30,7 +34,17 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     func textDidChange (textField: UITextField) {
         //Makes whatever user typed go into the SKLabel
-        theWord = textField.text!
+        //if there IS a value (not nil) for textField.text, then
+        //unwrap it and stick it in current word
+        
+        if let currentWord = textField.text {
+            //proccess a word
+            theWord = currentWord
+            
+            //print((getWordFromFirstLetter(currentWord))?.text) //IT WORKS! YAY
+        } else {
+            theWord = "" //Can't form a word from an empty String!!!*******************************FIX THIS!
+        } //User can't backspace! Discuss Design??? *********************************
     }
     
     override func didMoveToView(view: SKView) {
@@ -76,7 +90,6 @@ class GameScene: SKScene, UITextFieldDelegate {
         //set duration between calls to function test
         _ = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
         
-        //getWordFromFirstLetter(inputText.text!)
         
         
         /* MITCHELL'S SCREEN FIT TEST~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -106,76 +119,85 @@ class GameScene: SKScene, UITextFieldDelegate {
  
     }
     
-    func spawnWord() {
-        //spawn a random word from easyArray
-        //let wordArray = WordsManager.sharedInstance.getArrayOfWords(true);
-        let word = WordsManager.sharedInstance.getRandomWord(true)
-        let anotherWord = WordsManager.sharedInstance.getRandomWord(true)
-        let yetAnotherWord = WordsManager.sharedInstance.getRandomWord(true)
-        let oneMoreWord = WordsManager.sharedInstance.getRandomWord(true)
-        
-        let firstLetterF = word[word.startIndex]
-        let firstLetterN = anotherWord[anotherWord.startIndex]
-        
-        let fallingLabel = SKLabelNode(text: word)
-        let nextLabel = SKLabelNode(text: anotherWord)
-        
-        //Ensure the next falling Label won't have the same starting letter
-        if (firstLetterN != firstLetterF) {
-            fallingLabel.text = word
-            nextLabel.text = anotherWord
-        } else {
-            fallingLabel.text = yetAnotherWord
-            nextLabel.text = oneMoreWord
-        }
-        
-        //Constrict range for X from 0 to (width of scene - width of wordLabel)
-        // let range = random() % Int(frame.width - fallingLabel.frame.size.width)
-        let range = random() % Int(Int(view!.frame.width) / 2 ) //- Int(fallingLabel.frame.size.width))
-        //let anotherRange = random() % Int(Int(view!.frame.width) / 4) // - Int(fallingLabel.frame.size.width))
-        let anotherRange = Int(arc4random_uniform(UInt32(view!.frame.width)/4) + 20)
-        
-        print("\(word) \(range) \(frame.width) \(fallingLabel.frame.size.width)")
-        
-        fallingLabel.position.x = CGFloat(range)
-        nextLabel.position.x = CGFloat(anotherRange)
-        
-        fallingLabel.position.y = view!.frame.height
-        nextLabel.position.y = view!.frame.height / CGFloat(anotherRange)
+    //**********************************************************************//
+    //   [REFACTOR SO THAT SPAWN WORD FUNCTION JOB SPITS OUT 1 UNIQUE WORD]
+    //**********************************************************************//
+    
+    //spawns 1 UNIQUE Word, as in, it checks against all other label nodes to ensure no other words have same first letter
 
-        fallingLabel.horizontalAlignmentMode = .Left
-        nextLabel.horizontalAlignmentMode = .Left
+    func spawnWord() {
         
-        fallingLabel.verticalAlignmentMode = .Bottom
-        nextLabel.verticalAlignmentMode = .Bottom
+        var fallingLabel: FallingLabelNode?
         
-        fallingLabel.fontName = "Courier New Bold"
-        fallingLabel.fontColor = textColors[random() % textColors.count ]
-        self.addChild(fallingLabel)
-        
-        nextLabel.fontName = "Courier New Bold"
-        nextLabel.fontColor = textColors[random() % textColors.count ]
-        self.addChild(nextLabel)
-        
-        let fall = SKAction.moveToY(frame.height/3, duration: 10)
-        let remove = SKAction.removeFromParent()
-        let seq = SKAction.sequence([fall, remove])
-        
-        fallingLabel.runAction(seq)
-        nextLabel.runAction(seq)
+        while fallingLabel == nil {
+            //get a random word from Easy Array & get that first letter for the fallingLabel
+            let word = WordsManager.sharedInstance.getRandomWord(true)
+            let firstLetter  = word[word.startIndex]
+            
+            var foundLabel: FallingLabelNode? //For if we find another label that has same first letter
+            
+            for c in children {
+                if let thisLabel = c as? FallingLabelNode {  //fallingLabel is a SKLabelNode Child
+                    
+                    let thisLabelText = thisLabel.text!
+                    
+                    let thisFirstChar = thisLabelText[(thisLabelText.startIndex)]
+                    
+                    if thisFirstChar == firstLetter {
+                        foundLabel = thisLabel //found a label that has same 1st letter
+                        break
+                    }
+                }
+            }
+            
+            if foundLabel != nil {
+                print("Their first letters match!!!!!")
+                continue //go back to top of while to try again
+            }
+            
+            fallingLabel = FallingLabelNode(text: word)
+
+            //~~[ Add label to scene, assuming label is non-null ]~~
+            
+            //Constrict range for X from 0 to half the width of the scene
+            let range = random() % Int(Int(view!.frame.width) / 2 )
+            
+            //print("\(word) \(range) \(frame.width) \(fallingLabel.frame.size.width)")
+            
+            fallingLabel!.position.x = CGFloat(range)
+            
+            fallingLabel!.position.y = view!.frame.height
+            
+            fallingLabel!.horizontalAlignmentMode = .Left
+            
+            fallingLabel!.verticalAlignmentMode = .Bottom
+            
+            fallingLabel!.fontName = "Courier New Bold"
+            fallingLabel!.fontColor = textColors[random() % textColors.count ]
+            self.addChild(fallingLabel!)
+            
+            let fall = SKAction.moveToY(frame.height/3, duration: 10)
+            let remove = SKAction.removeFromParent()
+            let seq = SKAction.sequence([fall, remove])
+            
+            fallingLabel!.runAction(seq)
+        }
     }
+
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-    //Currently working on detecting attempted falling word, then moving it right above user input
-    func getWordFromFirstLetter(word: String) -> String? {
+    //  [Detecting attempted falling word]
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+
+    func getWordFromFirstLetter(word: String) -> SKLabelNode? { //String? {
         for c in children { //look through all children
             if let fallingLabel = c as? SKLabelNode {  //fallingLabel is a SKLabelNode Child
                 //get first letter of the word
                 let letter = word[word.startIndex]
+                
                 //letter is user's first typed letter, compared with fallingLabel's first letter
                 if letter == fallingLabel.text![fallingLabel.text!.startIndex] {
-                    //user is attempting that fallingLabel
-                    print("*******************YEP GOT IT**********************")
-                    return fallingLabel.text
+                    //user is attempting that particular fallingLabel
+                    return fallingLabel
                 }
             }
         }
