@@ -41,7 +41,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             //proccess a word
             theWord = currentWord
             
-            //print((getWordFromFirstLetter(currentWord))?.text) //IT WORKS! YAY
+            print((getWordFromFirstLetter(currentWord))?.text) //IT WORKS! YAY
         } else {
             theWord = "" //Can't form a word from an empty String!!!*******************************FIX THIS!
         } //User can't backspace! Discuss Design??? *********************************
@@ -76,19 +76,20 @@ class GameScene: SKScene, UITextFieldDelegate {
         inputText.font = UIFont(name: "Courier New Bold", size: 16)
         inputText.hidden = true //hides the text field
         inputText.autocapitalizationType = .None
+        inputText.autocorrectionType = .No
         
         view.addSubview(inputText) //Same as addChild in SpriteKit
         inputText.becomeFirstResponder() //Makes Keyboard appear first
         
         inputText.addTarget(self, action: #selector(UITextInputDelegate.textDidChange(_:)), forControlEvents: .EditingChanged)
         
-        //MARK: ~~~~~~~~~~~~ Setting up timer to spawn a falling word every 2 seconds ~~~~~~~~//
+        //MARK: ~~~~~~~~~~~~[ Setting up timer to spawn a falling word every 2 seconds ]~~~~~~~~//
         
-        //Spawn the first word so we don't have to wait for it
+        //Manually spawn the first word so we don't have to wait for it
         spawnWord()
         
-        //set duration between calls to function test
-        _ = NSTimer.scheduledTimerWithTimeInterval(5, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
+        //Set 4-second delay between continuous calls to function spawnWord
+        _ = NSTimer.scheduledTimerWithTimeInterval(4, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
         
         
         
@@ -119,11 +120,10 @@ class GameScene: SKScene, UITextFieldDelegate {
  
     }
     
-    //**********************************************************************//
-    //   [REFACTOR SO THAT SPAWN WORD FUNCTION JOB SPITS OUT 1 UNIQUE WORD]
-    //**********************************************************************//
+    //******************************************************************************************************//
+    // [SPAWN A UNIQUE WORD] - check all other nodes to make sure all visible words start w/ diff 1st letter
+    //******************************************************************************************************//
     
-    //spawns 1 UNIQUE Word, as in, it checks against all other label nodes to ensure no other words have same first letter
 
     func spawnWord() {
         
@@ -151,13 +151,12 @@ class GameScene: SKScene, UITextFieldDelegate {
             }
             
             if foundLabel != nil {
-                print("Their first letters match!!!!!")
-                continue //go back to top of while to try again
+                continue //go back to top of while to try spawning a unique word again
             }
             
             fallingLabel = FallingLabelNode(text: word)
 
-            //~~[ Add label to scene, assuming label is non-null ]~~
+            //~~[ Add label to scene, assuming label is non-null ]~~~~~~~//
             
             //Constrict range for X from 0 to half the width of the scene
             let range = random() % Int(Int(view!.frame.width) / 2 )
@@ -185,13 +184,18 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
 
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-    //  [Detecting attempted falling word]
+    //  [Detecting attempted falling word]  -> Returns the falling label that user is trying
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-    func getWordFromFirstLetter(word: String) -> SKLabelNode? { //String? {
+    func getWordFromFirstLetter(word: String) -> SKLabelNode? {
+        
+        if word == "" {
+            return nil
+        }
+        
         for c in children { //look through all children
             if let fallingLabel = c as? SKLabelNode {  //fallingLabel is a SKLabelNode Child
-                //get first letter of the word
+                //get first letter of the word if not empty string
                 let letter = word[word.startIndex]
                 
                 //letter is user's first typed letter, compared with fallingLabel's first letter
