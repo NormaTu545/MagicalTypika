@@ -11,16 +11,18 @@
 import SpriteKit
 import UIKit
 
-let textColors = [ UIColor.whiteColor(), UIColor.whiteColor()] //,UIColor.redColor(), UIColor.cyanColor(), UIColor.greenColor(), UIColor.whiteColor(), UIColor.whiteColor()]
+let textColors = [ UIColor.whiteColor(), UIColor.whiteColor()] //,UIColor.redColor(), UIColor.cyanColor(), UIColor.whiteColor(), UIColor.whiteColor(), UIColor.whiteColor(), UIColor.whiteColor() ]
 
 class FallingLabelNode: SKLabelNode {
     //used to differentiate between the user's input SKLabelNode
 }
 
 class GameScene: SKScene, UITextFieldDelegate {
-    
+    //Finding height of Keyboard
+
     var inputText: UITextField! //will be hidden
     var wordLabel: SKLabelNode! //will be user's typed word
+    var inputBG: SKSpriteNode!
     var level: Level!
     
     var theWord = "" {
@@ -41,42 +43,33 @@ class GameScene: SKScene, UITextFieldDelegate {
             //proccess a word
             theWord = currentWord
             
-            print((getWordFromFirstLetter(currentWord))?.text) //IT WORKS! YAY
+            //print((getWordFromFirstLetter(currentWord))?.text) //IT WORKS! YAY
         } else {
-            theWord = "" //Can't form a word from an empty String!!!*******************************FIX THIS!
-        } //User can't backspace! Discuss Design??? *********************************
+            theWord = ""
+        }
     }
     
     override func didMoveToView(view: SKView) {
-        
+        print("Did move to view!!!!")
         //Set up background
-        let background = SKSpriteNode(imageNamed: "background2")
+        let background = SKSpriteNode(imageNamed: "MTbackground")
         addChild(background)
         background.position.x = view.frame.width / 2
         background.position.y = view.frame.height / 2
         background.size = view.frame.size
-        background.zPosition = -1
+        background.zPosition = -2
         
         //MARK: ~~~~~~~~~~~~[Setting up UITextField -> SKLabel conversion]~~~~~~~~~~~~~~~~//
         
-        //[USER INPUT WORD LABEL HERE]***************************************
-        wordLabel = SKLabelNode(fontNamed: "Helvetica")
-        wordLabel.position.x = view.frame.width - 20
-        wordLabel.position.y = view.frame.height - (view.frame.height / 3)
-        //PUT WORD INPUT LABEL 2/3 DOWN THE SCREEN^
-        wordLabel.fontSize = 40
-        addChild(wordLabel)
-        
-        //fix origin of label to right of label box:
-        wordLabel.horizontalAlignmentMode = .Right
-
+        //For finding Keyboard sizes
+        NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GameScene.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         
         let frame = CGRect (x: 0, y: 0, width: view.frame.width-40, height: 40)
         inputText = UITextField(frame: frame)
         inputText.font = UIFont(name: "Courier New Bold", size: 16)
         inputText.hidden = true //hides the text field
-        inputText.autocapitalizationType = .None
-        inputText.autocorrectionType = .No
+        inputText.autocapitalizationType = .None //User starts typing in lowercase
+        inputText.autocorrectionType = .No  //Disables autocorrect suggestor
         
         view.addSubview(inputText) //Same as addChild in SpriteKit
         inputText.becomeFirstResponder() //Makes Keyboard appear first
@@ -119,6 +112,45 @@ class GameScene: SKScene, UITextFieldDelegate {
 
  
     }
+
+    
+    func keyboardWillShow(notification:NSNotification) {
+        let userInfo:NSDictionary = notification.userInfo!
+        let keyboardFrame:NSValue = userInfo.valueForKey(UIKeyboardFrameEndUserInfoKey) as! NSValue
+        let keyboardRectangle = keyboardFrame.CGRectValue()
+        let keyboardHeight = keyboardRectangle.height
+        let keyboardWidth = keyboardRectangle.width
+        
+        print("Made it")
+        
+        //Set up user input text's background relative to keyboard
+        
+        inputBG = SKSpriteNode(imageNamed: "inputBar")
+        addChild(inputBG)
+        inputBG.anchorPoint = CGPointMake(0, 0) //change anchor point to bottom left of the spritenode.
+        inputBG.position.x = 0
+        inputBG.position.y = keyboardHeight
+
+        inputBG.size.width = keyboardWidth
+        inputBG.size.height = keyboardHeight / 4
+        inputBG.zPosition = 5
+ 
+        
+        //[USER INPUT WORD LABEL HERE]***************************************
+        wordLabel = SKLabelNode(fontNamed: "Helvetica")
+        wordLabel.fontSize = 40
+        addChild(wordLabel)
+        
+        wordLabel.horizontalAlignmentMode = .Right //change origin to right of label
+        wordLabel.position.x = inputBG.size.width/2 + inputBG.size.width/8 //view.frame.width - 20
+        wordLabel.position.y = inputBG.size.height + keyboardHeight - 40 //view!.frame.height - (view!.frame.height / 3)
+        wordLabel.zPosition = 10
+    }
+    
+    
+    
+    
+    
     
     //******************************************************************************************************//
     // [SPAWN A UNIQUE WORD] - check all other nodes to make sure all visible words start w/ diff 1st letter
@@ -170,6 +202,8 @@ class GameScene: SKScene, UITextFieldDelegate {
             fallingLabel!.horizontalAlignmentMode = .Left
             
             fallingLabel!.verticalAlignmentMode = .Bottom
+            
+            fallingLabel!.zPosition = 0
             
             fallingLabel!.fontName = "Courier New Bold"
             fallingLabel!.fontColor = textColors[random() % textColors.count ]
