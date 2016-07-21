@@ -24,15 +24,23 @@ class GameScene: SKScene, UITextFieldDelegate {
     var wordLabel: SKLabelNode! //will be user's typed word
     var inputBG: SKSpriteNode!
     var level: Level!
+    var scoreLabel:  SKLabelNode! //for MVP
+    //var score: Int = 0 //for MVP
+    //var checked: Bool = true   // <~~~~HERE
     
     var theWord = "" {
         didSet {
             wordLabel.text = theWord
         }
     }
-    
-    //MARK: - TEXT FIELD DELEGATE ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
+   /*
+    var theScore = 0 {
+        didSet {
+            score = theScore
+        }
+    }
+     */
+    var targetLabel: SKLabelNode! //What word user is attempting
     
     func textDidChange (textField: UITextField) {
         //Makes whatever user typed go into the SKLabel
@@ -42,15 +50,36 @@ class GameScene: SKScene, UITextFieldDelegate {
         if let currentWord = textField.text {
             //proccess a word
             theWord = currentWord
-            
-            //print((getWordFromFirstLetter(currentWord))?.text) //IT WORKS! YAY
         } else {
             theWord = ""
         }
+        
+        //MARK: [DETECT MATCHING WORDS]***********************************************************
+        
+        //Compares user's word by first letter to see
+        //if checked==true {   // <~~~~HERE
+            if let tl = getWordFromFirstLetter(wordLabel.text!) {
+                targetLabel = tl
+                if targetLabel.text! == theWord {
+                    print("WAHOO THEY MATCH YOU DID IT.")
+                    //theScore += 1
+                }
+                //checked = false  // <~~~~HERE
+            }
+        //}  // <~~~~HERE
+        
+        //if has value then do thing, else move on with the program AKA ALLOW BACKSPACING TO EMPTY
+    }
+    
+    //Tells when user hits the return key
+    func textFieldShouldReturn(textField: UITextField) -> Bool {
+        print("You hit the return key")
+        // checked = true  // <~~~~HERE
+        
+        return false //so keyboard won't close
     }
     
     override func didMoveToView(view: SKView) {
-        print("Did move to view!!!!")
         //Set up background
         let background = SKSpriteNode(imageNamed: "MTbackground")
         addChild(background)
@@ -58,6 +87,16 @@ class GameScene: SKScene, UITextFieldDelegate {
         background.position.y = view.frame.height / 2
         background.size = view.frame.size
         background.zPosition = -2
+        
+        
+        scoreLabel = SKLabelNode(fontNamed: "Helvetica")
+        scoreLabel.fontSize = 40
+        //addChild(scoreLabel)
+        scoreLabel.position.x = view.frame.width - (view.frame.width/3)
+        scoreLabel.position.y = view.frame.height - 50
+        scoreLabel.zPosition = 10
+        //scoreLabel.text = "Score: \(score)"
+        scoreLabel.fontColor = UIColor.purpleColor()
         
         //MARK: ~~~~~~~~~~~~[Setting up UITextField -> SKLabel conversion]~~~~~~~~~~~~~~~~//
         
@@ -71,10 +110,11 @@ class GameScene: SKScene, UITextFieldDelegate {
         inputText.autocapitalizationType = .None //User starts typing in lowercase
         inputText.autocorrectionType = .No  //Disables autocorrect suggestor
         
-        view.addSubview(inputText) //Same as addChild in SpriteKit
+        view.addSubview(inputText) //Like addChild in SpriteKit
         inputText.becomeFirstResponder() //Makes Keyboard appear first
-        
         inputText.addTarget(self, action: #selector(UITextInputDelegate.textDidChange(_:)), forControlEvents: .EditingChanged)
+        
+        inputText.delegate = self
         
         //MARK: ~~~~~~~~~~~~[ Setting up timer to spawn a falling word every 2 seconds ]~~~~~~~~//
         
@@ -84,7 +124,9 @@ class GameScene: SKScene, UITextFieldDelegate {
         //Set 4-second delay between continuous calls to function spawnWord
         _ = NSTimer.scheduledTimerWithTimeInterval(4, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
         
+        //checkWords()
         
+
         
         /* MITCHELL'S SCREEN FIT TEST~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         let box = SKSpriteNode(color: UIColor.redColor(), size: CGSize(width: 100, height: 100))
@@ -114,14 +156,16 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
 
     
+    //******************************************************************************************************//
+    // [Shows User Input SKLabel & its background] - as soon as the keyboard comes up
+    //******************************************************************************************************//
+    
     func keyboardWillShow(notification:NSNotification) {
         let userInfo:NSDictionary = notification.userInfo!
         let keyboardFrame:NSValue = userInfo.valueForKey(UIKeyboardFrameEndUserInfoKey) as! NSValue
         let keyboardRectangle = keyboardFrame.CGRectValue()
         let keyboardHeight = keyboardRectangle.height
         let keyboardWidth = keyboardRectangle.width
-        
-        print("Made it")
         
         //Set up user input text's background relative to keyboard
         
@@ -136,20 +180,16 @@ class GameScene: SKScene, UITextFieldDelegate {
         inputBG.zPosition = 5
  
         
-        //[USER INPUT WORD LABEL HERE]***************************************
-        wordLabel = SKLabelNode(fontNamed: "Helvetica")
+        //[USER INPUT WORD LABEL HERE]******************************//
+        wordLabel = SKLabelNode(fontNamed: "Courier New Bold")
         wordLabel.fontSize = 40
         addChild(wordLabel)
         
-        wordLabel.horizontalAlignmentMode = .Right //change origin to right of label
-        wordLabel.position.x = inputBG.size.width/2 + inputBG.size.width/8 //view.frame.width - 20
-        wordLabel.position.y = inputBG.size.height + keyboardHeight - 40 //view!.frame.height - (view!.frame.height / 3)
+        wordLabel.horizontalAlignmentMode = .Center
+        wordLabel.position.x = inputBG.size.width/2
+        wordLabel.position.y = inputBG.size.height + keyboardHeight - 40
         wordLabel.zPosition = 10
     }
-    
-    
-    
-    
     
     
     //******************************************************************************************************//
@@ -221,14 +261,14 @@ class GameScene: SKScene, UITextFieldDelegate {
     //  [Detecting attempted falling word]  -> Returns the falling label that user is trying
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
-    func getWordFromFirstLetter(word: String) -> SKLabelNode? {
+    func getWordFromFirstLetter(word: String) -> FallingLabelNode? {
         
         if word == "" {
             return nil
         }
         
         for c in children { //look through all children
-            if let fallingLabel = c as? SKLabelNode {  //fallingLabel is a SKLabelNode Child
+            if let fallingLabel = c as? FallingLabelNode {  //fallingLabel is a SKLabelNode Child
                 //get first letter of the word if not empty string
                 let letter = word[word.startIndex]
                 
@@ -242,6 +282,14 @@ class GameScene: SKScene, UITextFieldDelegate {
         return nil
     }
     
+    
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    //  [Check Words to see if user typed it right]
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    
+    //func checkWords() {
+        
+   // }
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
     
     func setLevel(level: Level) {
