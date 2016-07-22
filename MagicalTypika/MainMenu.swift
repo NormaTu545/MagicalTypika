@@ -23,11 +23,11 @@ class MainMenu: SKScene {
         playButton = self.childNodeWithName("playButton") as! MSButtonNode
         
         playButton.selectedHandler =  {
-            let level = Level()
+            //let level = Level()
             
            // if let scene = GameScene(fileNamed: level.sceneName()) {
             let scene = GameScene(size: view.frame.size)
-                scene.setLevel(level)
+//                scene.setLevel(level)
 
                 // Configure the view.
                 let skView = self.view!

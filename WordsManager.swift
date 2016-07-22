@@ -53,9 +53,15 @@ class WordsManager {
                 //populate the hard level words array
                 if fullArray[index].characters.count <= 10 {
                     hardArray.append(fullArray[index])
+                    
                 }
             }
         }
+        
+        //Shuffle so that different random seeds happen
+        easyArray = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(easyArray) as! [String]
+        hardArray = GKRandomSource.sharedRandom().arrayByShufflingObjectsInArray(hardArray) as! [String]
+
     }
     
     func getArrayOfWords(easyLevel: Bool) -> [String] {

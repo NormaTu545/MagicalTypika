@@ -23,6 +23,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     var inputBG: SKSpriteNode!
     var level: Level!
     var correct: Bool = false //used to flag if falling word was correctly typed
+    //var doCheck: Bool = false //used to flag so that wordCheck happens once user presses return
     var scoreLabel:  SKLabelNode! //for MVP
     var blankTheLabel: Bool = false
     
@@ -53,9 +54,21 @@ class GameScene: SKScene, UITextFieldDelegate {
         }
         
         //MARK: [DETECT MATCHING WORDS]***********************************************************
+        //if doCheck {
+            wordCheck()
+            //doCheck = false
+        //}
+
+        if blankTheLabel {
+            inputText.text = ""
+            blankTheLabel = false
+        }
+    }
+    
+    func wordCheck() {
+        // Compares user's word by first letter to see if it
+        // matches the first letter of the target falling word
         
-        //Compares user's word by first letter to see
-        //if checked==true {   // <~~~~HERE
         if let tl = getWordFromFirstLetter(wordLabel.text!) {
             targetLabel = tl
             if targetLabel.text! == theWord {
@@ -64,24 +77,18 @@ class GameScene: SKScene, UITextFieldDelegate {
                 flip(tl)
                 blankTheLabel = true
             }
-            //checked = false  // <~~~~HERE
         }
-
-        //}  // <~~~~HERE
-        if blankTheLabel {
-            inputText.text = ""
-        }
-        
-        //if has value then do thing, else move on with the program AKA ALLOW BACKSPACING TO EMPTY
     }
     
-    //MARK: [When user hits the return key]*****************************************************
+    //MARK: [When user hits the RETURN key]*****************************************************
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         print("You hit the return key")
         // checked = true  // <~~~~HERE
         
         wordLabel.text = "" //Blanks the User Input so they won't have to backspace everything 
         //ALSO MUST BLANK THE UITEXTFIELD INPUT LABEL
+        
+        //doCheck = true
         
         return false //so keyboard won't close
     }
