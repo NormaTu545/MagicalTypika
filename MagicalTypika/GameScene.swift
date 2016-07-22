@@ -61,6 +61,7 @@ class GameScene: SKScene, UITextFieldDelegate {
 
         if blankTheLabel {
             inputText.text = ""
+            wordLabel.text = ""
             blankTheLabel = false
         }
     }
@@ -85,11 +86,18 @@ class GameScene: SKScene, UITextFieldDelegate {
         print("You hit the return key")
         // checked = true  // <~~~~HERE
         
-        wordLabel.text = "" //Blanks the User Input so they won't have to backspace everything 
+        if wordLabel.text != "" {
+            wordLabel.text = ""
+            //blankTheLabel = true //clear the messed up text
+
+        }
+        
+        
+        //wordLabel.text = "" //Blanks the User Input so they won't have to backspace everything
         //ALSO MUST BLANK THE UITEXTFIELD INPUT LABEL
         
         //doCheck = true
-        
+
         return false //so keyboard won't close
     }
     
@@ -135,12 +143,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         spawnWord()
         
         //Set 4-second delay between continuous calls to function spawnWord
-        _ = NSTimer.scheduledTimerWithTimeInterval(4, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
+        _ = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
         
-        //checkWords()
-
-        
-
         
         /* MITCHELL'S SCREEN FIT TEST~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         let box = SKSpriteNode(color: UIColor.redColor(), size: CGSize(width: 100, height: 100))
@@ -165,8 +169,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         // let anotherRange = random() % Int(Int(frame.width) - Int(fallingLabel.frame.size.width))
          
         MITCHELL'S SCREEN FIT TEST~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
-
- 
+        
+        
     }
 
     
@@ -203,6 +207,25 @@ class GameScene: SKScene, UITextFieldDelegate {
         wordLabel.position.x = inputBG.size.width/2
         wordLabel.position.y = inputBG.size.height + keyboardHeight - 40
         wordLabel.zPosition = 10
+        
+        //MARK: [TEMP ART]***************************************************************************
+        
+        let monster = SKSpriteNode(imageNamed: "kyubey")
+        addChild(monster)
+        monster.position.x = keyboardWidth/8
+        monster.position.y = keyboardHeight + 90
+        monster.size.width = 40
+        monster.size.height = 40
+        monster.zPosition = -1
+        
+        let typika = SKSpriteNode(imageNamed: "Sayaka")
+        addChild(typika)
+        typika.position.x = keyboardWidth - (keyboardWidth / 4)
+        typika.position.y = keyboardHeight + 100
+        typika.size.width = 75
+        typika.size.height = 80
+        typika.xScale = -1
+        typika.zPosition = -1
     }
     
     
