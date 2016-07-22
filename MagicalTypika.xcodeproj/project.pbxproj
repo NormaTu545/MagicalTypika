@@ -19,6 +19,7 @@
 		AD8DD28F1D359ECA00A37369 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8DD28E1D359ECA00A37369 /* MainMenu.swift */; };
 		AD8DD2911D35A20900A37369 /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = AD8DD2901D35A20900A37369 /* MainMenu.sks */; };
 		AD8DD2971D36B2BF00A37369 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */; };
+		ADC02C421D4289EF00F9A38D /* AnimationActions.sks in Resources */ = {isa = PBXBuildFile; fileRef = ADC02C411D4289EF00F9A38D /* AnimationActions.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		AD8DD28E1D359ECA00A37369 /* MainMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		AD8DD2901D35A20900A37369 /* MainMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainMenu.sks; sourceTree = "<group>"; };
 		AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSButtonNode.swift; sourceTree = "<group>"; };
+		ADC02C411D4289EF00F9A38D /* AnimationActions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = AnimationActions.sks; path = ../AnimationActions.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -69,6 +71,7 @@
 		AD5347621D2CB57B00FBF7B1 /* MagicalTypika */ = {
 			isa = PBXGroup;
 			children = (
+				ADC02C411D4289EF00F9A38D /* AnimationActions.sks */,
 				AD5C62491D385FDE00224AEE /* WordsManager.swift */,
 				AD5347631D2CB57B00FBF7B1 /* AppDelegate.swift */,
 				AD5347671D2CB57B00FBF7B1 /* GameScene.swift */,
@@ -144,6 +147,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ADC02C421D4289EF00F9A38D /* AnimationActions.sks in Resources */,
 				AD5C62481D38563000224AEE /* wordsEn.txt in Resources */,
 				AD5347721D2CB57B00FBF7B1 /* LaunchScreen.storyboard in Resources */,
 				AD53476F1D2CB57B00FBF7B1 /* Assets.xcassets in Resources */,

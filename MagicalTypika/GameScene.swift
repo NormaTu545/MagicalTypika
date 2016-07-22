@@ -6,8 +6,6 @@
 //  Copyright (c) 2016 NormaTu. All rights reserved.
 //
 
-//print(WordsManager.sharedInstance.getArrayOfWords(true))
-
 import SpriteKit
 import UIKit
 
@@ -24,23 +22,23 @@ class GameScene: SKScene, UITextFieldDelegate {
     var wordLabel: SKLabelNode! //will be user's typed word
     var inputBG: SKSpriteNode!
     var level: Level!
+    var correct: Bool = false //used to flag if falling word was correctly typed
     var scoreLabel:  SKLabelNode! //for MVP
-    //var score: Int = 0 //for MVP
-    //var checked: Bool = true   // <~~~~HERE
+    var blankTheLabel: Bool = false
+    
+    var score: Int = 0 {
+        didSet {
+            scoreLabel.text = "Score: \(score)"
+        }
+    }
     
     var theWord = "" {
         didSet {
             wordLabel.text = theWord
         }
     }
-   /*
-    var theScore = 0 {
-        didSet {
-            score = theScore
-        }
-    }
-     */
-    var targetLabel: SKLabelNode! //What word user is attempting
+
+    var targetLabel: FallingLabelNode! //What word user is attempting
     
     func textDidChange (textField: UITextField) {
         //Makes whatever user typed go into the SKLabel
@@ -58,23 +56,32 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //Compares user's word by first letter to see
         //if checked==true {   // <~~~~HERE
-            if let tl = getWordFromFirstLetter(wordLabel.text!) {
-                targetLabel = tl
-                if targetLabel.text! == theWord {
-                    print("WAHOO THEY MATCH YOU DID IT.")
-                    //theScore += 1
-                }
-                //checked = false  // <~~~~HERE
+        if let tl = getWordFromFirstLetter(wordLabel.text!) {
+            targetLabel = tl
+            if targetLabel.text! == theWord {
+                print("WAHOO THEY MATCH YOU DID IT.")
+                score += 1
+                flip(tl)
+                blankTheLabel = true
             }
+            //checked = false  // <~~~~HERE
+        }
+
         //}  // <~~~~HERE
+        if blankTheLabel {
+            inputText.text = ""
+        }
         
         //if has value then do thing, else move on with the program AKA ALLOW BACKSPACING TO EMPTY
     }
     
-    //Tells when user hits the return key
+    //MARK: [When user hits the return key]*****************************************************
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         print("You hit the return key")
         // checked = true  // <~~~~HERE
+        
+        wordLabel.text = "" //Blanks the User Input so they won't have to backspace everything 
+        //ALSO MUST BLANK THE UITEXTFIELD INPUT LABEL
         
         return false //so keyboard won't close
     }
@@ -88,15 +95,15 @@ class GameScene: SKScene, UITextFieldDelegate {
         background.size = view.frame.size
         background.zPosition = -2
         
-        
+        //Set up score for MVP
         scoreLabel = SKLabelNode(fontNamed: "Helvetica")
         scoreLabel.fontSize = 40
-        //addChild(scoreLabel)
+        addChild(scoreLabel)
         scoreLabel.position.x = view.frame.width - (view.frame.width/3)
         scoreLabel.position.y = view.frame.height - 50
         scoreLabel.zPosition = 10
-        //scoreLabel.text = "Score: \(score)"
-        scoreLabel.fontColor = UIColor.purpleColor()
+        scoreLabel.text = "Score: \(score)"
+        scoreLabel.fontColor = UIColor.cyanColor()
         
         //MARK: ~~~~~~~~~~~~[Setting up UITextField -> SKLabel conversion]~~~~~~~~~~~~~~~~//
         
@@ -113,7 +120,6 @@ class GameScene: SKScene, UITextFieldDelegate {
         view.addSubview(inputText) //Like addChild in SpriteKit
         inputText.becomeFirstResponder() //Makes Keyboard appear first
         inputText.addTarget(self, action: #selector(UITextInputDelegate.textDidChange(_:)), forControlEvents: .EditingChanged)
-        
         inputText.delegate = self
         
         //MARK: ~~~~~~~~~~~~[ Setting up timer to spawn a falling word every 2 seconds ]~~~~~~~~//
@@ -125,6 +131,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         _ = NSTimer.scheduledTimerWithTimeInterval(4, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
         
         //checkWords()
+
         
 
         
@@ -291,6 +298,27 @@ class GameScene: SKScene, UITextFieldDelegate {
         
    // }
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    
+    
+    func flip(fallingLabel: FallingLabelNode) {
+        /* Flip the correctly typed word out of the screen, at the monster */
+        //TODO: Refine the flip animation to flip at the monster, not offscreen to the right
+        
+        var actionName: String = ""
+        
+        actionName = "tossWord"
+        
+        /* Load appropriate action */
+        let flip = SKAction(named: actionName)!
+        
+        /* Create a node removal action */
+        let remove = SKAction.removeFromParent()
+        
+        /* Build sequence, flip then remove from scene */
+        let sequence = SKAction.sequence([flip,remove])
+        fallingLabel.runAction(sequence)
+        
+    }
     
     func setLevel(level: Level) {
         self.level = level //because Steve said so
