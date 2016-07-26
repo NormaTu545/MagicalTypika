@@ -17,18 +17,17 @@ class FallingLabelNode: SKLabelNode {
 
 class GameScene: SKScene, UITextFieldDelegate {
     //Finding height of Keyboard
+    
+    var monster:SKSpriteNode!
 
     var inputText: UITextField! //will be hidden
     var wordLabel: SKLabelNode! //will be user's typed word
     var inputBG: SKSpriteNode!
     var level: Level!
     var correct: Bool = false //used to flag if falling word was correctly typed
-    //var doCheck: Bool = false //used to flag so that wordCheck happens once user presses return
     var spawnSpeed: Double = 10 //speed of timer's interval between falling word spawns
-
-    
+    var glowBall: SKSpriteNode!
     var scoreLabel:  SKLabelNode! //for MVP
-    var blankTheLabel: Bool = false
     
     var score: Int = 0 {
         didSet {
@@ -38,8 +37,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             if score % 5 == 0 {
                 spawnSpeed -= 1 //make falling word fall faster
                 //print("CURRENT Speed:  \(spawnSpeed)~~~~~~~~~~")
-            //NOTE TO SELF:
-            //MONSTER SHOULD TAKE LESS THAN 50 WORDS TO DIE
+                
                 if spawnSpeed < 2 {
                     spawnSpeed = 2  //This is as fast as it'll get
                 }
@@ -66,8 +64,6 @@ class GameScene: SKScene, UITextFieldDelegate {
         } else {
             theWord = ""
         }
-        
-        //MARK: [DETECT MATCHING WORDS]***********************************************************
     }
     
     func wordCheck() {
@@ -80,13 +76,12 @@ class GameScene: SKScene, UITextFieldDelegate {
                 print("WAHOO THEY MATCH YOU DID IT.")
                 score += 1
                 flip(tl)
-                blankTheLabel = true
             }
         }
     }
     
     
-    //MARK: [When user hits the RETURN key]*****************************************************
+    //MARK: [DETECT MATCHING WORDS/CLEAR USER INPUT]***************************************************
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         wordCheck()
         
@@ -143,34 +138,10 @@ class GameScene: SKScene, UITextFieldDelegate {
         //Manually spawn the first word so we don't have to wait for it
         spawnWord()
         
-        //Set 4-second delay between continuous calls to function spawnWord
+        //Set 2-second delay between continuous calls to function spawnWord
         _ = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
         
-
-        
-        /* MITCHELL'S SCREEN FIT TEST~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        let box = SKSpriteNode(color: UIColor.redColor(), size: CGSize(width: 100, height: 100))
-        addChild(box)
-        box.zPosition = 9999
-        box.position.x = 50
-        box.position.y = 450
-        
-        let box2 = SKSpriteNode(color: UIColor.orangeColor(), size: CGSize(width: 100, height: 100))
-        addChild(box2)
-        box2.zPosition = 9999
-        box2.position.x = view.frame.width - 50
-        box2.position.y = 450
-        
-        print("***************")
-        print(frame.width)
-        print(view.frame.width)
-        print("***************")
-        
-        
-        //let range = random() % Int(Int(frame.width) - Int(fallingLabel.frame.size.width))
-        // let anotherRange = random() % Int(Int(frame.width) - Int(fallingLabel.frame.size.width))
-         
-        MITCHELL'S SCREEN FIT TEST~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~*/
+        _ = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: #selector(GameScene.monsterAttack), userInfo: nil, repeats: true)
         
         
     }
@@ -212,7 +183,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //MARK: [TEMP ART]***************************************************************************
         
-        let monster = SKSpriteNode(imageNamed: "kyubey")
+        monster = SKSpriteNode(imageNamed: "kyubey")
         addChild(monster)
         monster.position.x = keyboardWidth/8
         monster.position.y = keyboardHeight + 90
@@ -228,8 +199,33 @@ class GameScene: SKScene, UITextFieldDelegate {
         typika.size.height = 80
         typika.xScale = -1
         typika.zPosition = -1
+        
+        glowBall = SKSpriteNode(imageNamed: "ball")
+        addChild(glowBall)
+        glowBall.position.x = keyboardWidth/8 + 25
+        glowBall.position.y = keyboardHeight + 100
+        glowBall.size.width = 30
+        glowBall.size.height = 30
+        glowBall.zPosition = -1
+        glowBall.hidden = true
     }
     
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    //  [Monster Attack] Make a monster class dude. Don't leave this here
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    
+    func monsterAttack() {
+        /* Load appropriate action */
+        let attack = SKAction(named: "monsterAttack")!
+        
+        /* Create a node removal action */
+        let remove = SKAction.removeFromParent()
+        
+        /* Build sequence, flip then remove from scene */
+        let sequence = SKAction.sequence([attack,remove])
+        glowBall.hidden = false
+        glowBall.runAction(sequence)
+    }
     
     //******************************************************************************************************//
     // [SPAWN A UNIQUE WORD] - check all other nodes to make sure all visible words start w/ diff 1st letter
@@ -243,7 +239,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         while fallingLabel == nil {
             //get a random word from Easy Array & get that first letter for the fallingLabel
             let word = WordsManager.sharedInstance.getRandomWord(true)
-            let firstLetter  = word[word.startIndex]
+            let firstLetter = word[word.startIndex]
             
             var foundLabel: FallingLabelNode? //For if we find another label that has same first letter
             
@@ -321,33 +317,32 @@ class GameScene: SKScene, UITextFieldDelegate {
         return nil
     }
     
-    
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-    //  [Check Words to see if user typed it right]
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-    
-    //func checkWords() {
-        
-   // }
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-    
-    
     func flip(fallingLabel: FallingLabelNode) {
         /* Flip the correctly typed word out of the screen, at the monster */
         //TODO: Refine the flip animation to flip at the monster, not offscreen to the right
         
-        var actionName: String = ""
-        
-        actionName = "tossWord"
+        // var actionName = "tossWord"
         
         /* Load appropriate action */
-        let flip = SKAction(named: actionName)!
+        // let flip = SKAction(named: actionName)!
+        let flip = SKAction.moveTo(monster.position, duration: 0.25)
         
         /* Create a node removal action */
         let remove = SKAction.removeFromParent()
         
+        let boom = SKAction.runBlock { 
+            let boom = SKEmitterNode(fileNamed: "Boom")!
+            self.addChild(boom)
+            boom.position = self.monster.position
+            let wait = SKAction.waitForDuration(0.5)
+            let removeBoom = SKAction.removeFromParent()
+            
+            let boomSequence = SKAction.sequence([wait, removeBoom])
+            boom.runAction(boomSequence)
+        }
+        
         /* Build sequence, flip then remove from scene */
-        let sequence = SKAction.sequence([flip,remove])
+        let sequence = SKAction.sequence([flip, remove, boom])
         fallingLabel.runAction(sequence)
         
     }

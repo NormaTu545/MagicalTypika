@@ -20,6 +20,9 @@
 		AD8DD2971D36B2BF00A37369 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */; };
 		ADC02C421D4289EF00F9A38D /* AnimationActions.sks in Resources */ = {isa = PBXBuildFile; fileRef = ADC02C411D4289EF00F9A38D /* AnimationActions.sks */; };
 		ADC02C441D46DD1000F9A38D /* 1000words.txt in Resources */ = {isa = PBXBuildFile; fileRef = ADC02C431D46DD1000F9A38D /* 1000words.txt */; };
+		ADC02C461D480B6100F9A38D /* Monster.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC02C451D480B6100F9A38D /* Monster.swift */; };
+		ADC02C491D48167900F9A38D /* Boom.sks in Resources */ = {isa = PBXBuildFile; fileRef = ADC02C471D48167900F9A38D /* Boom.sks */; };
+		ADC02C4A1D48167900F9A38D /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = ADC02C481D48167900F9A38D /* spark.png */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -38,6 +41,9 @@
 		AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSButtonNode.swift; sourceTree = "<group>"; };
 		ADC02C411D4289EF00F9A38D /* AnimationActions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = AnimationActions.sks; path = ../AnimationActions.sks; sourceTree = "<group>"; };
 		ADC02C431D46DD1000F9A38D /* 1000words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 1000words.txt; sourceTree = "<group>"; };
+		ADC02C451D480B6100F9A38D /* Monster.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Monster.swift; sourceTree = "<group>"; };
+		ADC02C471D48167900F9A38D /* Boom.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Boom.sks; sourceTree = "<group>"; };
+		ADC02C481D48167900F9A38D /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -73,8 +79,11 @@
 			children = (
 				ADC02C411D4289EF00F9A38D /* AnimationActions.sks */,
 				AD5C62491D385FDE00224AEE /* WordsManager.swift */,
+				ADC02C451D480B6100F9A38D /* Monster.swift */,
 				AD5347631D2CB57B00FBF7B1 /* AppDelegate.swift */,
 				AD5347671D2CB57B00FBF7B1 /* GameScene.swift */,
+				ADC02C471D48167900F9A38D /* Boom.sks */,
+				ADC02C481D48167900F9A38D /* spark.png */,
 				AD8DD2901D35A20900A37369 /* MainMenu.sks */,
 				AD8DD28E1D359ECA00A37369 /* MainMenu.swift */,
 				AD0057531D3D4CF700F469FB /* Level.swift */,
@@ -147,10 +156,12 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ADC02C491D48167900F9A38D /* Boom.sks in Resources */,
 				ADC02C421D4289EF00F9A38D /* AnimationActions.sks in Resources */,
 				AD5347721D2CB57B00FBF7B1 /* LaunchScreen.storyboard in Resources */,
 				AD53476F1D2CB57B00FBF7B1 /* Assets.xcassets in Resources */,
 				AD8DD2911D35A20900A37369 /* MainMenu.sks in Resources */,
+				ADC02C4A1D48167900F9A38D /* spark.png in Resources */,
 				AD53476D1D2CB57B00FBF7B1 /* Main.storyboard in Resources */,
 				ADC02C441D46DD1000F9A38D /* 1000words.txt in Resources */,
 			);
@@ -163,6 +174,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				ADC02C461D480B6100F9A38D /* Monster.swift in Sources */,
 				AD5347681D2CB57B00FBF7B1 /* GameScene.swift in Sources */,
 				AD53476A1D2CB57B00FBF7B1 /* GameViewController.swift in Sources */,
 				AD5347641D2CB57B00FBF7B1 /* AppDelegate.swift in Sources */,
