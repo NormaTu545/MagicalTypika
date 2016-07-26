@@ -21,7 +21,7 @@ class WordsManager {
     init() {
         //~~~~~~~ Reading into a word list text file and populating an array with the words ~~~~~~~~~~//
         bundle = NSBundle.mainBundle()
-        let path = bundle.pathForResource("wordsEn", ofType: "txt")!
+        let path = bundle.pathForResource("1000words", ofType: "txt")!
         
         //~~~~~~~ Copies entire word list into a super long string to split ~~~~~~~~~~~~~~~~~~~~~~~~~~//
         let contents: String?

@@ -24,12 +24,26 @@ class GameScene: SKScene, UITextFieldDelegate {
     var level: Level!
     var correct: Bool = false //used to flag if falling word was correctly typed
     //var doCheck: Bool = false //used to flag so that wordCheck happens once user presses return
+    var spawnSpeed: Double = 10 //speed of timer's interval between falling word spawns
+
+    
     var scoreLabel:  SKLabelNode! //for MVP
     var blankTheLabel: Bool = false
     
     var score: Int = 0 {
         didSet {
             scoreLabel.text = "Score: \(score)"
+            
+            //~~[Increase difficulty as user gets better]~~~~~~~~
+            if score % 5 == 0 {
+                spawnSpeed -= 1 //make falling word fall faster
+                //print("CURRENT Speed:  \(spawnSpeed)~~~~~~~~~~")
+            //NOTE TO SELF:
+            //MONSTER SHOULD TAKE LESS THAN 50 WORDS TO DIE
+                if spawnSpeed < 2 {
+                    spawnSpeed = 2  //This is as fast as it'll get
+                }
+            }
         }
     }
     
@@ -54,16 +68,6 @@ class GameScene: SKScene, UITextFieldDelegate {
         }
         
         //MARK: [DETECT MATCHING WORDS]***********************************************************
-        //if doCheck {
-            wordCheck()
-            //doCheck = false
-        //}
-
-        if blankTheLabel {
-            inputText.text = ""
-            wordLabel.text = ""
-            blankTheLabel = false
-        }
     }
     
     func wordCheck() {
@@ -81,23 +85,17 @@ class GameScene: SKScene, UITextFieldDelegate {
         }
     }
     
+    
     //MARK: [When user hits the RETURN key]*****************************************************
     func textFieldShouldReturn(textField: UITextField) -> Bool {
-        print("You hit the return key")
-        // checked = true  // <~~~~HERE
+        wordCheck()
         
+        //PRESSING RETURN BLANKS BOTH LABELS AND STRING CONTENT
         if wordLabel.text != "" {
             wordLabel.text = ""
-            //blankTheLabel = true //clear the messed up text
+            inputText.text = ""
 
         }
-        
-        
-        //wordLabel.text = "" //Blanks the User Input so they won't have to backspace everything
-        //ALSO MUST BLANK THE UITEXTFIELD INPUT LABEL
-        
-        //doCheck = true
-
         return false //so keyboard won't close
     }
     
@@ -127,6 +125,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         let frame = CGRect (x: 0, y: 0, width: view.frame.width-40, height: 40)
         inputText = UITextField(frame: frame)
+
         inputText.font = UIFont(name: "Courier New Bold", size: 16)
         inputText.hidden = true //hides the text field
         inputText.autocapitalizationType = .None //User starts typing in lowercase
@@ -136,6 +135,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         inputText.becomeFirstResponder() //Makes Keyboard appear first
         inputText.addTarget(self, action: #selector(UITextInputDelegate.textDidChange(_:)), forControlEvents: .EditingChanged)
         inputText.delegate = self
+        inputText.keyboardType = UIKeyboardType.Alphabet
+
         
         //MARK: ~~~~~~~~~~~~[ Setting up timer to spawn a falling word every 2 seconds ]~~~~~~~~//
         
@@ -145,6 +146,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         //Set 4-second delay between continuous calls to function spawnWord
         _ = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
         
+
         
         /* MITCHELL'S SCREEN FIT TEST~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         let box = SKSpriteNode(color: UIColor.redColor(), size: CGSize(width: 100, height: 100))
@@ -286,7 +288,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             fallingLabel!.fontColor = textColors[random() % textColors.count ]
             self.addChild(fallingLabel!)
             
-            let fall = SKAction.moveToY(frame.height/3, duration: 10)
+            let fall = SKAction.moveToY(frame.height/3, duration: spawnSpeed)
             let remove = SKAction.removeFromParent()
             let seq = SKAction.sequence([fall, remove])
             
@@ -368,8 +370,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
-        //compares first letter user typed with first letter of falling words, returns text string of attempted falling word
-        //getWordFromFirstLetter(inputText.text!)
+        
 
     }
 }

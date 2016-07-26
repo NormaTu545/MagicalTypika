@@ -14,12 +14,12 @@
 		AD53476D1D2CB57B00FBF7B1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD53476B1D2CB57B00FBF7B1 /* Main.storyboard */; };
 		AD53476F1D2CB57B00FBF7B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD53476E1D2CB57B00FBF7B1 /* Assets.xcassets */; };
 		AD5347721D2CB57B00FBF7B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD5347701D2CB57B00FBF7B1 /* LaunchScreen.storyboard */; };
-		AD5C62481D38563000224AEE /* wordsEn.txt in Resources */ = {isa = PBXBuildFile; fileRef = AD5C62471D38563000224AEE /* wordsEn.txt */; };
 		AD5C624A1D385FDE00224AEE /* WordsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5C62491D385FDE00224AEE /* WordsManager.swift */; };
 		AD8DD28F1D359ECA00A37369 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8DD28E1D359ECA00A37369 /* MainMenu.swift */; };
 		AD8DD2911D35A20900A37369 /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = AD8DD2901D35A20900A37369 /* MainMenu.sks */; };
 		AD8DD2971D36B2BF00A37369 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */; };
 		ADC02C421D4289EF00F9A38D /* AnimationActions.sks in Resources */ = {isa = PBXBuildFile; fileRef = ADC02C411D4289EF00F9A38D /* AnimationActions.sks */; };
+		ADC02C441D46DD1000F9A38D /* 1000words.txt in Resources */ = {isa = PBXBuildFile; fileRef = ADC02C431D46DD1000F9A38D /* 1000words.txt */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -32,12 +32,12 @@
 		AD53476E1D2CB57B00FBF7B1 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		AD5347711D2CB57B00FBF7B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AD5347731D2CB57B00FBF7B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		AD5C62471D38563000224AEE /* wordsEn.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = wordsEn.txt; sourceTree = "<group>"; };
 		AD5C62491D385FDE00224AEE /* WordsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WordsManager.swift; path = ../WordsManager.swift; sourceTree = "<group>"; };
 		AD8DD28E1D359ECA00A37369 /* MainMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		AD8DD2901D35A20900A37369 /* MainMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainMenu.sks; sourceTree = "<group>"; };
 		AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MSButtonNode.swift; sourceTree = "<group>"; };
 		ADC02C411D4289EF00F9A38D /* AnimationActions.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = AnimationActions.sks; path = ../AnimationActions.sks; sourceTree = "<group>"; };
+		ADC02C431D46DD1000F9A38D /* 1000words.txt */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = 1000words.txt; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -79,8 +79,8 @@
 				AD8DD28E1D359ECA00A37369 /* MainMenu.swift */,
 				AD0057531D3D4CF700F469FB /* Level.swift */,
 				AD5347691D2CB57B00FBF7B1 /* GameViewController.swift */,
-				AD5C62471D38563000224AEE /* wordsEn.txt */,
 				AD53476B1D2CB57B00FBF7B1 /* Main.storyboard */,
+				ADC02C431D46DD1000F9A38D /* 1000words.txt */,
 				AD53476E1D2CB57B00FBF7B1 /* Assets.xcassets */,
 				AD5347701D2CB57B00FBF7B1 /* LaunchScreen.storyboard */,
 				AD5347731D2CB57B00FBF7B1 /* Info.plist */,
@@ -148,11 +148,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				ADC02C421D4289EF00F9A38D /* AnimationActions.sks in Resources */,
-				AD5C62481D38563000224AEE /* wordsEn.txt in Resources */,
 				AD5347721D2CB57B00FBF7B1 /* LaunchScreen.storyboard in Resources */,
 				AD53476F1D2CB57B00FBF7B1 /* Assets.xcassets in Resources */,
 				AD8DD2911D35A20900A37369 /* MainMenu.sks in Resources */,
 				AD53476D1D2CB57B00FBF7B1 /* Main.storyboard in Resources */,
+				ADC02C441D46DD1000F9A38D /* 1000words.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
