@@ -18,11 +18,10 @@ class Monster: SKSpriteNode { //~~~~~~~~~~~~TODO: Set up Monster class and HP Ba
     //var attackSpeed: Double = 0 //Easy monster attacks faster, Boss attacks slower
     //var damageRange: Double = 0 //10 - 20 for easy monster, 20 - 25 for boss monster
     var monsterIMG: SKTexture!
+    var target: Player!
+    var glowBall: SKSpriteNode!
     
-    
-    // Monster("Bubbles", textureName: "NameofPNGResource") //How to make instance
-    
-    init(name: String, xPos: CGFloat, yPos: CGFloat) {
+    init(name: String, xPos: CGFloat, yPos: CGFloat, attackTarget: Player, attackBall: SKSpriteNode) {
         
         monsterIMG = SKTexture(imageNamed: name)
         
@@ -33,12 +32,35 @@ class Monster: SKSpriteNode { //~~~~~~~~~~~~TODO: Set up Monster class and HP Ba
         self.monsterName = name
         self.position.x = xPos
         self.position.y = yPos
+        self.target = attackTarget
+        self.glowBall = attackBall
+        // self.addChild(self.glowBall)
+
+        
+        self.glowBall.position.x = self.position.x
+        self.glowBall.position.y = self.position.y
+        self.glowBall.size.width = 30
+        self.glowBall.size.height = 30
+        self.glowBall.zPosition = -1
+        self.glowBall.hidden = true
         
     }
     
     func monsterAttack() {
-        print("\(self.monsterName) just attacked!")
+
+        /* Load attack action */
+        let sendAttack = SKAction.moveTo(self.target.position, duration: 0.25)
         
+        /* Create a node removal action */
+        let reset = SKAction.runBlock { 
+            self.glowBall.position = self.position
+            self.glowBall.hidden = true
+        }
+        
+        /* Build sequence, flip then remove from scene */
+        let sequence = SKAction.sequence([sendAttack,reset])
+        self.glowBall.hidden = false
+        self.glowBall.runAction(sequence)
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -52,9 +74,9 @@ class Monster: SKSpriteNode { //~~~~~~~~~~~~TODO: Set up Monster class and HP Ba
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 class DaBug: Monster {
-    init(name: String, xPosition: CGFloat, yPosition: CGFloat) {
+    init(name: String, xPosition: CGFloat, yPosition: CGFloat, attackTarget: Player, attackBall: SKSpriteNode) {
         
-        super.init(name: name, xPos: xPosition, yPos: yPosition)
+        super.init(name: name, xPos: xPosition, yPos: yPosition, attackTarget: attackTarget, attackBall: attackBall)
         
         self.size.width = 40
         self.size.height = 40
@@ -64,6 +86,8 @@ class DaBug: Monster {
     
     override func monsterAttack() {
         print("INSERT DABUG ATTACK HERE")
+        
+        super.monsterAttack()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -76,18 +100,20 @@ class DaBug: Monster {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 class DeeBug: Monster {
-    init(name: String, xPosition: CGFloat, yPosition: CGFloat) {
+    init(name: String, xPosition: CGFloat, yPosition: CGFloat, attackTarget: Player, attackBall: SKSpriteNode) {
         
-        super.init(name: name, xPos: xPosition, yPos: yPosition)
-        
+        super.init(name: name, xPos: xPosition, yPos: yPosition, attackTarget: attackTarget, attackBall: attackBall)
         self.size.width = 100
         self.size.height = 100
         self.health = 500
-        
+        self.glowBall.size.width = 60
+        self.glowBall.size.height = 60
     }
     
     override func monsterAttack() {
         print("INSERT BOSS ATTACK HERE")
+
+        super.monsterAttack()
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -100,12 +126,12 @@ class DeeBug: Monster {
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 class MonsterFactory {
-    static func create(monster : String, xPosition: CGFloat, yPosition: CGFloat) -> Monster? {
+    static func create(monster : String, xPosition: CGFloat, yPosition: CGFloat, attackTarget: Player, attackBall: SKSpriteNode) -> Monster? {
         if monster == "DaBug" {
-            return DaBug(name: "DaBug", xPosition: xPosition, yPosition: yPosition)
+            return DaBug(name: "DaBug", xPosition: xPosition, yPosition: yPosition, attackTarget: attackTarget, attackBall: attackBall)
         }
         if monster == "DeeBug" {
-            return DeeBug(name: "DeeBug", xPosition: xPosition, yPosition: yPosition)
+            return DeeBug(name: "DeeBug", xPosition: xPosition, yPosition: yPosition, attackTarget: attackTarget, attackBall: attackBall)
         }
         return nil
     }

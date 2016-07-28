@@ -19,6 +19,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     //Finding height of Keyboard
     
     var monster: Monster!
+    var player: Player!
     var level: Level!
 
     var inputText: UITextField! //will be hidden
@@ -31,7 +32,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     var score: Int = 0 {
         didSet {
-            scoreLabel.text = "Score: \(score)"
+            scoreLabel.text = "\(score)"
             
             //~~[Increase difficulty as user gets better]~~~~~~~~
             if score % 5 == 0 {
@@ -105,13 +106,14 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //Set up score for MVP
         scoreLabel = SKLabelNode(fontNamed: "Helvetica")
-        scoreLabel.fontSize = 40
+        scoreLabel.fontSize = 200
         addChild(scoreLabel)
-        scoreLabel.position.x = view.frame.width - (view.frame.width/3)
-        scoreLabel.position.y = view.frame.height - 50
-        scoreLabel.zPosition = 10
-        scoreLabel.text = "Score: \(score)"
-        scoreLabel.fontColor = UIColor.cyanColor()
+        scoreLabel.position.x = view.frame.width/2
+        scoreLabel.position.y = view.frame.height - (view.frame.height/3) - 25
+        scoreLabel.zPosition = 0
+        scoreLabel.text = "\(score)"
+        scoreLabel.fontColor = UIColor(hue: 0.45, saturation: 0.75, brightness: 1, alpha: 0.25)
+        
         
         //MARK: ~~~~~~~~~~~~[Setting up UITextField -> SKLabel conversion]~~~~~~~~~~~~~~~~//
         
@@ -133,15 +135,16 @@ class GameScene: SKScene, UITextFieldDelegate {
         inputText.keyboardType = UIKeyboardType.Alphabet
 
         
-        //MARK: ~~~~~~~~~~~~[ Setting up timer to spawn a falling word every 2 seconds ]~~~~~~~~//
+        //MARK: ~~~~~~~~~~~~[ SETTING UP TIMERS ]~~~~~~~~~~~~~~~~~~~~~~~~//
         
-        //Manually spawn the first word so we don't have to wait for it
+        /* Manually spawn the first word so we don't have to wait for it */
         spawnWord()
         
-        //Set 2-second delay between continuous calls to function spawnWord
+        /* Set 2-second delay between continuous calls to function spawnWord */
         _ = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
         
-        _ = NSTimer.scheduledTimerWithTimeInterval(3, target: self, selector: #selector(GameScene.monsterAttack), userInfo: nil, repeats: true)
+        /* Set how often the monster will attack */
+        _ = NSTimer.scheduledTimerWithTimeInterval(3, target: monster, selector: #selector(Monster.monsterAttack), userInfo: nil, repeats: true)
         
         
     }
@@ -182,46 +185,18 @@ class GameScene: SKScene, UITextFieldDelegate {
         wordLabel.zPosition = 10
         
         //MARK: [TEMP ART]***************************************************************************
+        glowBall = SKSpriteNode(imageNamed: "ball")
+        addChild(glowBall)
         
-        monster = MonsterFactory.create("DaBug", xPosition: keyboardWidth/8, yPosition: keyboardHeight + 90)!
+        player = PlayerFactory.create("Typika", xPosition: keyboardWidth - (keyboardWidth / 4), yPosition: keyboardHeight + 100)
+        addChild(player)
+        player.xScale = -1
+        player.zPosition = -1
+        
+        monster = MonsterFactory.create("DeeBug", xPosition: keyboardWidth/8, yPosition: keyboardHeight + 90, attackTarget: player, attackBall: glowBall)!
         addChild(monster)
         monster.xScale = -1
         monster.zPosition = -1
-        
-        let typika = SKSpriteNode(imageNamed: "Sayaka")
-        addChild(typika)
-        typika.position.x = keyboardWidth - (keyboardWidth / 4)
-        typika.position.y = keyboardHeight + 100
-        typika.size.width = 75
-        typika.size.height = 80
-        typika.xScale = -1
-        typika.zPosition = -1
-        
-        glowBall = SKSpriteNode(imageNamed: "ball")
-        addChild(glowBall)
-        glowBall.position.x = keyboardWidth/8 + 25
-        glowBall.position.y = keyboardHeight + 100
-        glowBall.size.width = 30
-        glowBall.size.height = 30
-        glowBall.zPosition = -1
-        glowBall.hidden = true
-    }
-    
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-    //  [Monster Attack] Make a monster class dude. Don't leave this here
-    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-    
-    func monsterAttack() {
-        /* Load appropriate action */
-        let attack = SKAction(named: "monsterAttack")!
-        
-        /* Create a node removal action */
-        let remove = SKAction.removeFromParent()
-        
-        /* Build sequence, flip then remove from scene */
-        let sequence = SKAction.sequence([attack,remove])
-        glowBall.hidden = false
-        glowBall.runAction(sequence)
     }
     
     //******************************************************************************************************//
