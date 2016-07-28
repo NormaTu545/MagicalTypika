@@ -18,16 +18,16 @@ class FallingLabelNode: SKLabelNode {
 class GameScene: SKScene, UITextFieldDelegate {
     //Finding height of Keyboard
     
-    var monster:SKSpriteNode!
+    var monster: Monster!
+    var level: Level!
 
     var inputText: UITextField! //will be hidden
     var wordLabel: SKLabelNode! //will be user's typed word
+    var scoreLabel: SKLabelNode! //for MVP
+
     var inputBG: SKSpriteNode!
-    var level: Level!
-    var correct: Bool = false //used to flag if falling word was correctly typed
     var spawnSpeed: Double = 10 //speed of timer's interval between falling word spawns
     var glowBall: SKSpriteNode!
-    var scoreLabel:  SKLabelNode! //for MVP
     
     var score: Int = 0 {
         didSet {
@@ -183,12 +183,9 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //MARK: [TEMP ART]***************************************************************************
         
-        monster = SKSpriteNode(imageNamed: "kyubey")
+        monster = MonsterFactory.create("DaBug", xPosition: keyboardWidth/8, yPosition: keyboardHeight + 90)!
         addChild(monster)
-        monster.position.x = keyboardWidth/8
-        monster.position.y = keyboardHeight + 90
-        monster.size.width = 40
-        monster.size.height = 40
+        monster.xScale = -1
         monster.zPosition = -1
         
         let typika = SKSpriteNode(imageNamed: "Sayaka")
@@ -317,9 +314,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         return nil
     }
     
+    /* Flip the correctly typed word at the monster, and remove it */
     func flip(fallingLabel: FallingLabelNode) {
-        /* Flip the correctly typed word out of the screen, at the monster */
-        //TODO: Refine the flip animation to flip at the monster, not offscreen to the right
         
         // var actionName = "tossWord"
         
@@ -334,7 +330,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             let boom = SKEmitterNode(fileNamed: "Boom")!
             self.addChild(boom)
             boom.position = self.monster.position
-            let wait = SKAction.waitForDuration(0.5)
+            let wait = SKAction.waitForDuration(0.6)
             let removeBoom = SKAction.removeFromParent()
             
             let boomSequence = SKAction.sequence([wait, removeBoom])
