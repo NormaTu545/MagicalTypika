@@ -21,11 +21,11 @@ class GameScene: SKScene, UITextFieldDelegate {
     var monster: Monster!
     var player: Player!
     var level: Level!
-
+    
     var inputText: UITextField! //will be hidden
     var wordLabel: SKLabelNode! //will be user's typed word
     var scoreLabel: SKLabelNode! //for MVP
-
+    
     var inputBG: SKSpriteNode!
     var spawnSpeed: Double = 10 //speed of timer's interval between falling word spawns
     var glowBall: SKSpriteNode!
@@ -51,7 +51,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             wordLabel.text = theWord
         }
     }
-
+    
     var targetLabel: FallingLabelNode! //What word user is attempting
     
     func textDidChange (textField: UITextField) {
@@ -90,7 +90,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         if wordLabel.text != "" {
             wordLabel.text = ""
             inputText.text = ""
-
+            
         }
         return false //so keyboard won't close
     }
@@ -122,7 +122,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         let frame = CGRect (x: 0, y: 0, width: view.frame.width-40, height: 40)
         inputText = UITextField(frame: frame)
-
+        
         inputText.font = UIFont(name: "Courier New Bold", size: 16)
         inputText.hidden = true //hides the text field
         inputText.autocapitalizationType = .None //User starts typing in lowercase
@@ -133,7 +133,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         inputText.addTarget(self, action: #selector(UITextInputDelegate.textDidChange(_:)), forControlEvents: .EditingChanged)
         inputText.delegate = self
         inputText.keyboardType = UIKeyboardType.Alphabet
-
+        
         
         //MARK: ~~~~~~~~~~~~[ SETTING UP TIMERS ]~~~~~~~~~~~~~~~~~~~~~~~~//
         
@@ -143,12 +143,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         /* Set 2-second delay between continuous calls to function spawnWord */
         _ = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
         
-        /* Set how often the monster will attack */
-        _ = NSTimer.scheduledTimerWithTimeInterval(3, target: monster, selector: #selector(Monster.monsterAttack), userInfo: nil, repeats: true)
-        
-        
     }
-
+    
     
     //******************************************************************************************************//
     // [Shows User Input SKLabel & its background] - as soon as the keyboard comes up
@@ -168,11 +164,11 @@ class GameScene: SKScene, UITextFieldDelegate {
         inputBG.anchorPoint = CGPointMake(0, 0) //change anchor point to bottom left of the spritenode.
         inputBG.position.x = 0
         inputBG.position.y = keyboardHeight
-
+        
         inputBG.size.width = keyboardWidth
         inputBG.size.height = keyboardHeight / 4
         inputBG.zPosition = 5
- 
+        
         
         //[USER INPUT WORD LABEL HERE]******************************//
         wordLabel = SKLabelNode(fontNamed: "Courier New Bold")
@@ -197,13 +193,17 @@ class GameScene: SKScene, UITextFieldDelegate {
         addChild(monster)
         monster.xScale = -1
         monster.zPosition = -1
+        
+        /* Set how often the monster will attack (Every 3 seconds) */
+        _ = NSTimer.scheduledTimerWithTimeInterval(3, target: monster, selector: #selector(Monster.monsterAttack), userInfo: nil, repeats: true)
+        
     }
     
     //******************************************************************************************************//
     // [SPAWN A UNIQUE WORD] - check all other nodes to make sure all visible words start w/ diff 1st letter
     //******************************************************************************************************//
     
-
+    
     func spawnWord() {
         
         var fallingLabel: FallingLabelNode?
@@ -234,7 +234,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             }
             
             fallingLabel = FallingLabelNode(text: word)
-
+            
             //~~[ Add label to scene, assuming label is non-null ]~~~~~~~//
             
             //Constrict range for X from 0 to half the width of the scene
@@ -263,11 +263,11 @@ class GameScene: SKScene, UITextFieldDelegate {
             fallingLabel!.runAction(seq)
         }
     }
-
+    
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
     //  [Detecting attempted falling word]  -> Returns the falling label that user is trying
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-
+    
     func getWordFromFirstLetter(word: String) -> FallingLabelNode? {
         
         if word == "" {
@@ -301,7 +301,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         /* Create a node removal action */
         let remove = SKAction.removeFromParent()
         
-        let boom = SKAction.runBlock { 
+        let boom = SKAction.runBlock {
             let boom = SKEmitterNode(fileNamed: "Boom")!
             self.addChild(boom)
             boom.position = self.monster.position
@@ -329,14 +329,13 @@ class GameScene: SKScene, UITextFieldDelegate {
         /*
          for touch in touches {
          //yada yada yada
-
          }*/
     }
-
+    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
         
-
+        
     }
 }

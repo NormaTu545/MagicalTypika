@@ -5,6 +5,7 @@
 //  Created by Norma Tu on 7/26/16.
 //  Copyright © 2016 NormaTu. All rights reserved.
 //
+//CGFloat = 1 //means 100% health
 
 import Foundation
 import SpriteKit
@@ -13,7 +14,7 @@ class Monster: SKSpriteNode { //~~~~~~~~~~~~TODO: Set up Monster class and HP Ba
     /* Instance variables */
     
     var monsterName: String = ""
-
+    
     var health: Double = 0 //200 HP Easy, 500 HP BOSS
     //var attackSpeed: Double = 0 //Easy monster attacks faster, Boss attacks slower
     //var damageRange: Double = 0 //10 - 20 for easy monster, 20 - 25 for boss monster
@@ -35,7 +36,7 @@ class Monster: SKSpriteNode { //~~~~~~~~~~~~TODO: Set up Monster class and HP Ba
         self.target = attackTarget
         self.glowBall = attackBall
         // self.addChild(self.glowBall)
-
+        
         
         self.glowBall.position.x = self.position.x
         self.glowBall.position.y = self.position.y
@@ -47,12 +48,12 @@ class Monster: SKSpriteNode { //~~~~~~~~~~~~TODO: Set up Monster class and HP Ba
     }
     
     func monsterAttack() {
-
+        
         /* Load attack action */
         let sendAttack = SKAction.moveTo(self.target.position, duration: 0.25)
         
         /* Create a node removal action */
-        let reset = SKAction.runBlock { 
+        let reset = SKAction.runBlock {
             self.glowBall.position = self.position
             self.glowBall.hidden = true
         }
@@ -96,7 +97,7 @@ class DaBug: Monster {
 }
 
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-//  [FINAL BOSS MONSTER] 
+//  [FINAL BOSS MONSTER]
 //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
 
 class DeeBug: Monster {
@@ -112,7 +113,7 @@ class DeeBug: Monster {
     
     override func monsterAttack() {
         print("INSERT BOSS ATTACK HERE")
-
+        
         super.monsterAttack()
     }
     
@@ -136,6 +137,3 @@ class MonsterFactory {
         return nil
     }
 }
-
-//let monster = MonsterFactory.create("DaBug")!
-
