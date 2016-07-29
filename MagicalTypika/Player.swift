@@ -11,8 +11,13 @@ import SpriteKit
 
 class Player: SKSpriteNode {
     var playerName: String = "Typika"
-    var health: Double = 0
     var playerIMG: SKTexture!
+    
+    var healthBar: HealthBar!
+    var damage: CGFloat = 100  //Player damage
+    var health: CGFloat = 100
+    let totalHealth: CGFloat = 100
+    
     
     init(name: String, xPos: CGFloat, yPos: CGFloat) {
         
@@ -28,6 +33,19 @@ class Player: SKSpriteNode {
         self.size.width = 75
         self.size.height = 80
         
+        self.healthBar = HealthBar()
+        self.addChild(healthBar)
+        self.healthBar.zPosition = 3
+        self.healthBar.position.x = self.size.width / -2
+        self.healthBar.position.y = self.size.height - self.size.height/3
+        self.damage = 10.0
+        //self.healthBar.hidden = true
+        
+    }
+    
+    func dealDamage(target: Monster) {
+        target.health -= self.damage
+        target.healthBar.value = target.health / target.totalHealth
     }
     
     required init?(coder aDecoder: NSCoder) {

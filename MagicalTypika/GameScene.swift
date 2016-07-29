@@ -77,6 +77,7 @@ class GameScene: SKScene, UITextFieldDelegate {
                 print("WAHOO THEY MATCH YOU DID IT.")
                 score += 1
                 flip(tl)
+                player.dealDamage(monster)
             }
         }
     }
@@ -335,7 +336,15 @@ class GameScene: SKScene, UITextFieldDelegate {
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
-        
+        /* CAP HEALTH */
+        if player.health <= 0 {
+            player.health = 0
+            //game over: you lose
+        }
+        if monster.health <= 0 {
+            monster.health = 0
+            //game over: you win! show WPM & total score
+        }
         
     }
 }
