@@ -362,6 +362,13 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     func gameOver() {
+        let endLabel = SKLabelNode(fontNamed: "Courier New Bold")
+        endLabel.fontSize = 40
+        addChild(endLabel)
+        endLabel.position.x = view!.frame.width/2
+        endLabel.position.y = view!.frame.height/2
+        endLabel.zPosition = 100
+        
         gameState = .GameOver
         
         //Hide Keyboard
@@ -378,13 +385,14 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         /* PLAYER LOST SCREEN */
         if monsterWins {
-        
-            
+            endLabel.fontColor = UIColor.redColor()
+            endLabel.text = "You Lost"
         }
         
         /* PLAYER WON SCREEN */
         if playerWins {
-        
+            endLabel.fontColor = UIColor.blackColor()
+            endLabel.text = "You win!"
         }
         
         

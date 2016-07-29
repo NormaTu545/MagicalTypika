@@ -15,8 +15,8 @@ class Player: SKSpriteNode {
     
     var healthBar: HealthBar!
     var damage: CGFloat = 0
-    var health: CGFloat = 100
-    let totalHealth: CGFloat = 100
+    var health: CGFloat = 500
+    let totalHealth: CGFloat = 500
     
     
     init(name: String, xPos: CGFloat, yPos: CGFloat) {
