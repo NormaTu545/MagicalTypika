@@ -22,8 +22,13 @@ class GameScene: SKScene, UITextFieldDelegate {
     var player: Player!
     var level: Level!
     
+    var wordSpawnTimer: NSTimer!
+    var attackTimer: NSTimer!
+    
     var monsterWins: Bool = false
     var playerWins: Bool = false
+    
+    var stopGame: Bool = false
     var gameState: GameState = .Ready
     
     var inputText: UITextField! //will be hidden
@@ -164,7 +169,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         spawnWord()
         
         /* Set 2-second delay between continuous calls to function spawnWord */
-        _ = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
+        wordSpawnTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
         
         _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(GameScene.timeCount), userInfo: nil, repeats: true)
         
@@ -228,9 +233,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         monster.zPosition = -1
         
         /* Set how often the monster will attack (Every 3 seconds) */
-        if gameState != .GameOver {
-            _ = NSTimer.scheduledTimerWithTimeInterval(3, target: monster, selector: #selector(Monster.monsterAttack), userInfo: nil, repeats: true)
-        }
+        attackTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: monster, selector: #selector(Monster.monsterAttack), userInfo: nil, repeats: true)
 
     }
     
@@ -367,10 +370,25 @@ class GameScene: SKScene, UITextFieldDelegate {
         //Show End Results
         endScreen.hidden = false
         
+        //Stops the Automated Monster Attacks
+        attackTimer.invalidate()
+        
+        //Stops spawning falling words
+        wordSpawnTimer.invalidate()
+        
+        /* PLAYER LOST SCREEN */
+        if monsterWins {
+        
+            
+        }
+        
+        /* PLAYER WON SCREEN */
+        if playerWins {
+        
+        }
+        
         
         /*
-        if monsterWins, show losing screen
-        if playerWins, show winning screen
         let showEndScreen = SKAction(named: "winScreen")!
         endScreen.runAction(showEndScreen)
         */
