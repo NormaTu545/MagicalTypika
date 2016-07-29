@@ -190,7 +190,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         player.xScale = -1
         player.zPosition = -1
         
-        monster = MonsterFactory.create("DeeBug", xPosition: keyboardWidth/8, yPosition: keyboardHeight + 90, attackTarget: player, attackBall: glowBall)!
+        monster = MonsterFactory.create("DeeBug", xPosition: keyboardWidth/4, yPosition: keyboardHeight + keyboardHeight/2, attackTarget: player, attackBall: glowBall)!
         addChild(monster)
         monster.xScale = -1
         monster.zPosition = -1

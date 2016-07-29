@@ -14,7 +14,7 @@ class Player: SKSpriteNode {
     var playerIMG: SKTexture!
     
     var healthBar: HealthBar!
-    var damage: CGFloat = 100  //Player damage
+    var damage: CGFloat = 0
     var health: CGFloat = 100
     let totalHealth: CGFloat = 100
     
@@ -35,10 +35,11 @@ class Player: SKSpriteNode {
         
         self.healthBar = HealthBar()
         self.addChild(healthBar)
-        self.healthBar.zPosition = 3
+        self.healthBar.zPosition = 0
         self.healthBar.position.x = self.size.width / -2
         self.healthBar.position.y = self.size.height - self.size.height/3
-        self.damage = 10.0
+        
+        self.damage = 50.0 //Player damage
         //self.healthBar.hidden = true
         
     }
