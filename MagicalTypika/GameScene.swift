@@ -22,14 +22,21 @@ class GameScene: SKScene, UITextFieldDelegate {
     var player: Player!
     var level: Level!
     
+    var monsterWins: Bool = false
+    var playerWins: Bool = false
+    var gameState: GameState = .Ready
+    
     var inputText: UITextField! //will be hidden
     var wordLabel: SKLabelNode! //will be user's typed word
     var scoreLabel: SKLabelNode! //for MVP
     
     var inputBG: SKSpriteNode!
+    var endScreen: SKSpriteNode!
+
     var spawnSpeed: Double = 10 //speed of timer's interval between falling word spawns
     var glowBall: SKSpriteNode!
     
+    var timePassed: Int = 0
     var score: Int = 0 {
         didSet {
             scoreLabel.text = "\(score)"
@@ -39,8 +46,8 @@ class GameScene: SKScene, UITextFieldDelegate {
                 spawnSpeed -= 1 //make falling word fall faster
                 //print("CURRENT Speed:  \(spawnSpeed)~~~~~~~~~~")
                 
-                if spawnSpeed < 2 {
-                    spawnSpeed = 2  //This is as fast as it'll get
+                if spawnSpeed < 3 {
+                    spawnSpeed = 3  //This is as fast as it'll get
                 }
             }
         }
@@ -68,6 +75,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     func wordCheck() {
+        
         // Compares user's word by first letter to see if it
         // matches the first letter of the target falling word
         
@@ -93,6 +101,10 @@ class GameScene: SKScene, UITextFieldDelegate {
             inputText.text = ""
             
         }
+        else {
+            wordLabel.text = "[Type word here]"
+        }
+        
         return false //so keyboard won't close
     }
     
@@ -104,6 +116,16 @@ class GameScene: SKScene, UITextFieldDelegate {
         background.position.y = view.frame.height / 2
         background.size = view.frame.size
         background.zPosition = -2
+        
+        endScreen = SKSpriteNode(imageNamed: "endScreen")
+        addChild(endScreen)
+        endScreen.position.x = view.frame.width / 2
+        endScreen.position.y = view.frame.height / 2
+        endScreen.size.width = view.frame.size.width
+        endScreen.size.height = view.frame.size.height
+        endScreen.zPosition = 10
+        endScreen.hidden = true
+
         
         //Set up score for MVP
         scoreLabel = SKLabelNode(fontNamed: "Helvetica")
@@ -136,7 +158,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         inputText.keyboardType = UIKeyboardType.Alphabet
         
         
-        //MARK: ~~~~~~~~~~~~[ SETTING UP TIMERS ]~~~~~~~~~~~~~~~~~~~~~~~~//
+        //MARK: [ SETTING UP TIMERS ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
         
         /* Manually spawn the first word so we don't have to wait for it */
         spawnWord()
@@ -144,6 +166,16 @@ class GameScene: SKScene, UITextFieldDelegate {
         /* Set 2-second delay between continuous calls to function spawnWord */
         _ = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
         
+        _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(GameScene.timeCount), userInfo: nil, repeats: true)
+        
+        //Let everything load first
+        gameState = .Playing
+    }
+    
+    //MARK: Gameplay timer function - Divide timePassed by 60 to convert to minutes
+    func timeCount() {
+        /* Counter that tracks how many seconds of gameplay has passed. */
+        timePassed += 1 //Will be used to calculate raw WPM
     }
     
     
@@ -196,8 +228,10 @@ class GameScene: SKScene, UITextFieldDelegate {
         monster.zPosition = -1
         
         /* Set how often the monster will attack (Every 3 seconds) */
-        _ = NSTimer.scheduledTimerWithTimeInterval(3, target: monster, selector: #selector(Monster.monsterAttack), userInfo: nil, repeats: true)
-        
+        if gameState != .GameOver {
+            _ = NSTimer.scheduledTimerWithTimeInterval(3, target: monster, selector: #selector(Monster.monsterAttack), userInfo: nil, repeats: true)
+        }
+
     }
     
     //******************************************************************************************************//
@@ -272,7 +306,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     func getWordFromFirstLetter(word: String) -> FallingLabelNode? {
         
         if word == "" {
-            return nil
+            print("Please type a word")
         }
         
         for c in children { //look through all children
@@ -322,29 +356,74 @@ class GameScene: SKScene, UITextFieldDelegate {
     func setLevel(level: Level) {
         self.level = level //because Steve said so
         
+    }
+    
+    func gameOver() {
+        gameState = .GameOver
         
+        //Hide Keyboard
+        inputText.resignFirstResponder()
+        
+        //Show End Results
+        endScreen.hidden = false
+        
+        
+        /*
+        if monsterWins, show losing screen
+        if playerWins, show winning screen
+        let showEndScreen = SKAction(named: "winScreen")!
+        endScreen.runAction(showEndScreen)
+        */
+        
+        /*
+        let userDefaults = NSUserDefaults.standardUserDefaults()
+        var highscore = userDefaults.integerForKey("highscore")
+        
+        if score > highscore {
+            userDefaults.setValue(score, forKey: "highscore")
+            userDefaults.synchronize()
+        }
+        
+        highscore = userDefaults.integerForKey("highscore")
+        */
+        //highScoreLabel.text = "High score: \(highscore)"
+        //endScoreLabel.text = "Score: \(score)"
+        //var endWPM = (score/5) / (timePassed/60)
+        //WPMscoreLabel.text = "Mobile WPM: endWPM"
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
         /* Called when a touch begins */
+        
         /*
          for touch in touches {
-         //yada yada yada
-         }*/
+         //yada yada yada implement pause button here eventually
+         }
+         */
     }
     
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
-        /* CAP HEALTH */
-        if player.health <= 0 {
-            player.health = 0
-            //game over: you lose
+        if gameState == .Playing {
+            
+            /* CAP HEALTH SO NO NEGATIVE HEALTH */
+            
+            if player.health <= 0 {
+                player.health = 0
+                monsterWins = true
+                
+                //game over: you lose
+                gameOver()
+            }
+            if monster.health <= 0 {
+                monster.health = 0
+                playerWins = true
+                
+                //game over: you win! show WPM & total score
+                gameOver()
+            }
+            
         }
-        if monster.health <= 0 {
-            monster.health = 0
-            //game over: you win! show WPM & total score
-        }
-        
     }
 }
