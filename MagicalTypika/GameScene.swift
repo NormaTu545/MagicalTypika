@@ -40,14 +40,18 @@ class GameScene: SKScene, UITextFieldDelegate {
     var spawnSpeed: Double = 10 //speed of timer's interval between falling word spawns
     var glowBall: SKSpriteNode!
     
-    var timePassed: Int = 0
+    var wordCount: Int = 0 //total words that spawned during gameplay
+    var endWPM: Int = 0
+    var timePassed: Double = 0.0 //minutes
+    var secondsPassed: Double = 0.0
+    
     var score: Int = 0 {
         didSet {
             scoreLabel.text = "\(score)"
             
             //~~[Increase difficulty as user gets better]~~~~~~~~
-            if score % 5 == 0 {
-                spawnSpeed -= 1 //make falling word fall faster
+            if score % 4 == 0 {
+                spawnSpeed -= 1 //make falling word fall faster every 4 words typed
                 
                 if spawnSpeed < 3 {
                     spawnSpeed = 3  //This is as fast as it'll get
@@ -172,7 +176,8 @@ class GameScene: SKScene, UITextFieldDelegate {
     //MARK: Gameplay timer function - Divide timePassed by 60 to convert to minutes
     func timeCount() {
         /* Counter that tracks how many seconds of gameplay has passed. */
-        timePassed += 1 //Will be used to calculate raw WPM
+        secondsPassed += 1.0 //Will be used to calculate raw WPM
+        timePassed = secondsPassed/60 //Converted to minutes
     }
     
     
@@ -223,7 +228,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         player.xScale = -1
         player.zPosition = -1
         
-        monster = MonsterFactory.create("DeeBug", xPosition: keyboardWidth/4, yPosition: keyboardHeight + keyboardHeight/2, attackTarget: player, attackBall: glowBall)!
+        monster = MonsterFactory.create("DaBug", xPosition: keyboardWidth/4, yPosition: keyboardHeight + keyboardHeight/2, attackTarget: player, attackBall: glowBall)!
         addChild(monster)
         monster.xScale = -1
         monster.zPosition = -1
@@ -295,6 +300,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             let seq = SKAction.sequence([fall, remove])
             
             fallingLabel!.runAction(seq)
+            wordCount += 1
         }
     }
     
@@ -305,7 +311,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     func getWordFromFirstLetter(word: String) -> FallingLabelNode? {
         
         if word == "" {
-            print("Please type a word")
+            //MARK: [NOTE TO SELF] CATCH WHEN USER TRIES TO SUBMIT AN EMPTY STRING
         }
         
         for c in children { //look through all children
@@ -358,12 +364,34 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     func gameOver() {
+        
         let endLabel = SKLabelNode(fontNamed: "Courier New Bold")
         endLabel.fontSize = 40
         addChild(endLabel)
         endLabel.position.x = view!.frame.width/2
-        endLabel.position.y = view!.frame.height/2
+        endLabel.position.y = view!.frame.height - (view!.frame.height/8)
         endLabel.zPosition = 100
+        
+        let wordsLabel = SKLabelNode(fontNamed: "Courier New Bold")
+        wordsLabel.fontSize = 30
+        addChild(wordsLabel)
+        wordsLabel.text = "Words Typed: \(score)"
+        wordsLabel.fontColor = UIColor.blackColor()
+        wordsLabel.position.x = view!.frame.width/2
+        wordsLabel.position.y = view!.frame.height - (view!.frame.height/4)
+        wordsLabel.zPosition = 100
+        
+        let endWPM_double = 2 * (Double(score) / timePassed)
+        endWPM = Int(endWPM_double)
+        
+        let WPMLabel = SKLabelNode(fontNamed: "Courier New Bold")
+        WPMLabel.fontSize = 30
+        addChild(WPMLabel)
+        WPMLabel.text = "Mobile WPM: \(endWPM)"
+        WPMLabel.fontColor = UIColor.blackColor()
+        WPMLabel.position.x = view!.frame.width/2
+        WPMLabel.position.y = view!.frame.height - (view!.frame.height/4) - 100
+        WPMLabel.zPosition = 100
         
         gameState = .GameOver
         
@@ -382,7 +410,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         /* PLAYER LOST SCREEN */
         if monsterWins {
             endLabel.fontColor = UIColor.redColor()
-            endLabel.text = "You Lost"
+            endLabel.text = "You Lost..."
         }
         
         /* PLAYER WON SCREEN */
