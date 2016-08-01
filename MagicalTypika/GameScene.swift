@@ -50,8 +50,8 @@ class GameScene: SKScene, UITextFieldDelegate {
             scoreLabel.text = "\(score)"
             
             //~~[Increase difficulty as user gets better]~~~~~~~~
-            if score % 4 == 0 {
-                spawnSpeed -= 1 //make falling word fall faster every 4 words typed
+            if score % 3 == 0 {
+                spawnSpeed -= 1 //make falling word fall faster every 3 words typed
                 
                 if spawnSpeed < 3 {
                     spawnSpeed = 3  //This is as fast as it'll get
@@ -107,6 +107,12 @@ class GameScene: SKScene, UITextFieldDelegate {
             wordLabel.text = ""
             inputText.text = ""
             
+        }
+        
+        //PRESSING RETURN ON EMPTY STRING WON'T CRASH THE GAME ANYMORE
+        if wordLabel.text == "" && inputText.text == "" {
+            wordLabel.text = "~:~" //THANK YOU PLACEHOLDER STRING
+            inputText.text = ""
         }
         
         return false //so keyboard won't close
