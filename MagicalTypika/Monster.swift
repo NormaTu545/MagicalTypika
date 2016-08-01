@@ -38,8 +38,8 @@ class Monster: SKSpriteNode { //~~~~~~~~~~~~TODO: Set up Monster class and HP Ba
         self.monsterName = name
         self.position.x = xPos
         self.position.y = yPos
-        self.size.width = 100
-        self.size.height = 100
+        self.size.width = 75
+        self.size.height = 75
         
         self.target = attackTarget
         self.glowBall = attackBall

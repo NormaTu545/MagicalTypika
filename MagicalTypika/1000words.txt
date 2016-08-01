@@ -58,7 +58,7 @@ be
 bean
 bear
 beautiful
-beer
+beet
 bed
 bedroom
 behave
@@ -744,7 +744,7 @@ sentence
 serve
 seven
 several
-sex
+set
 shade
 shadow
 shake
