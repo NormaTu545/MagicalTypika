@@ -73,7 +73,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             //proccess a word
             theWord = currentWord
         } else {
-            theWord = "[Type word here]"
+            theWord = "[Type here]"
         }
     }
     
@@ -103,9 +103,6 @@ class GameScene: SKScene, UITextFieldDelegate {
             wordLabel.text = ""
             inputText.text = ""
             
-        }
-        else {
-            wordLabel.text = "[Type word here]"
         }
         
         return false //so keyboard won't close
@@ -208,6 +205,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         //[USER INPUT WORD LABEL HERE]******************************//
         wordLabel = SKLabelNode(fontNamed: "Courier New Bold")
+        wordLabel.text = "[Type here]"
         wordLabel.fontSize = 40
         addChild(wordLabel)
         
