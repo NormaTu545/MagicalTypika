@@ -51,7 +51,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             
             //~~[Increase difficulty as user gets better]~~~~~~~~
             if score % 3 == 0 {
-                spawnSpeed -= 1 //make falling word fall faster every 3 words typed
+                spawnSpeed -= 1.5 //make falling word fall faster every 3 words typed
                 
                 if spawnSpeed < 3 {
                     spawnSpeed = 3  //This is as fast as it'll get
@@ -127,7 +127,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         background.size = view.frame.size
         background.zPosition = -2
         
-        endScreen = SKSpriteNode(imageNamed: "endScreen")
+        endScreen = SKSpriteNode(imageNamed: "endGreen")
         addChild(endScreen)
         endScreen.position.x = view.frame.width / 2
         endScreen.position.y = view.frame.height / 2
@@ -396,7 +396,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         WPMLabel.text = "Mobile WPM: \(endWPM)"
         WPMLabel.fontColor = UIColor.blackColor()
         WPMLabel.position.x = view!.frame.width/2
-        WPMLabel.position.y = view!.frame.height - (view!.frame.height/4) - 100
+        WPMLabel.position.y = view!.frame.height - (view!.frame.height/4) - 75
         WPMLabel.zPosition = 100
         
         gameState = .GameOver
@@ -415,6 +415,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         
         /* PLAYER LOST SCREEN */
         if monsterWins {
+            endScreen.texture = SKTexture(imageNamed: "endRed")
+
             endLabel.fontColor = UIColor.redColor()
             endLabel.text = "You Lost..."
         }

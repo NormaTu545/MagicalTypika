@@ -10,11 +10,11 @@
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "MagicalTypika/GameScene.swift"
-            timestampString = "491779307.961734"
+            timestampString = "491780622.008585"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "389"
-            endingLineNumber = "389"
+            startingLineNumber = "390"
+            endingLineNumber = "390"
             landmarkName = "gameOver()"
             landmarkType = "5">
          </BreakpointContent>

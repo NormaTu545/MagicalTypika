@@ -5,12 +5,11 @@
 //  Created by Norma Tu on 7/26/16.
 //  Copyright © 2016 NormaTu. All rights reserved.
 //
-//CGFloat = 1 //means 100% health
 
 import Foundation
 import SpriteKit
 
-class Monster: SKSpriteNode { //~~~~~~~~~~~~TODO: Set up Monster class and HP Bars for both monster & player
+class Monster: SKSpriteNode {
     /* Instance variables */
     
     var monsterName: String = ""
