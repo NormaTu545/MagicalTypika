@@ -12,11 +12,10 @@ import UIKit
 let textColors = [ UIColor.whiteColor(), UIColor.whiteColor()] //,UIColor.redColor(), UIColor.cyanColor(), UIColor.whiteColor(), UIColor.whiteColor(), UIColor.whiteColor(), UIColor.whiteColor() ]
 
 class FallingLabelNode: SKLabelNode {
-    //used to differentiate between the user's input SKLabelNode
+    //Used to differentiate between the user's input SKLabelNode
 }
 
 class GameScene: SKScene, UITextFieldDelegate {
-    //Finding height of Keyboard
     
     var monster: Monster!
     var player: Player!
@@ -29,7 +28,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     var playerWins: Bool = false
     
     var stopGame: Bool = false
-    var gameState: GameState = .Ready
+    var gameState: GameState = .Loading
     
     var inputText: UITextField! //will be hidden
     var wordLabel: SKLabelNode! //will be user's typed word
@@ -49,7 +48,6 @@ class GameScene: SKScene, UITextFieldDelegate {
             //~~[Increase difficulty as user gets better]~~~~~~~~
             if score % 5 == 0 {
                 spawnSpeed -= 1 //make falling word fall faster
-                //print("CURRENT Speed:  \(spawnSpeed)~~~~~~~~~~")
                 
                 if spawnSpeed < 3 {
                     spawnSpeed = 3  //This is as fast as it'll get
@@ -75,7 +73,7 @@ class GameScene: SKScene, UITextFieldDelegate {
             //proccess a word
             theWord = currentWord
         } else {
-            theWord = ""
+            theWord = "[Type word here]"
         }
     }
     
@@ -172,9 +170,6 @@ class GameScene: SKScene, UITextFieldDelegate {
         wordSpawnTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
         
         _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(GameScene.timeCount), userInfo: nil, repeats: true)
-        
-        //Let everything load first
-        gameState = .Playing
     }
     
     //MARK: Gameplay timer function - Divide timePassed by 60 to convert to minutes
@@ -194,6 +189,9 @@ class GameScene: SKScene, UITextFieldDelegate {
         let keyboardRectangle = keyboardFrame.CGRectValue()
         let keyboardHeight = keyboardRectangle.height
         let keyboardWidth = keyboardRectangle.width
+        
+        //Lets everything load first; game officially starts when keyboard appears
+        gameState = .Playing
         
         //Set up user input text's background relative to keyboard
         

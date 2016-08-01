@@ -10,7 +10,7 @@ import Foundation
 import SpriteKit
 
 enum GameState {
-    case Ready, Playing, GameOver
+    case Loading, Playing, GameOver
 }
 
 class MainMenu: SKScene {
