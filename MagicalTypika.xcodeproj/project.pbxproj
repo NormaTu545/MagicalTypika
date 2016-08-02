@@ -15,6 +15,7 @@
 		AD53476F1D2CB57B00FBF7B1 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = AD53476E1D2CB57B00FBF7B1 /* Assets.xcassets */; };
 		AD5347721D2CB57B00FBF7B1 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AD5347701D2CB57B00FBF7B1 /* LaunchScreen.storyboard */; };
 		AD5C624A1D385FDE00224AEE /* WordsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5C62491D385FDE00224AEE /* WordsManager.swift */; };
+		AD72D1CC1D50115400A45DAA /* ButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD72D1CB1D50115400A45DAA /* ButtonNode.swift */; };
 		AD8DD28F1D359ECA00A37369 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8DD28E1D359ECA00A37369 /* MainMenu.swift */; };
 		AD8DD2911D35A20900A37369 /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = AD8DD2901D35A20900A37369 /* MainMenu.sks */; };
 		AD8DD2971D36B2BF00A37369 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */; };
@@ -37,6 +38,7 @@
 		AD5347711D2CB57B00FBF7B1 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		AD5347731D2CB57B00FBF7B1 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		AD5C62491D385FDE00224AEE /* WordsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WordsManager.swift; path = ../WordsManager.swift; sourceTree = "<group>"; };
+		AD72D1CB1D50115400A45DAA /* ButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonNode.swift; sourceTree = "<group>"; };
 		AD8DD28E1D359ECA00A37369 /* MainMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		AD8DD2901D35A20900A37369 /* MainMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainMenu.sks; sourceTree = "<group>"; };
 		AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MSButtonNode.swift; path = ../MSButtonNode.swift; sourceTree = "<group>"; };
@@ -79,6 +81,7 @@
 			isa = PBXGroup;
 			children = (
 				AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */,
+				AD72D1CB1D50115400A45DAA /* ButtonNode.swift */,
 				AD5C62491D385FDE00224AEE /* WordsManager.swift */,
 				ADC02C4D1D4ABE7A00F9A38D /* HealthBar.swift */,
 				ADC02C451D480B6100F9A38D /* Monster.swift */,
@@ -178,6 +181,7 @@
 			files = (
 				ADC02C461D480B6100F9A38D /* Monster.swift in Sources */,
 				ADC02C4E1D4ABE7A00F9A38D /* HealthBar.swift in Sources */,
+				AD72D1CC1D50115400A45DAA /* ButtonNode.swift in Sources */,
 				AD5347681D2CB57B00FBF7B1 /* GameScene.swift in Sources */,
 				AD53476A1D2CB57B00FBF7B1 /* GameViewController.swift in Sources */,
 				AD5347641D2CB57B00FBF7B1 /* AppDelegate.swift in Sources */,

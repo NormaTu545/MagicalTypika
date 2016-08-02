@@ -40,6 +40,8 @@ class GameScene: SKScene, UITextFieldDelegate {
     var spawnSpeed: Double = 10 //speed of timer's interval between falling word spawns
     var glowBall: SKSpriteNode!
     
+    var okButton: ButtonNode!
+    
     var wordCount: Int = 0 //total words that spawned during gameplay
     var endWPM: Int = 0
     var timePassed: Double = 0.0 //minutes
@@ -146,6 +148,21 @@ class GameScene: SKScene, UITextFieldDelegate {
         scoreLabel.zPosition = 0
         scoreLabel.text = "\(score)"
         scoreLabel.fontColor = UIColor(hue: 0.45, saturation: 0.75, brightness: 1, alpha: 0.25)
+        
+        
+        
+        
+        
+        
+        
+
+
+
+        
+        
+        
+        
+        
         
         
         //MARK: ~~~~~~~~~~~~[Setting up UITextField -> SKLabel conversion]~~~~~~~~~~~~~~~~//
@@ -370,6 +387,8 @@ class GameScene: SKScene, UITextFieldDelegate {
     }
     
     func gameOver() {
+        gameState = .GameOver
+        wordLabel.text = "" //Clears the "~:~" placeholder string
         
         let endLabel = SKLabelNode(fontNamed: "Courier New Bold")
         endLabel.fontSize = 40
@@ -399,7 +418,21 @@ class GameScene: SKScene, UITextFieldDelegate {
         WPMLabel.position.y = view!.frame.height - (view!.frame.height/4) - 75
         WPMLabel.zPosition = 100
         
-        gameState = .GameOver
+        //MARK: [OK Button] Brings us back to main menu
+        okButton = ButtonNode(normalImageNamed: "okButton", activeImageNamed: "okButton", disabledImageNamed: "okButton")
+        addChild(okButton)
+        okButton.position.x = view!.frame.width/2
+        okButton.position.y = view!.frame.height/2
+        okButton.zPosition = 200
+
+        okButton.selectedHandler = {
+            //Resets the game
+            let skView = self.view as SKView!
+            
+            let scene = MainMenu(fileNamed: "MainMenu") as MainMenu!
+            scene.scaleMode = .AspectFill
+            skView.presentScene(scene)
+        }
         
         //Hide Keyboard
         inputText.resignFirstResponder()
@@ -445,9 +478,6 @@ class GameScene: SKScene, UITextFieldDelegate {
         highscore = userDefaults.integerForKey("highscore")
         */
         //highScoreLabel.text = "High score: \(highscore)"
-        //endScoreLabel.text = "Score: \(score)"
-        //var endWPM = (score/5) / (timePassed/60)
-        //WPMscoreLabel.text = "Mobile WPM: endWPM"
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -471,14 +501,14 @@ class GameScene: SKScene, UITextFieldDelegate {
                 player.health = 0
                 monsterWins = true
                 
-                //game over: you lose
+                //game over: you lose...
                 gameOver()
             }
             if monster.health <= 0 {
                 monster.health = 0
                 playerWins = true
                 
-                //game over: you win! show WPM & total score
+                //game over: you win!
                 gameOver()
             }
             
