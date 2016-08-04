@@ -38,7 +38,7 @@ class MainMenu: SKScene {
                 skView.ignoresSiblingOrder = true
                 
                 /* Set the scale mode to scale to fit the window */
-                scene.scaleMode = .AspectFill
+                scene.scaleMode = .ResizeFill
                 
                 skView.presentScene(scene)
             // }

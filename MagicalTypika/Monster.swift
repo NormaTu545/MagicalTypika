@@ -9,14 +9,29 @@
 import Foundation
 import SpriteKit
 
+protocol MonsterDelegate {
+    func monsterDied()
+}
+
 class Monster: SKSpriteNode {
     /* Instance variables */
+    
+    var delegate: MonsterDelegate?
     
     var monsterName: String = ""
     
     var healthBar: HealthBar!
     var damage: CGFloat = 0 //How much damage it can inflict
-    var health: CGFloat = 100
+    var health: CGFloat = 100 {
+        didSet {
+            if health <= 0 {
+                // This monster is dead
+                if let delegate = delegate {
+                    delegate.monsterDied()
+                }
+            }
+        }
+    }
     var totalHealth: CGFloat = 100
     
     //var attackSpeed: Double = 0 //Easy monster attacks faster, Boss attacks slower
@@ -37,7 +52,7 @@ class Monster: SKSpriteNode {
         self.monsterName = name
         self.position.x = xPos
         self.position.y = yPos
-        self.size.width = 75
+        self.size.width = 95
         self.size.height = 75
         
         self.target = attackTarget
@@ -98,8 +113,8 @@ class DaBug: Monster {
         
         super.init(name: name, xPos: xPosition, yPos: yPosition, attackTarget: attackTarget, attackBall: attackBall)
         
-        self.health = 500
-        self.totalHealth = 500
+        self.health = 1000
+        self.totalHealth = 1000
         
     }
     
@@ -126,8 +141,8 @@ class DeeBug: Monster {
        
         self.size.width = 175
         self.size.height = 175
-        self.health = 1000 //~10 hits to die
-        self.totalHealth = 1000
+        self.health = 500 
+        self.totalHealth = 500
         self.glowBall.size.width = 60
         self.glowBall.size.height = 60
     }

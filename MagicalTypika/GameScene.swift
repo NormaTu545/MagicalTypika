@@ -15,14 +15,20 @@ class FallingLabelNode: SKLabelNode {
     //Used to differentiate between the user's input SKLabelNode
 }
 
-class GameScene: SKScene, UITextFieldDelegate {
+class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDelegate {
     
-    var monster: Monster!
     var player: Player!
-    var level: Level!
     
-    var wordSpawnTimer: NSTimer!
-    var attackTimer: NSTimer!
+    var contentNodeLVL: SKSpriteNode!
+    var contentNodeBOSS: SKSpriteNode!
+    var oldNode: LevelContent?
+    var level: Int = 0
+    var levels = [LevelContent]()  //Empty array of SKNodes
+    var transitionTime: CFTimeInterval = 0.5
+    var transitioning = false
+    
+    //var wordSpawnTimer: NSTimer!
+    //var attackTimer: NSTimer!
     
     var monsterWins: Bool = false
     var playerWins: Bool = false
@@ -70,6 +76,10 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     var targetLabel: FallingLabelNode! //What word user is attempting
     
+    //******************************************************************************************************//
+    // [USER TEXT] - Handling when text changes & comparing it by first letter
+    //******************************************************************************************************//
+    
     func textDidChange (textField: UITextField) {
         //Makes whatever user typed go into the SKLabel
         //if there IS a value (not nil) for textField.text, then
@@ -94,6 +104,8 @@ class GameScene: SKScene, UITextFieldDelegate {
                 print("WAHOO THEY MATCH YOU DID IT.")
                 score += 1
                 flip(tl)
+                
+                let monster = levels[level].monster
                 player.dealDamage(monster)
             }
         }
@@ -102,6 +114,7 @@ class GameScene: SKScene, UITextFieldDelegate {
     
     //MARK: [DETECT MATCHING WORDS/CLEAR USER INPUT]***************************************************
     func textFieldShouldReturn(textField: UITextField) -> Bool {
+        
         wordCheck()
         
         //PRESSING RETURN BLANKS BOTH LABELS AND STRING CONTENT
@@ -120,7 +133,77 @@ class GameScene: SKScene, UITextFieldDelegate {
         return false //so keyboard won't close
     }
     
+    
+    //******************************************************************************************************//
+    // [LEVEL MANAGEMENT] - Switching between levels using their content nodes
+    //******************************************************************************************************//
+    
+    // TODO: - Refactor later
+    
+    func contentSetUp_LVL() {
+        
+        let monsterX = player.position.x - ((view?.frame.width)!/2)
+        let monsterY = player.position.y
+        
+        let monster = MonsterFactory.create("DaBug", xPosition: monsterX, yPosition: monsterY, attackTarget: player, attackBall: glowBall)!
+        monster.xScale = -1
+        monster.zPosition = 1
+        monster.delegate = self
+        
+        let level = LevelContent(color: UIColor.clearColor(), size: size, monster: monster)
+        level.delegate = self
+
+        levels.append(level)
+    }
+    
+    func contentSetUp_BOSS() {
+        
+        let monsterX = (view?.frame.width)!/2 //player.position.x - ((view?.frame.width)!/2)
+        let monsterY = player.position.y
+        
+        //local variable monster
+        let monster = MonsterFactory.create("DeeBug", xPosition: monsterX, yPosition: monsterY, attackTarget: player, attackBall: glowBall)!
+        monster.xScale = -1
+        monster.zPosition = 1
+        monster.delegate = self
+        
+        let level = LevelContent(color: UIColor.clearColor(), size: size, monster: monster)
+        level.delegate = self
+        
+        levels.append(level)
+    }
+    
+    // TODO: Refactor all oldNode to oldLVL
+    func changeLVL(node: LevelContent) {
+        if let oldNode = oldNode {
+            let move = SKAction.moveToX(-size.width, duration: transitionTime) //left
+            let remove = SKAction.removeFromParent()
+
+            oldNode.stopEverything()
+            oldNode.runAction(SKAction.sequence([move, remove]))
+        }
+        
+        node.position.x = size.width
+        addChild(node)
+        
+        let moveAction = SKAction.moveToX(0, duration: transitionTime)
+        
+        let start =  SKAction.runBlock {
+            
+            node.startEverything()
+            
+            //self.startFight()
+        }
+        
+        node.runAction(SKAction.sequence([moveAction, start]))
+        
+        oldNode = node
+    }
+    
+    //MARK: Initial loading when the view loads
+    
     override func didMoveToView(view: SKView) {
+        
         //Set up background
         let background = SKSpriteNode(imageNamed: "MTbackground")
         addChild(background)
@@ -137,9 +220,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         endScreen.size.height = view.frame.size.height
         endScreen.zPosition = 10
         endScreen.hidden = true
-
         
-        //Set up score for MVP
+        //Set up correctly typed word score in background of gameplay
         scoreLabel = SKLabelNode(fontNamed: "Helvetica")
         scoreLabel.fontSize = 200
         addChild(scoreLabel)
@@ -158,12 +240,7 @@ class GameScene: SKScene, UITextFieldDelegate {
 
 
 
-        
-        
-        
-        
-        
-        
+
         
         //MARK: ~~~~~~~~~~~~[Setting up UITextField -> SKLabel conversion]~~~~~~~~~~~~~~~~//
         
@@ -184,8 +261,19 @@ class GameScene: SKScene, UITextFieldDelegate {
         inputText.delegate = self
         inputText.keyboardType = UIKeyboardType.Alphabet
         
+        //Seconds of gameplay elapsed
+        _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(GameScene.timeCount), userInfo: nil, repeats: true)
         
-        //MARK: [ SETTING UP TIMERS ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+    }
+    
+    // TODO: Clean up this function
+    
+    /*
+    func startFight() {
+        //MARK: [ SETTING UP TIMERS IN LEVEL ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+        
+        /* Set how often the MONSTER will attack (Every 3 seconds) */
+        attackTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: monster, selector: #selector(Monster.monsterAttack), userInfo: nil, repeats: true)
         
         /* Manually spawn the first word so we don't have to wait for it */
         spawnWord()
@@ -193,8 +281,8 @@ class GameScene: SKScene, UITextFieldDelegate {
         /* Set 2-second delay between continuous calls to function spawnWord */
         wordSpawnTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
         
-        _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(GameScene.timeCount), userInfo: nil, repeats: true)
-    }
+    } 
+    */
     
     //MARK: Gameplay timer function - Divide timePassed by 60 to convert to minutes
     func timeCount() {
@@ -242,23 +330,20 @@ class GameScene: SKScene, UITextFieldDelegate {
         wordLabel.position.y = inputBG.size.height + keyboardHeight - 40
         wordLabel.zPosition = 10
         
-        //MARK: [TEMP ART]***************************************************************************
+        //MARK: [MONSTER/PLAYER ART]********************************************************************
         glowBall = SKSpriteNode(imageNamed: "ball")
         addChild(glowBall)
         
         player = PlayerFactory.create("Typika", xPosition: keyboardWidth - (keyboardWidth / 4), yPosition: keyboardHeight + 100)
         addChild(player)
-        player.xScale = -1
+        //player.xScale = -1
         player.zPosition = -1
         
-        monster = MonsterFactory.create("DaBug", xPosition: keyboardWidth/4, yPosition: keyboardHeight + keyboardHeight/2, attackTarget: player, attackBall: glowBall)!
-        addChild(monster)
-        monster.xScale = -1
-        monster.zPosition = -1
+        //Load level-specific details
+        contentSetUp_LVL() // Norma: I want to setup level 1. I don't want start level 1, yet....
+        contentSetUp_BOSS()
         
-        /* Set how often the monster will attack (Every 3 seconds) */
-        attackTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: monster, selector: #selector(Monster.monsterAttack), userInfo: nil, repeats: true)
-
+        changeLVL(levels[0]) //start with regular level
     }
     
     //******************************************************************************************************//
@@ -269,10 +354,18 @@ class GameScene: SKScene, UITextFieldDelegate {
     func spawnWord() {
         
         var fallingLabel: FallingLabelNode?
+        var level1flag: Bool!
         
         while fallingLabel == nil {
-            //get a random word from Easy Array & get that first letter for the fallingLabel
-            let word = WordsManager.sharedInstance.getRandomWord(true)
+            
+            if level == 0 {
+                level1flag = true
+            } else {
+                level1flag = false
+            }
+            
+            //Get a random word from Easy Array (true) or Hard Array (false) & get that first letter for the fallingLabel
+            let word = WordsManager.sharedInstance.getRandomWord(level1flag)
             let firstLetter = word[word.startIndex]
             
             var foundLabel: FallingLabelNode? //For if we find another label that has same first letter
@@ -355,10 +448,8 @@ class GameScene: SKScene, UITextFieldDelegate {
     /* Flip the correctly typed word at the monster, and remove it */
     func flip(fallingLabel: FallingLabelNode) {
         
-        // var actionName = "tossWord"
+        let monster = levels[level].monster
         
-        /* Load appropriate action */
-        // let flip = SKAction(named: actionName)!
         let flip = SKAction.moveTo(monster.position, duration: 0.25)
         
         /* Create a node removal action */
@@ -367,7 +458,7 @@ class GameScene: SKScene, UITextFieldDelegate {
         let boom = SKAction.runBlock {
             let boom = SKEmitterNode(fileNamed: "Boom")!
             self.addChild(boom)
-            boom.position = self.monster.position
+            boom.position = monster.position
             let wait = SKAction.waitForDuration(0.6)
             let removeBoom = SKAction.removeFromParent()
             
@@ -379,11 +470,9 @@ class GameScene: SKScene, UITextFieldDelegate {
         let sequence = SKAction.sequence([flip, remove, boom])
         fallingLabel.runAction(sequence)
         
-    }
-    
-    func setLevel(level: Level) {
-        self.level = level //because Steve said so
-        
+        //Player's damage is a random number between 50-100 every time a word is flipped
+        player.damage = CGFloat(arc4random_uniform(51) + 50)
+        print("~~~~~damage: \(player.damage)")
     }
     
     func gameOver() {
@@ -440,11 +529,13 @@ class GameScene: SKScene, UITextFieldDelegate {
         //Show End Results
         endScreen.hidden = false
         
+        /*
         //Stops the Automated Monster Attacks
         attackTimer.invalidate()
         
         //Stops spawning falling words
         wordSpawnTimer.invalidate()
+        */
         
         /* PLAYER LOST SCREEN */
         if monsterWins {
@@ -490,6 +581,26 @@ class GameScene: SKScene, UITextFieldDelegate {
          */
     }
     
+    func monsterDied() {
+        //MARK: Player defeats level 1 monster
+        
+        // if level == 0 {
+            level += 1
+            
+            // When boss is defeated:
+            if level == levels.count {
+                level = 1 //stay on boss level
+                
+                // //Game Over: you win!
+                playerWins = true
+                gameOver()
+            }
+        if playerWins == false {
+            changeLVL(levels[level])
+        }
+    // }
+    }
+    
     override func update(currentTime: CFTimeInterval) {
         /* Called before each frame is rendered */
         
@@ -504,14 +615,24 @@ class GameScene: SKScene, UITextFieldDelegate {
                 //game over: you lose...
                 gameOver()
             }
-            if monster.health <= 0 {
-                monster.health = 0
-                playerWins = true
-                
-                //game over: you win!
-                gameOver()
-            }
+
+            //TODO: Simplify level transitioning
+            //let currentLevel = levels[level]
+            //let monster = currentLevel.monster
             
+            //if monster.health <= 0 {
+              //  monster.health = 0
+                
+
+
+                //MARK: Player defeats Boss level monster
+                /*
+                if level == 1 {
+                    //Game Over: you win!
+                    playerWins = true
+                    gameOver()
+                }*/
+         //   }
         }
     }
 }

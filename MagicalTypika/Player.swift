@@ -30,8 +30,8 @@ class Player: SKSpriteNode {
         self.playerName = name
         self.position.x = xPos
         self.position.y = yPos
-        self.size.width = 75
-        self.size.height = 80
+        self.size.width = 85
+        self.size.height = 90
         
         self.healthBar = HealthBar()
         self.addChild(healthBar)
@@ -39,9 +39,8 @@ class Player: SKSpriteNode {
         self.healthBar.position.x = self.size.width / -2
         self.healthBar.position.y = self.size.height - self.size.height/3
         
-        self.damage = 50.0 //Player damage
-        //self.healthBar.hidden = true
-        
+        //Player's damage is a random number between 50-100
+        self.damage = CGFloat(arc4random_uniform(51) + 50)
     }
     
     func dealDamage(target: Monster) {
