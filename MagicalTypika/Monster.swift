@@ -68,11 +68,11 @@ class Monster: SKSpriteNode {
         self.healthBar = HealthBar()
         self.addChild(healthBar)
         self.healthBar.xScale = -1
-        self.healthBar.zPosition = 0
+        self.healthBar.zPosition = 2
         //self.healthBar.anchorPoint = CGPointMake(0.5, 0.5)
 
         self.healthBar.position.x = self.size.width/2 //monster w/2
-        self.healthBar.position.y = self.size.height/2 +  self.size.height/3
+        self.healthBar.position.y = self.size.height - self.size.height/4
         
         self.damage = 10
         

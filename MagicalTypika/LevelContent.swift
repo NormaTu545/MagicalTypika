@@ -57,24 +57,7 @@ class LevelContent: SKSpriteNode {
 
     func stopEverything() {
         removeAllActions()
-        print("stopped")
     }
-    
-    /*
-    contentNode = SKSpriteNode(color: UIColor.clearColor(), size: size)
-    contentNode.anchorPoint = CGPoint(x: 0, y: 0)
-    
-    let monsterX = player.position.x - ((view?.frame.width)!/2)
-    let monsterY = player.position.y
-    
-    monster = MonsterFactory.create("DaBug", xPosition: monsterX, yPosition: monsterY, attackTarget: player, attackBall: glowBall)!
-    monster.xScale = -1
-    monster.zPosition = 1
-    
-    contentNodeLVL.addChild(monster)
-    levels.append(contentNodeLVL)
- */
-
 
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

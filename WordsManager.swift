@@ -16,7 +16,6 @@ class WordsManager {
     var fullArray: [String] = [] //every word in the wordsEn.txt file
     var easyArray: [String] = [] //words 5 characters or less only
     var hardArray: [String] = [] //words 10 characters or less only
-    //var easyLevel: Bool = true //initialize to true
     
     init() {
         //~~~~~~~ Reading into a word list text file and populating an array with the words ~~~~~~~~~~//
@@ -46,24 +45,10 @@ class WordsManager {
             
             if fullArray[index].characters.count <= 5 {
                 easyArray.append(fullArray[index])
-            } else if fullArray[index].characters.count >= 4 && fullArray[index].characters.count <= 10 {
+            } else if fullArray[index].characters.count >= 4 && fullArray[index].characters.count <= 8 {
                 hardArray.append(fullArray[index])
             }
-            
-            /*
-            if easyLevel {
-                //populate the easy level words array
-                if fullArray[index].characters.count <= 5 {
-                    easyArray.append(fullArray[index])
-                }
-                
-            } else {
-                //populate the hard level words array
-                if fullArray[index].characters.count <= 10 {
-                    hardArray.append(fullArray[index])
-                    
-                }
-            }*/
+    
         }
         
         //Shuffle so that different random seeds happen

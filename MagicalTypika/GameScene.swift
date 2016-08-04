@@ -19,8 +19,6 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     
     var player: Player!
     
-    var contentNodeLVL: SKSpriteNode!
-    var contentNodeBOSS: SKSpriteNode!
     var oldNode: LevelContent?
     var level: Int = 0
     var levels = [LevelContent]()  //Empty array of SKNodes
@@ -58,8 +56,8 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
             scoreLabel.text = "\(score)"
             
             //~~[Increase difficulty as user gets better]~~~~~~~~
-            if score % 3 == 0 {
-                spawnSpeed -= 1.5 //make falling word fall faster every 3 words typed
+            if score % 4 == 0 {
+                spawnSpeed -= 2 //make falling word fall faster every 4 words typed
                 
                 if spawnSpeed < 3 {
                     spawnSpeed = 3  //This is as fast as it'll get
@@ -112,7 +110,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     }
     
     
-    //MARK: [DETECT MATCHING WORDS/CLEAR USER INPUT]***************************************************
+    //MARK: - [DETECT MATCHING WORDS/CLEAR USER INPUT]
     func textFieldShouldReturn(textField: UITextField) -> Bool {
         
         wordCheck()
@@ -158,7 +156,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     
     func contentSetUp_BOSS() {
         
-        let monsterX = (view?.frame.width)!/2 //player.position.x - ((view?.frame.width)!/2)
+        let monsterX = player.position.x - ((view?.frame.width)!/2)
         let monsterY = player.position.y
         
         //local variable monster
@@ -199,9 +197,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         
         oldNode = node
     }
-    
-    //MARK: Initial loading when the view loads
-    
+        
     override func didMoveToView(view: SKView) {
         
         //Set up background
@@ -223,11 +219,11 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         
         //Set up correctly typed word score in background of gameplay
         scoreLabel = SKLabelNode(fontNamed: "Helvetica")
-        scoreLabel.fontSize = 200
+        scoreLabel.fontSize = 175
         addChild(scoreLabel)
         scoreLabel.position.x = view.frame.width/2
-        scoreLabel.position.y = view.frame.height - (view.frame.height/3) - 25
-        scoreLabel.zPosition = 0
+        scoreLabel.position.y = view.frame.height - (view.frame.height/3) + 20
+        scoreLabel.zPosition = -1
         scoreLabel.text = "\(score)"
         scoreLabel.fontColor = UIColor(hue: 0.45, saturation: 0.75, brightness: 1, alpha: 0.25)
         
@@ -242,7 +238,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
 
 
         
-        //MARK: ~~~~~~~~~~~~[Setting up UITextField -> SKLabel conversion]~~~~~~~~~~~~~~~~//
+        //MARK: - [Setting up UITextField -> SKLabel conversion]~~~~~~~~~~~~~~~~//
         
         //For finding Keyboard sizes
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GameScene.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
@@ -336,14 +332,15 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         
         player = PlayerFactory.create("Typika", xPosition: keyboardWidth - (keyboardWidth / 4), yPosition: keyboardHeight + 100)
         addChild(player)
-        //player.xScale = -1
+        //player.xScale = -1 //mirror the image
         player.zPosition = -1
         
         //Load level-specific details
-        contentSetUp_LVL() // Norma: I want to setup level 1. I don't want start level 1, yet....
+        contentSetUp_LVL() 
         contentSetUp_BOSS()
         
         changeLVL(levels[0]) //start with regular level
+        spawnWord() //Manually spawns first word so user doesn't have to wait
     }
     
     //******************************************************************************************************//
@@ -425,9 +422,9 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
     
     func getWordFromFirstLetter(word: String) -> FallingLabelNode? {
-        
+        //when user returns an empty string (backspaces an attempt & presses return on a blank entry)
         if word == "" {
-            //MARK: [NOTE TO SELF] CATCH WHEN USER TRIES TO SUBMIT AN EMPTY STRING
+            return nil
         }
         
         for c in children { //look through all children
@@ -477,6 +474,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     
     func gameOver() {
         gameState = .GameOver
+        level = 0
         wordLabel.text = "" //Clears the "~:~" placeholder string
         
         let endLabel = SKLabelNode(fontNamed: "Courier New Bold")
