@@ -19,6 +19,8 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     
     var player: Player!
     
+    var keyboardVisible = false
+    
     var oldLVL: LevelContent?
     var level: Int = 0
     var levels = [LevelContent]()  //Empty array of SKNodes
@@ -138,7 +140,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     
     // TODO: - Refactor later
     
-    func contentSetUp_LVL() {
+    func contentSetUpLvl() {
         
         let monsterX = player.position.x - ((view?.frame.width)!/2)
         let monsterY = player.position.y
@@ -154,7 +156,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         levels.append(level)
     }
     
-    func contentSetUp_BOSS() {
+    func contentSetUpBoss() {
         
         let monsterX = player.position.x - ((view?.frame.width)!/2)
         let monsterY = player.position.y
@@ -265,7 +267,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         inputText.becomeFirstResponder() //Makes Keyboard appear first
         inputText.addTarget(self, action: #selector(UITextInputDelegate.textDidChange(_:)), forControlEvents: .EditingChanged)
         inputText.delegate = self
-        inputText.keyboardType = UIKeyboardType.Alphabet
+        inputText.keyboardType = UIKeyboardType.ASCIICapable
         
         //Seconds of gameplay elapsed
         _ = NSTimer.scheduledTimerWithTimeInterval(1, target: self, selector: #selector(GameScene.timeCount), userInfo: nil, repeats: true)
@@ -303,6 +305,10 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     //******************************************************************************************************//
     
     func keyboardWillShow(notification:NSNotification) {
+        if keyboardVisible == true {
+            return
+        }
+        
         let userInfo:NSDictionary = notification.userInfo!
         let keyboardFrame:NSValue = userInfo.valueForKey(UIKeyboardFrameEndUserInfoKey) as! NSValue
         let keyboardRectangle = keyboardFrame.CGRectValue()
@@ -346,10 +352,15 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         player.zPosition = -1
         
         //Load level-specific details
-        contentSetUp_LVL() 
-        contentSetUp_BOSS()
+        contentSetUpLvl()
+        contentSetUpBoss()
         
         changeLVL(levels[0]) //start with regular level
+        
+        
+            keyboardVisible = true
+        
+    
        // spawnWord() //Manually spawns first word so user doesn't have to wait
     }
     
