@@ -27,20 +27,20 @@ class MainMenu: SKScene {
             
            // if let scene = GameScene(fileNamed: level.sceneName()) {
             let scene = GameScene(size: view.frame.size)
-//                scene.setLevel(level)
+            // scene.setLevel(level)
 
-                // Configure the view.
-                let skView = self.view!
-                skView.showsFPS = false
-                skView.showsNodeCount = false
-                
-                /* Sprite Kit applies additional optimizations to improve rendering performance */
-                skView.ignoresSiblingOrder = true
-                
-                /* Set the scale mode to scale to fit the window */
-                scene.scaleMode = .ResizeFill
-                
-                skView.presentScene(scene)
+            // Configure the view.
+            let skView = self.view!
+            skView.showsFPS = false
+            skView.showsNodeCount = false
+            
+            /* Sprite Kit applies additional optimizations to improve rendering performance */
+            skView.ignoresSiblingOrder = true
+            
+            /* Set the scale mode to scale to fit the window */
+            scene.scaleMode = .ResizeFill
+            
+            skView.presentScene(scene)
             // }
         }
         

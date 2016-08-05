@@ -10,15 +10,14 @@ import Foundation
 import SpriteKit
 
 
-protocol LevelContentDelegate {
+protocol LevelContentDelegate: class {
     func spawnWord()
 }
-
 
 class LevelContent: SKSpriteNode {
     
     let monster: Monster
-    var delegate: LevelContentDelegate?
+    weak var delegate: LevelContentDelegate?
     
     init(color: UIColor, size: CGSize, monster: Monster) {
         

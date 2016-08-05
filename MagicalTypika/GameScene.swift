@@ -19,7 +19,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     
     var player: Player!
     
-    var oldNode: LevelContent?
+    var oldLVL: LevelContent?
     var level: Int = 0
     var levels = [LevelContent]()  //Empty array of SKNodes
     var transitionTime: CFTimeInterval = 0.5
@@ -171,14 +171,21 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         levels.append(level)
     }
     
-    // TODO: Refactor all oldNode to oldLVL
+    
+    func stopLVL(node: LevelContent) {
+        // TODO: resets all level values so that player can play again
+        
+        let move = SKAction.moveToX(-size.width, duration: transitionTime) //left
+        let remove = SKAction.removeFromParent()
+        
+        node.stopEverything()
+        node.runAction(SKAction.sequence([move, remove]))
+        
+    }
+    
     func changeLVL(node: LevelContent) {
-        if let oldNode = oldNode {
-            let move = SKAction.moveToX(-size.width, duration: transitionTime) //left
-            let remove = SKAction.removeFromParent()
-
-            oldNode.stopEverything()
-            oldNode.runAction(SKAction.sequence([move, remove]))
+        if let oldLVL = oldLVL {
+            stopLVL(oldLVL)
         }
         
         node.position.x = size.width
@@ -193,9 +200,10 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
             //self.startFight()
         }
         
-        node.runAction(SKAction.sequence([moveAction, start]))
-        
-        oldNode = node
+        node.runAction(SKAction.sequence([moveAction, start])) //Move LVLContent node onto scene & start it
+        spawnWord() //Manually spawns first word so user doesn't have to wait
+
+        oldLVL = node
     }
         
     override func didMoveToView(view: SKView) {
@@ -243,6 +251,8 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         //For finding Keyboard sizes
         NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GameScene.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         
+        
+        
         let frame = CGRect (x: 0, y: 0, width: view.frame.width-40, height: 40)
         inputText = UITextField(frame: frame)
         
@@ -266,7 +276,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     
     /*
     func startFight() {
-        //MARK: [ SETTING UP TIMERS IN LEVEL ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+        //MARK: [ SETTING UP TIMERS IN LEVEL ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
         
         /* Set how often the MONSTER will attack (Every 3 seconds) */
         attackTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: monster, selector: #selector(Monster.monsterAttack), userInfo: nil, repeats: true)
@@ -340,7 +350,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         contentSetUp_BOSS()
         
         changeLVL(levels[0]) //start with regular level
-        spawnWord() //Manually spawns first word so user doesn't have to wait
+       // spawnWord() //Manually spawns first word so user doesn't have to wait
     }
     
     //******************************************************************************************************//
@@ -472,8 +482,22 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         print("~~~~~damage: \(player.damage)")
     }
     
+    
+    
+    override func willMoveFromView(view: SKView) {
+        print("Will move from view happened!~~~~~~~~~~")
+        // NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GameScene.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
+        
+         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
+    }
+
+    
+    
+    
+    
     func gameOver() {
         gameState = .GameOver
+        stopLVL(levels[1]) //stop boss level, destroy its levelContent node
         level = 0
         wordLabel.text = "" //Clears the "~:~" placeholder string
         
@@ -527,14 +551,6 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         //Show End Results
         endScreen.hidden = false
         
-        /*
-        //Stops the Automated Monster Attacks
-        attackTimer.invalidate()
-        
-        //Stops spawning falling words
-        wordSpawnTimer.invalidate()
-        */
-        
         /* PLAYER LOST SCREEN */
         if monsterWins {
             endScreen.texture = SKTexture(imageNamed: "endRed")
@@ -545,7 +561,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         
         /* PLAYER WON SCREEN */
         if playerWins {
-            endLabel.fontColor = UIColor.blackColor()
+            endLabel.fontColor = UIColor.init(hue: 0.47, saturation: 1, brightness: 0.5, alpha: 1)
             endLabel.text = "You win!"
         }
         
@@ -567,6 +583,15 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         highscore = userDefaults.integerForKey("highscore")
         */
         //highScoreLabel.text = "High score: \(highscore)"
+        
+        
+        /*
+         //Stops the Automated Monster Attacks
+         attackTimer.invalidate()
+         
+         //Stops spawning falling words
+         wordSpawnTimer.invalidate()
+         */
     }
     
     override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
@@ -582,21 +607,19 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     func monsterDied() {
         //MARK: Player defeats level 1 monster
         
-        // if level == 0 {
-            level += 1
+        level += 1
+        
+        // Player defeats level 2 BOSS monster
+        if level == levels.count {
+            level = 1 //stay on boss level
             
-            // When boss is defeated:
-            if level == levels.count {
-                level = 1 //stay on boss level
-                
-                // //Game Over: you win!
-                playerWins = true
-                gameOver()
-            }
+            // Game Over: you win!
+            playerWins = true
+            gameOver()
+        }
         if playerWins == false {
             changeLVL(levels[level])
         }
-    // }
     }
     
     override func update(currentTime: CFTimeInterval) {
@@ -615,22 +638,6 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
             }
 
             //TODO: Simplify level transitioning
-            //let currentLevel = levels[level]
-            //let monster = currentLevel.monster
-            
-            //if monster.health <= 0 {
-              //  monster.health = 0
-                
-
-
-                //MARK: Player defeats Boss level monster
-                /*
-                if level == 1 {
-                    //Game Over: you win!
-                    playerWins = true
-                    gameOver()
-                }*/
-         //   }
         }
     }
 }
