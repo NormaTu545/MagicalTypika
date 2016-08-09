@@ -15,8 +15,8 @@ class Player: SKSpriteNode {
     
     var healthBar: HealthBar!
     var damage: CGFloat = 0
-    var health: CGFloat = 500
-    let totalHealth: CGFloat = 500
+    var health: CGFloat = 700
+    let totalHealth: CGFloat = 700
     
     
     init(name: String, xPos: CGFloat, yPos: CGFloat) {
@@ -31,16 +31,18 @@ class Player: SKSpriteNode {
         self.position.x = xPos
         self.position.y = yPos
         self.size.width = 85
-        self.size.height = 90
+        self.size.height = 110
+        self.anchorPoint = CGPoint(x: 0, y: 0)
         
         self.healthBar = HealthBar()
         self.addChild(healthBar)
         self.healthBar.zPosition = 0
-        self.healthBar.position.x = self.size.width / -2
-        self.healthBar.position.y = self.size.height - self.size.height/3
+        self.healthBar.anchorPoint = CGPoint(x: 0, y: 0)
+        self.healthBar.position.x = 0
+        self.healthBar.position.y = self.size.height + 10
         
-        //Player's damage is a random number between 50-100
-        self.damage = CGFloat(arc4random_uniform(51) + 50)
+        //Player's damage is a random number between 75-100
+        self.damage = CGFloat(arc4random_uniform(76) + 75)
     }
     
     func dealDamage(target: Monster) {

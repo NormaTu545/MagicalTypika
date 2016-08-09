@@ -58,8 +58,8 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
             scoreLabel.text = "\(score)"
             
             //~~[Increase difficulty as user gets better]~~~~~~~~
-            if score % 4 == 0 {
-                spawnSpeed -= 2 //make falling word fall faster every 4 words typed
+            if score % 5 == 0 {
+                spawnSpeed -= 1.5 //make falling word fall faster every 5 words typed
                 
                 if spawnSpeed < 3 {
                     spawnSpeed = 3  //This is as fast as it'll get
@@ -141,8 +141,8 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     // TODO: - Refactor later
     
     func contentSetUpLvl() {
-        
-        let monsterX = player.position.x - ((view?.frame.width)!/2)
+    
+        let monsterX = player.position.x - ((view?.frame.width)!/3) //MARK: 1st Monster positioning
         let monsterY = player.position.y
         
         let monster = MonsterFactory.create("DaBug", xPosition: monsterX, yPosition: monsterY, attackTarget: player, attackBall: glowBall)!
@@ -158,7 +158,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     
     func contentSetUpBoss() {
         
-        let monsterX = player.position.x - ((view?.frame.width)!/2)
+        let monsterX = player.position.x - ((view?.frame.width)!/4) //MARK: Boss Monster positioning
         let monsterY = player.position.y
         
         //local variable monster
@@ -346,7 +346,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         glowBall = SKSpriteNode(imageNamed: "ball")
         addChild(glowBall)
         
-        player = PlayerFactory.create("Typika", xPosition: keyboardWidth - (keyboardWidth / 4), yPosition: keyboardHeight + 100)
+        player = PlayerFactory.create("Typika", xPosition: keyboardWidth - (keyboardWidth / 3), yPosition: keyboardHeight + keyboardHeight/4)
         addChild(player)
         //player.xScale = -1 //mirror the image
         player.zPosition = -1

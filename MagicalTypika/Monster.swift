@@ -54,6 +54,7 @@ class Monster: SKSpriteNode {
         self.position.y = yPos
         self.size.width = 95
         self.size.height = 75
+        self.anchorPoint = CGPoint(x: 0, y: 0)
         
         self.target = attackTarget
         self.glowBall = attackBall
@@ -69,10 +70,10 @@ class Monster: SKSpriteNode {
         self.addChild(healthBar)
         self.healthBar.xScale = -1
         self.healthBar.zPosition = 2
-        //self.healthBar.anchorPoint = CGPointMake(0.5, 0.5)
+        self.healthBar.anchorPoint = CGPoint(x: 0, y: 0)
 
-        self.healthBar.position.x = self.size.width/2 //monster w/2
-        self.healthBar.position.y = self.size.height - self.size.height/4
+        self.healthBar.position.x = self.size.width //self.size.width/2 //monster w/2
+        self.healthBar.position.y = self.size.height + 10
         
         self.damage = 25
         
@@ -113,8 +114,8 @@ class DaBug: Monster {
         
         super.init(name: name, xPos: xPosition, yPos: yPosition, attackTarget: attackTarget, attackBall: attackBall)
         
-        self.health = 200
-        self.totalHealth = 200
+        self.health = 400
+        self.totalHealth = 400
         
     }
     
@@ -139,10 +140,10 @@ class DeeBug: Monster {
         
         super.init(name: name, xPos: xPosition, yPos: yPosition, attackTarget: attackTarget, attackBall: attackBall)
        
-        self.size.width = 175
-        self.size.height = 175
-        self.health = 200
-        self.totalHealth = 200
+        self.size.width = 150
+        self.size.height = 85
+        self.health = 600
+        self.totalHealth = 600
         self.glowBall.size.width = 60
         self.glowBall.size.height = 60
     }
