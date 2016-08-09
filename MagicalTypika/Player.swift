@@ -13,6 +13,9 @@ class Player: SKSpriteNode {
     var playerName: String = "Typika"
     var playerIMG: SKTexture!
     
+    var attackAction: SKAction!
+    var isAttacking = false
+    
     var healthBar: HealthBar!
     var damage: CGFloat = 0
     var health: CGFloat = 700
@@ -21,6 +24,7 @@ class Player: SKSpriteNode {
     
     init(name: String, xPos: CGFloat, yPos: CGFloat) {
         
+        //MARK: Original still image set up ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
         playerIMG = SKTexture(imageNamed: name)
         
         //SKSpriteNode's init
@@ -43,11 +47,38 @@ class Player: SKSpriteNode {
         
         //Player's damage is a random number between 75-100
         self.damage = CGFloat(arc4random_uniform(76) + 75)
+        
+        //MARK: Sprite Animations!!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
+        
+        var textures = [SKTexture]()
+        
+        for i in 4...6 {
+            let texture = SKTexture(imageNamed: "MT_\(i)")
+            textures.append(texture)
+        }
+        
+        // Make an action to play these texture frames
+        let attack = SKAction.animateWithTextures(textures, timePerFrame: 0.15, resize: true, restore: false)
+        
+        let endAttack = SKAction.runBlock {
+            self.playerIMG = SKTexture(imageNamed: name)
+            self.isAttacking = false
+        }
+        
+        attackAction = SKAction.sequence([attack, endAttack])
     }
     
     func dealDamage(target: Monster) {
         target.health -= self.damage
         target.healthBar.value = target.health / target.totalHealth
+    }
+    
+    func attack() {
+        // only player is not already attacking
+        if !isAttacking {
+            isAttacking = true
+            runAction(attackAction)
+        }
     }
     
     required init?(coder aDecoder: NSCoder) {

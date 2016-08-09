@@ -59,8 +59,9 @@ class Monster: SKSpriteNode {
         self.target = attackTarget
         self.glowBall = attackBall
         
-        self.glowBall.position.x = self.position.x
-        self.glowBall.position.y = self.position.y
+        self.glowBall.anchorPoint = CGPoint(x: 0, y: 0)
+        self.glowBall.position.x = 0 //self.position.x
+        self.glowBall.position.y = 0 //self.position.y
         self.glowBall.size.width = 30
         self.glowBall.size.height = 30
         self.glowBall.zPosition = -1
@@ -72,7 +73,7 @@ class Monster: SKSpriteNode {
         self.healthBar.zPosition = 2
         self.healthBar.anchorPoint = CGPoint(x: 0, y: 0)
 
-        self.healthBar.position.x = self.size.width //self.size.width/2 //monster w/2
+        self.healthBar.position.x = self.size.width
         self.healthBar.position.y = self.size.height + 10
         
         self.damage = 25

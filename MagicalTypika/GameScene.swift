@@ -103,6 +103,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
             if targetLabel.text! == theWord {
                 print("WAHOO THEY MATCH YOU DID IT.")
                 score += 1
+                player.attack()
                 flip(tl)
                 
                 let monster = levels[level].monster
@@ -468,7 +469,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         
         let monster = levels[level].monster
         
-        let flip = SKAction.moveTo(monster.position, duration: 0.25)
+        let flip = SKAction.moveTo(CGPoint(x: monster.size.width/2, y: monster.position.y + monster.size.height/2), duration: 0.25)
         
         /* Create a node removal action */
         let remove = SKAction.removeFromParent()
@@ -476,7 +477,8 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         let boom = SKAction.runBlock {
             let boom = SKEmitterNode(fileNamed: "Boom")!
             self.addChild(boom)
-            boom.position = monster.position
+            boom.zPosition = 10
+            boom.position = CGPoint(x: monster.position.x, y: monster.position.y + monster.size.height/2)
             let wait = SKAction.waitForDuration(0.6)
             let removeBoom = SKAction.removeFromParent()
             
