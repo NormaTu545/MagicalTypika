@@ -61,7 +61,7 @@ class Player: SKSpriteNode {
         let attack = SKAction.animateWithTextures(textures, timePerFrame: 0.15, resize: true, restore: false)
         
         let endAttack = SKAction.runBlock {
-            self.playerIMG = SKTexture(imageNamed: name)
+            self.texture = SKTexture(imageNamed: name)
             self.isAttacking = false
         }
         

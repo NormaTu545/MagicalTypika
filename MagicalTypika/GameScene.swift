@@ -478,7 +478,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
             let boom = SKEmitterNode(fileNamed: "Boom")!
             self.addChild(boom)
             boom.zPosition = 10
-            boom.position = CGPoint(x: monster.position.x, y: monster.position.y + monster.size.height/2)
+            boom.position = CGPoint(x: monster.position.x - monster.size.width/2, y: monster.position.y + monster.size.height/2)
             let wait = SKAction.waitForDuration(0.6)
             let removeBoom = SKAction.removeFromParent()
             
