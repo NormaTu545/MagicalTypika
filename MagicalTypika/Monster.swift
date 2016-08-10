@@ -96,7 +96,8 @@ class Monster: SKSpriteNode {
     }
     
     func monsterAttack() {
-        
+        self.glowBall.position = self.position //starting position of glowball = monster
+
         /* Load attack action */
         let sendAttack = SKAction.moveTo(self.target.position, duration: 0.25)
         
