@@ -114,6 +114,7 @@ class Monster: SKSpriteNode {
         
         self.target.health -= self.damage
         self.target.healthBar.value = self.target.health / self.target.totalHealth
+        self.target.flinch()
     }
     
     required init?(coder aDecoder: NSCoder) {

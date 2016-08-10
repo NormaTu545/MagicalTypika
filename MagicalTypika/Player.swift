@@ -15,7 +15,11 @@ class Player: SKSpriteNode {
     
     var idleAction: SKAction!
     var attackAction: SKAction!
+    var flinchAction: SKAction!
+    var deathAction: SKAction!
+    
     var isAttacking = false
+    var isFlinching = false
     
     var healthBar: HealthBar!
     var damage: CGFloat = 0
@@ -52,7 +56,7 @@ class Player: SKSpriteNode {
         var textures = [SKTexture]()
         
         // --------------------------------------------------------------
-        // Setup idle action. This action is made from textures 4 to 6
+        // Setup idle action. This action is made from textures 0 to 3
         // --------------------------------------------------------------
         
         for i in 0...3 {
@@ -83,6 +87,32 @@ class Player: SKSpriteNode {
         }
         
         attackAction = SKAction.sequence([attack, endAttack])
+        
+        // -----------------------------------------------------------------
+        // Setup flinching action. This action is used in monsterAttack()
+        // -----------------------------------------------------------------
+        
+        textures = []
+        let ow = SKTexture(imageNamed: "MT_7")
+        textures.append(ow)
+        
+        let wait = SKAction.waitForDuration(0.25) //time offset so player flinches when glowball hits player
+        let owch = SKAction.animateWithTextures(textures, timePerFrame: 0.3, resize: true, restore: true)
+        
+        flinchAction = SKAction.sequence([wait, owch])
+        
+        // -----------------------------------------------------------------
+        // Setup death action.
+        // -----------------------------------------------------------------
+        
+        textures = []
+        let die = SKTexture(imageNamed: "MT_8")
+        textures.append(die)
+        
+        let offset = SKAction.waitForDuration(0.25) //time offset so player flinches when glowball hits player
+        let dead = SKAction.animateWithTextures(textures, timePerFrame: 0.4, resize: true, restore: false)
+        
+        deathAction = SKAction.sequence([offset, dead])
     }
     
     func dealDamage(target: Monster) {
@@ -91,11 +121,20 @@ class Player: SKSpriteNode {
     }
     
     func attack() {
-        // only player is not already attacking
+        // only player is not already in its attack animation
         if !isAttacking {
             isAttacking = true
+            
             runAction(attackAction)
         }
+    }
+    
+    func flinch() {
+        runAction(flinchAction)
+    }
+    
+    func dead() {
+        runAction(deathAction)
     }
     
     required init?(coder aDecoder: NSCoder) {

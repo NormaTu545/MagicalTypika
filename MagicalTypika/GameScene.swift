@@ -651,7 +651,16 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
                 monsterWins = true
                 
                 //game over: you lose...
-                gameOver()
+                player.dead() //dying animation
+                
+                let dying = SKAction.waitForDuration(0.5)
+            
+                let end = SKAction.runBlock {
+                    self.gameOver()
+                }
+                
+                let seq = SKAction.sequence([dying, end])
+                runAction(seq)
             }
 
             //TODO: Simplify level transitioning
