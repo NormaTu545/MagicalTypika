@@ -13,6 +13,7 @@ class Player: SKSpriteNode {
     var playerName: String = "Typika"
     var playerIMG: SKTexture!
     
+    var idleAction: SKAction!
     var attackAction: SKAction!
     var isAttacking = false
     
@@ -25,7 +26,7 @@ class Player: SKSpriteNode {
     init(name: String, xPos: CGFloat, yPos: CGFloat) {
         
         //MARK: Original still image set up ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-        playerIMG = SKTexture(imageNamed: name)
+        playerIMG = SKTexture(imageNamed: "MT_0") //default
         
         //SKSpriteNode's init
         super.init(texture: playerIMG, color: UIColor.clearColor(), size: playerIMG.size())
@@ -34,8 +35,6 @@ class Player: SKSpriteNode {
         self.playerName = name
         self.position.x = xPos
         self.position.y = yPos
-        self.size.width = 85
-        self.size.height = 110
         self.anchorPoint = CGPoint(x: 0, y: 0)
         
         self.healthBar = HealthBar()
@@ -43,7 +42,7 @@ class Player: SKSpriteNode {
         self.healthBar.zPosition = 0
         self.healthBar.anchorPoint = CGPoint(x: 0, y: 0)
         self.healthBar.position.x = 0
-        self.healthBar.position.y = self.size.height + 10
+        self.healthBar.position.y = self.size.height// + 10
         
         //Player's damage is a random number between 75-100
         self.damage = CGFloat(arc4random_uniform(76) + 75)
@@ -51,6 +50,24 @@ class Player: SKSpriteNode {
         //MARK: Sprite Animations!!~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
         
         var textures = [SKTexture]()
+        
+        // --------------------------------------------------------------
+        // Setup idle action. This action is made from textures 4 to 6
+        // --------------------------------------------------------------
+        
+        for i in 0...3 {
+            let texture = SKTexture(imageNamed: "MT_\(i)")
+            textures.append(texture)
+        }
+        
+        let animateIdle = SKAction.animateWithTextures(textures, timePerFrame: 0.5, resize: true, restore: false)
+        idleAction = SKAction.repeatActionForever(animateIdle)
+        runAction(idleAction)
+        
+        // --------------------------------------------------------------
+        // Setup attack action. This action is made from textures 4 to 6
+        // --------------------------------------------------------------
+        textures = []
         
         for i in 4...6 {
             let texture = SKTexture(imageNamed: "MT_\(i)")
@@ -93,7 +110,7 @@ class Player: SKSpriteNode {
 class PlayerFactory {
     static func create(player : String, xPosition: CGFloat, yPosition: CGFloat) -> Player? {
         if player == "Typika" {
-            return Player(name: "Typika", xPos: xPosition, yPos: yPosition)
+            return Player(name: "MT_0", xPos: xPosition, yPos: yPosition)
         }
         return nil
     }

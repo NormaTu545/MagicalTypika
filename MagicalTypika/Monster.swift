@@ -19,6 +19,7 @@ class Monster: SKSpriteNode {
     var delegate: MonsterDelegate?
     
     var monsterName: String = ""
+    var idleAction: SKAction!
     
     var healthBar: HealthBar!
     var damage: CGFloat = 0 //How much damage it can inflict
@@ -39,11 +40,11 @@ class Monster: SKSpriteNode {
     var monsterIMG: SKTexture!
     var target: Player!
     var glowBall: SKSpriteNode!
-    
+    var textures = [SKTexture]()
     
     init(name: String, xPos: CGFloat, yPos: CGFloat, attackTarget: Player, attackBall: SKSpriteNode) {
         
-        monsterIMG = SKTexture(imageNamed: name)
+        monsterIMG = SKTexture(imageNamed: "MON_0")
         
         //SKSpriteNode's init
         super.init(texture: monsterIMG, color: UIColor.clearColor(), size: monsterIMG.size())
@@ -69,15 +70,29 @@ class Monster: SKSpriteNode {
         
         self.healthBar = HealthBar()
         self.addChild(healthBar)
-        self.healthBar.xScale = -1
         self.healthBar.zPosition = 2
         self.healthBar.anchorPoint = CGPoint(x: 0, y: 0)
 
-        self.healthBar.position.x = self.size.width
+        self.healthBar.position.x = 0
         self.healthBar.position.y = self.size.height + 10
         
         self.damage = 25
+    }
+    
+    func idle(){
         
+        // --------------------------------------------------------------
+        // Setup idle animation. This action is made from textures 0 to 2
+        // --------------------------------------------------------------
+        
+        for i in 0...2 {
+            let texture = SKTexture(imageNamed: "MON_\(i)")
+            textures.append(texture)
+        }
+        
+        let animateIdle = SKAction.animateWithTextures(textures, timePerFrame: 0.05, resize: true, restore: false)
+        idleAction = SKAction.repeatActionForever(animateIdle)
+        runAction(idleAction)
     }
     
     func monsterAttack() {
@@ -117,7 +132,6 @@ class DaBug: Monster {
         
         self.health = 400
         self.totalHealth = 400
-        
     }
     
     override func monsterAttack() {
@@ -145,8 +159,32 @@ class DeeBug: Monster {
         self.size.height = 85
         self.health = 600
         self.totalHealth = 600
+        
+        self.healthBar.position.x = 25
+        self.healthBar.position.y = self.size.height + 25
+        
         self.glowBall.size.width = 60
         self.glowBall.size.height = 60
+    }
+    
+    override func idle() {
+        
+        textures = []
+        
+        // --------------------------------------------------------------
+        // Setup idle action. This action is made from textures 0 to 2
+        // --------------------------------------------------------------
+        
+        monsterIMG = SKTexture(imageNamed: "MON_3")
+        
+        for i in 3...5 {
+            let texture = SKTexture(imageNamed: "MON_\(i)")
+            textures.append(texture)
+        }
+        
+        let animateIdle = SKAction.animateWithTextures(textures, timePerFrame: 0.05, resize: true, restore: false)
+        idleAction = SKAction.repeatActionForever(animateIdle)
+        runAction(idleAction)
     }
     
     override func monsterAttack() {
@@ -170,10 +208,10 @@ class DeeBug: Monster {
 class MonsterFactory {
     static func create(monster : String, xPosition: CGFloat, yPosition: CGFloat, attackTarget: Player, attackBall: SKSpriteNode) -> Monster? {
         if monster == "DaBug" {
-            return DaBug(name: "DaBug", xPosition: xPosition, yPosition: yPosition, attackTarget: attackTarget, attackBall: attackBall)
+            return DaBug(name: "MON_0", xPosition: xPosition, yPosition: yPosition, attackTarget: attackTarget, attackBall: attackBall)
         }
         if monster == "DeeBug" {
-            return DeeBug(name: "DeeBug", xPosition: xPosition, yPosition: yPosition, attackTarget: attackTarget, attackBall: attackBall)
+            return DeeBug(name: "MON_3", xPosition: xPosition, yPosition: yPosition, attackTarget: attackTarget, attackBall: attackBall)
         }
         return nil
     }

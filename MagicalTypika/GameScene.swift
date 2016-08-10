@@ -89,7 +89,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
             //proccess a word
             theWord = currentWord
         } else {
-            theWord = "[Type here]"
+            theWord = "Type & Return"
         }
     }
     
@@ -143,11 +143,12 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     
     func contentSetUpLvl() {
     
-        let monsterX = player.position.x - ((view?.frame.width)!/3) //MARK: 1st Monster positioning
+        let monsterX = player.position.x - ((view?.frame.width)!/2) //MARK: 1st Monster positioning
         let monsterY = player.position.y
         
         let monster = MonsterFactory.create("DaBug", xPosition: monsterX, yPosition: monsterY, attackTarget: player, attackBall: glowBall)!
-        monster.xScale = -1
+        monster.idle()
+        //monster.xScale = -1
         monster.zPosition = 1
         monster.delegate = self
         
@@ -159,12 +160,13 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     
     func contentSetUpBoss() {
         
-        let monsterX = player.position.x - ((view?.frame.width)!/4) //MARK: Boss Monster positioning
+        let monsterX = player.position.x - ((view?.frame.width)!/1.8) //MARK: Boss Monster positioning
         let monsterY = player.position.y
         
-        //local variable monster
+                                                    //local variable monster
         let monster = MonsterFactory.create("DeeBug", xPosition: monsterX, yPosition: monsterY, attackTarget: player, attackBall: glowBall)!
-        monster.xScale = -1
+        monster.idle()
+        //monster.xScale = -1
         monster.zPosition = 1
         monster.delegate = self
         
@@ -334,8 +336,8 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         
         //[USER INPUT WORD LABEL HERE]******************************//
         wordLabel = SKLabelNode(fontNamed: "Courier New Bold")
-        wordLabel.text = "[Type here]"
-        wordLabel.fontSize = 40
+        wordLabel.text = "Type & Return"
+        wordLabel.fontSize = 30
         addChild(wordLabel)
         
         wordLabel.horizontalAlignmentMode = .Center
@@ -468,8 +470,10 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     func flip(fallingLabel: FallingLabelNode) {
         
         let monster = levels[level].monster
+        let monsterX = monster.position.x + monster.size.width/2 //AnchorPoint of monster image is (0,0)
+        let monsterY = monster.position.y + monster.size.height/2 //center of monster image
         
-        let flip = SKAction.moveTo(CGPoint(x: monster.size.width/2, y: monster.position.y + monster.size.height/2), duration: 0.25)
+        let flip = SKAction.moveTo(CGPoint(x: monsterX, y: monsterY), duration: 0.25)
         
         /* Create a node removal action */
         let remove = SKAction.removeFromParent()
@@ -478,7 +482,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
             let boom = SKEmitterNode(fileNamed: "Boom")!
             self.addChild(boom)
             boom.zPosition = 10
-            boom.position = CGPoint(x: monster.position.x - monster.size.width/2, y: monster.position.y + monster.size.height/2)
+            boom.position = CGPoint(x: monsterX, y: monsterY)
             let wait = SKAction.waitForDuration(0.6)
             let removeBoom = SKAction.removeFromParent()
             

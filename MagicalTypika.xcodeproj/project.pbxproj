@@ -16,7 +16,7 @@
 		AD5C624A1D385FDE00224AEE /* WordsManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD5C62491D385FDE00224AEE /* WordsManager.swift */; };
 		AD6B7B181D53ACA300667BC1 /* LevelContent.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD6B7B171D53ACA300667BC1 /* LevelContent.swift */; };
 		AD72D1CC1D50115400A45DAA /* ButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD72D1CB1D50115400A45DAA /* ButtonNode.swift */; };
-		AD74E1801D5A796C007EB40E /* MagicalTypika.atlas in Resources */ = {isa = PBXBuildFile; fileRef = AD74E17F1D5A796C007EB40E /* MagicalTypika.atlas */; };
+		AD74E1821D5A9B2E007EB40E /* MagicalTypika.atlas in Resources */ = {isa = PBXBuildFile; fileRef = AD74E1811D5A9B2E007EB40E /* MagicalTypika.atlas */; };
 		AD8DD28F1D359ECA00A37369 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8DD28E1D359ECA00A37369 /* MainMenu.swift */; };
 		AD8DD2911D35A20900A37369 /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = AD8DD2901D35A20900A37369 /* MainMenu.sks */; };
 		AD8DD2971D36B2BF00A37369 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */; };
@@ -40,7 +40,7 @@
 		AD5C62491D385FDE00224AEE /* WordsManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = WordsManager.swift; path = ../WordsManager.swift; sourceTree = "<group>"; };
 		AD6B7B171D53ACA300667BC1 /* LevelContent.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LevelContent.swift; sourceTree = "<group>"; };
 		AD72D1CB1D50115400A45DAA /* ButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ButtonNode.swift; sourceTree = "<group>"; };
-		AD74E17F1D5A796C007EB40E /* MagicalTypika.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = MagicalTypika.atlas; sourceTree = "<group>"; };
+		AD74E1811D5A9B2E007EB40E /* MagicalTypika.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = MagicalTypika.atlas; sourceTree = "<group>"; };
 		AD8DD28E1D359ECA00A37369 /* MainMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		AD8DD2901D35A20900A37369 /* MainMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainMenu.sks; sourceTree = "<group>"; };
 		AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MSButtonNode.swift; path = ../MSButtonNode.swift; sourceTree = "<group>"; };
@@ -68,7 +68,7 @@
 			children = (
 				AD5347621D2CB57B00FBF7B1 /* MagicalTypika */,
 				AD5347611D2CB57B00FBF7B1 /* Products */,
-				AD74E17F1D5A796C007EB40E /* MagicalTypika.atlas */,
+				AD74E1811D5A9B2E007EB40E /* MagicalTypika.atlas */,
 			);
 			sourceTree = "<group>";
 		};
@@ -171,7 +171,7 @@
 				AD8DD2911D35A20900A37369 /* MainMenu.sks in Resources */,
 				ADC02C4A1D48167900F9A38D /* spark.png in Resources */,
 				AD53476D1D2CB57B00FBF7B1 /* Main.storyboard in Resources */,
-				AD74E1801D5A796C007EB40E /* MagicalTypika.atlas in Resources */,
+				AD74E1821D5A9B2E007EB40E /* MagicalTypika.atlas in Resources */,
 				ADC02C441D46DD1000F9A38D /* 1000words.txt in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
