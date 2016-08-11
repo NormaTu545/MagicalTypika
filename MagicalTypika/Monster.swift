@@ -20,6 +20,7 @@ class Monster: SKSpriteNode {
     
     var monsterName: String = ""
     var idleAction: SKAction!
+    var flinchAction: SKAction!
     
     var healthBar: HealthBar!
     var damage: CGFloat = 0 //How much damage it can inflict
@@ -61,8 +62,8 @@ class Monster: SKSpriteNode {
         self.glowBall = attackBall
         
         self.glowBall.anchorPoint = CGPoint(x: 0, y: 0)
-        self.glowBall.position.x = 0 //self.position.x
-        self.glowBall.position.y = 0 //self.position.y
+        self.glowBall.position.x = self.size.width/2
+        self.glowBall.position.y = self.size.height/2
         self.glowBall.size.width = 30
         self.glowBall.size.height = 30
         self.glowBall.zPosition = -1
@@ -77,9 +78,7 @@ class Monster: SKSpriteNode {
         self.healthBar.position.y = self.size.height + 10
         
         self.damage = 25
-    }
-    
-    func idle(){
+        
         
         // --------------------------------------------------------------
         // Setup idle animation. This action is made from textures 0 to 2
@@ -92,12 +91,38 @@ class Monster: SKSpriteNode {
         
         let animateIdle = SKAction.animateWithTextures(textures, timePerFrame: 0.05, resize: true, restore: false)
         idleAction = SKAction.repeatActionForever(animateIdle)
+        
+        // --------------------------------------------------------------
+        // Setup flinch animation. (Monster gets hit)
+        // --------------------------------------------------------------
+        
+        textures = []
+        
+        let ow = SKTexture(imageNamed: "MON_6")
+        textures.append(ow)
+        
+        let wait = SKAction.waitForDuration(0.25) //time offset so player flinches when glowball hits player
+        let owch = SKAction.animateWithTextures(textures, timePerFrame: 0.3, resize: true, restore: true)
+        
+        flinchAction = SKAction.sequence([wait, owch])
+
+    }
+    
+    func idle(){
         runAction(idleAction)
     }
     
+    func flinch() {
+        runAction(flinchAction)
+    }
+    
     func monsterAttack() {
-        self.glowBall.position = self.position //starting position of glowball = monster
-
+        // self.glowBall.position = self.position //starting position of glowball = monster
+        
+        //Fix parent of glowBall
+        let pt = self.parent?.convertPoint(self.position, toNode: self.glowBall.parent! )
+        self.glowBall.position = pt!
+        
         /* Load attack action */
         let sendAttack = SKAction.moveTo(self.target.position, duration: 0.25)
         
@@ -187,6 +212,19 @@ class DeeBug: Monster {
         let animateIdle = SKAction.animateWithTextures(textures, timePerFrame: 0.05, resize: true, restore: false)
         idleAction = SKAction.repeatActionForever(animateIdle)
         runAction(idleAction)
+    }
+    
+    override func flinch() {
+        textures = []
+        
+        let ow = SKTexture(imageNamed: "MON_7")
+        textures.append(ow)
+        
+        let wait = SKAction.waitForDuration(0.3) //time offset so player flinches when glowball hits player
+        let owch = SKAction.animateWithTextures(textures, timePerFrame: 0.3, resize: true, restore: true)
+        
+        flinchAction = SKAction.sequence([wait, owch])
+        super.flinch()
     }
     
     override func monsterAttack() {

@@ -108,6 +108,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
                 
                 let monster = levels[level].monster
                 player.dealDamage(monster)
+                monster.flinch()
             }
         }
     }
@@ -580,6 +581,28 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         if playerWins {
             endLabel.fontColor = UIColor.init(hue: 0.47, saturation: 1, brightness: 0.5, alpha: 1)
             endLabel.text = "You win!"
+            
+            // ---------------------------------------------------------------
+            // Setup victory animation. This action is from textures 9 to 10
+            // ---------------------------------------------------------------
+            
+            var textures = [SKTexture]()
+
+            for i in 9...10 {
+                let texture = SKTexture(imageNamed: "MT_\(i)")
+                textures.append(texture)
+            }
+            
+            let playerIMG = textures[0] //default
+            let happyPlayer = SKSpriteNode(texture: playerIMG, size: playerIMG.size())
+            
+            happyPlayer.position.x = okButton.position.x
+            happyPlayer.position.y = okButton.position.y + 50
+            happyPlayer.zPosition = 100
+            
+            let animateHappy = SKAction.animateWithTextures(textures, timePerFrame: 0.1, resize: true, restore: false)
+            let happyAction = SKAction.repeatActionForever(animateHappy)
+            runAction(happyAction)
         }
         
         
