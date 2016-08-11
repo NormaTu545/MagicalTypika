@@ -122,7 +122,7 @@ class EndScreen: SKSpriteNode {
         let losingPlayer = SKSpriteNode(texture: textures[0], size: textures[0].size())
         
         losingPlayer.position.x = okButton.position.x
-        losingPlayer.position.y = okButton.position.y - 200
+        losingPlayer.position.y = okButton.position.y - 100
         losingPlayer.zPosition = 20
         addChild(losingPlayer)
         

@@ -9,7 +9,14 @@
 import Foundation
 import SpriteKit
 
+protocol PlayerDelegate {
+    func playerDied()
+}
+
 class Player: SKSpriteNode {
+    
+    var delegate: PlayerDelegate?
+    
     var playerName: String = "Typika"
     var playerIMG: SKTexture!
     
@@ -23,8 +30,21 @@ class Player: SKSpriteNode {
     
     var healthBar: HealthBar!
     var damage: CGFloat = 0
-    var health: CGFloat = 100//700
-    let totalHealth: CGFloat = 100//700
+    var health: CGFloat = 700 {
+        didSet {
+            if health <= 0 {
+                //Cap player health so no negative health
+                health = 0
+                
+                // The player is dead
+                if let delegate = delegate {
+                    delegate.playerDied()
+                }
+            }
+        }
+    }
+    
+    let totalHealth: CGFloat = 700
     
     
     init(name: String, xPos: CGFloat, yPos: CGFloat) {

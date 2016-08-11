@@ -196,8 +196,8 @@ class DaBug: Monster {
         
         super.init(name: name, xPos: xPosition, yPos: yPosition, attackTarget: attackTarget, attackBall: attackBall)
         
-        self.health = 10//400
-        self.totalHealth = 10//400
+        self.health = 400
+        self.totalHealth = 400
     }
     
     override func monsterAttack() {
@@ -223,8 +223,8 @@ class DeeBug: Monster {
        
         self.size.width = 150
         self.size.height = 85
-        self.health = 20 //600
-        self.totalHealth = 20
+        self.health = 600
+        self.totalHealth = 600
         
         self.healthBar.position.x = 25
         self.healthBar.position.y = self.size.height + 25

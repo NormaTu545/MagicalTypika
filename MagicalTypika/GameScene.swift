@@ -15,7 +15,7 @@ class FallingLabelNode: SKLabelNode {
     //Used to differentiate between the user's input SKLabelNode
 }
 
-class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDelegate {
+class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDelegate, PlayerDelegate {
     
     var player: Player!
     
@@ -30,7 +30,6 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     //var wordSpawnTimer: NSTimer!
     //var attackTimer: NSTimer!
     
-    var monsterWins: Bool = false
     var playerWins: Bool = false
     
     var stopGame: Bool = false
@@ -222,17 +221,6 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         background.size = view.frame.size
         background.zPosition = -2
         
-        /*
-        endScreen = SKSpriteNode(imageNamed: "endGreen")
-        addChild(endScreen)
-        endScreen.position.x = view.frame.width / 2
-        endScreen.position.y = view.frame.height / 2
-        endScreen.size.width = view.frame.size.width
-        endScreen.size.height = view.frame.size.height
-        endScreen.zPosition = 10
-        endScreen.hidden = true
-        */
-        
         //Set up correctly typed word score in background of gameplay
         scoreLabel = SKLabelNode(fontNamed: "Helvetica")
         scoreLabel.fontSize = 175
@@ -280,25 +268,10 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         
     }
     
-    // TODO: Clean up this function
-    
-    /*
-    func startFight() {
-        //MARK: [ SETTING UP TIMERS IN LEVEL ]~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~//
-        
-        /* Set how often the MONSTER will attack (Every 3 seconds) */
-        attackTimer = NSTimer.scheduledTimerWithTimeInterval(3, target: monster, selector: #selector(Monster.monsterAttack), userInfo: nil, repeats: true)
-        
-        /* Manually spawn the first word so we don't have to wait for it */
-        spawnWord()
-        
-        /* Set 2-second delay between continuous calls to function spawnWord */
-        wordSpawnTimer = NSTimer.scheduledTimerWithTimeInterval(2, target: self, selector: #selector(GameScene.spawnWord), userInfo: nil, repeats: true)
-        
-    } 
-    */
-    
-    //MARK: Gameplay timer function - Divide timePassed by 60 to convert to minutes
+    //------------------------------------------------------------------------------
+    // MARK: Gameplay timer function - Divide timePassed by 60 to convert to minutes
+    //------------------------------------------------------------------------------
+
     func timeCount() {
         /* Counter that tracks how many seconds of gameplay has passed. */
         secondsPassed += 1.0 //Will be used to calculate raw WPM
@@ -354,8 +327,11 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         
         player = PlayerFactory.create("Typika", xPosition: keyboardWidth - (keyboardWidth / 3), yPosition: keyboardHeight + keyboardHeight/4)
         addChild(player)
+        
         //player.xScale = -1 //mirror the image
-        player.zPosition = -1
+        player.zPosition = 1 //MARK: HERE IS THE Z POSITION OF THE PLAYAAHHHHHHH
+        
+        player.delegate = self
         
         //Load level-specific details
         contentSetUpLvl()
@@ -363,11 +339,8 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         
         changeLVL(levels[0]) //start with regular level
         
+        keyboardVisible = true
         
-            keyboardVisible = true
-        
-    
-       // spawnWord() //Manually spawns first word so user doesn't have to wait
     }
     
     //******************************************************************************************************//
@@ -506,12 +479,9 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     
     override func willMoveFromView(view: SKView) {
         print("Will move from view happened!~~~~~~~~~~")
-        // NSNotificationCenter.defaultCenter().addObserver(self, selector: #selector(GameScene.keyboardWillShow(_:)), name: UIKeyboardWillShowNotification, object: nil)
         
-         NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
+        NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
     }
-    
-    
     
     func startNewGame() {
         
@@ -522,7 +492,6 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         scene.scaleMode = .AspectFill
         skView.presentScene(scene)
     }
-    
     
     func gameOver() {
         gameState = .GameOver
@@ -541,162 +510,6 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         addChild(endScreen)
         endScreen.zPosition = 10
         endScreen.anchorPoint = CGPoint(x: 0, y: 0)
-        
-        //init(size: CGSize, background: String, score: Int, timePassed: Double, win: Bool) {
-
-        /*
-        let endLabel = SKLabelNode(fontNamed: "Courier New Bold")
-        endLabel.fontSize = 40
-        addChild(endLabel)
-        endLabel.position.x = view!.frame.width/2
-        endLabel.position.y = view!.frame.height - (view!.frame.height/8)
-        endLabel.zPosition = 100
-        
-        let wordsLabel = SKLabelNode(fontNamed: "Courier New Bold")
-        wordsLabel.fontSize = 30
-        addChild(wordsLabel)
-        wordsLabel.text = "Words Typed: \(score)"
-        wordsLabel.fontColor = UIColor.blackColor()
-        wordsLabel.position.x = view!.frame.width/2
-        wordsLabel.position.y = view!.frame.height - (view!.frame.height/4)
-        wordsLabel.zPosition = 100
-        
-        let endWPM_double = 2 * (Double(score) / timePassed)
-        endWPM = Int(endWPM_double)
-        
-        let WPMLabel = SKLabelNode(fontNamed: "Courier New Bold")
-        WPMLabel.fontSize = 30
-        addChild(WPMLabel)
-        WPMLabel.text = "Mobile WPM: \(endWPM)"
-        WPMLabel.fontColor = UIColor.blackColor()
-        WPMLabel.position.x = view!.frame.width/2
-        WPMLabel.position.y = view!.frame.height - (view!.frame.height/4) - 75
-        WPMLabel.zPosition = 100
-        
-        //MARK: [OK Button] Brings us back to main menu
-        okButton = ButtonNode(normalImageNamed: "okButton", activeImageNamed: "okButton", disabledImageNamed: "okButton")
-        addChild(okButton)
-        okButton.position.x = view!.frame.width/2
-        okButton.position.y = view!.frame.height/2
-        okButton.zPosition = 200
-
-        okButton.selectedHandler = {
-            //Resets the game
-            let skView = self.view as SKView!
-            
-            let scene = MainMenu(fileNamed: "MainMenu") as MainMenu!
-            scene.scaleMode = .AspectFill
-            skView.presentScene(scene)
-        } */
-        
-        
-        //Show End Results
-        //endScreen.hidden = false
-        /*
-        /* PLAYER LOST SCREEN */
-        if monsterWins {
-            endScreen.texture = SKTexture(imageNamed: "endRed")
-
-            endLabel.fontColor = UIColor.redColor()
-            endLabel.text = "You Lost..."
-            
-            // ---------------------------------------------------------------
-            //  Setup losing animation. This action is from textures 11 to 12
-            // ---------------------------------------------------------------
-            
-            var textures = [SKTexture]()
-            
-            for i in 11...12 {
-                let texture = SKTexture(imageNamed: "MT_\(i)")
-                textures.append(texture)
-            }
-            
-            let losingPlayer = SKSpriteNode(texture: textures[0], size: textures[0].size())
-
-            losingPlayer.position.x = okButton.position.x
-            losingPlayer.position.y = okButton.position.y - 200
-            losingPlayer.zPosition = 20
-            addChild(losingPlayer)
-
-            let animateLoser = SKAction.animateWithTextures(textures, timePerFrame: 0.2, resize: true, restore: false)
-            let loserAction = SKAction.repeatActionForever(animateLoser)
-            losingPlayer.runAction(loserAction)
-        }
-        
-        /* Mark: PLAYER WON SCREEN */
-        if playerWins {
-            
-            endLabel.fontColor = UIColor.init(hue: 0.47, saturation: 1, brightness: 0.5, alpha: 1)
-            endLabel.text = "You win!"
-            
-            // ---------------------------------------------------------------
-            //  Setup victory animation. This action is from textures 9 to 10
-            // ---------------------------------------------------------------
-            
-            var textures = [SKTexture]()
-
-            for i in 9...10 {
-                let texture = SKTexture(imageNamed: "MT_\(i)")
-                textures.append(texture)
-            }
- 
-            let happyPlayer = SKSpriteNode(texture: textures[0], size: textures[0].size())
- 
-            happyPlayer.position.x = okButton.position.x
-            happyPlayer.position.y = okButton.position.y - 100
-            happyPlayer.zPosition = 20
-            
-            let animateHappy = SKAction.animateWithTextures(textures, timePerFrame: 0.2, resize: true, restore: false)
-            let happyAction = SKAction.repeatActionForever(animateHappy)
-            addChild(happyPlayer)
-            happyPlayer.runAction(happyAction)
-            /*
-            //WHY ISN'T HAPPYPLAYER APPEARING???
-            print(happyPlayer.size)
-            print(happyPlayer.position)
-            print(happyPlayer.texture)
-            print(happyPlayer.alpha)
-            //Dang it I just forgot to addChild.
-            */
-        }
-        */
-        
-        /*
-        let showEndScreen = SKAction(named: "winScreen")!
-        endScreen.runAction(showEndScreen)
-        */
-        
-        /*
-        let userDefaults = NSUserDefaults.standardUserDefaults()
-        var highscore = userDefaults.integerForKey("highscore")
-        
-        if score > highscore {
-            userDefaults.setValue(score, forKey: "highscore")
-            userDefaults.synchronize()
-        }
-        
-        highscore = userDefaults.integerForKey("highscore")
-        */
-        //highScoreLabel.text = "High score: \(highscore)"
-        
-        
-        /*
-         //Stops the Automated Monster Attacks
-         attackTimer.invalidate()
-         
-         //Stops spawning falling words
-         wordSpawnTimer.invalidate()
-         */
-    }
-    
-    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
-        /* Called when a touch begins */
-        
-        /*
-         for touch in touches {
-         //yada yada yada implement pause button here eventually
-         }
-         */
     }
     
     func monsterDied() {
@@ -722,74 +535,35 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         }
         
         runAction(SKAction.sequence([wait, check]))
-        
-
-        /*
-        
-        let monster = levels[level].monster
-        let deathAnimation = SKAction.runBlock { 
-            monster.dying()
-            canChangeLVL = true
-        }
-        let wait = SKAction.waitForDuration(1)
-        
-        monster.runAction(SKAction.sequence([deathAnimation, wait]))
-        //canChangeLVL = true//uncomment above
-        
-        //let seq = SKAction.sequence([deathAnimation, wait])
-        //runAction(seq)
-        
-        if canChangeLVL {
-            level += 1
-            
-            // Player defeats level 2 BOSS monster
-            if level == levels.count {
-                level = 1 //stay on boss level
-                
-                // Game Over: you win!
-                playerWins = true
-                gameOver()
-            }
-            if playerWins == false {
-                changeLVL(levels[level])
-                
-                //Bring in new monster
-                let fadeIn = SKAction.fadeInWithDuration(0.25)
-                monster.runAction(fadeIn)
-            }
-            canChangeLVL = false
-        }
-        
-        
-        
-        */
     }
     
-    override func update(currentTime: CFTimeInterval) {
-        /* Called before each frame is rendered */
-        
-        if gameState == .Playing {
+    func playerDied() {
+        if gameState == .Playing && player.health <= 0 {
             
-            /* CAP HEALTH SO NO NEGATIVE HEALTH */
+            //game over: you lose...
+            player.dead() //dying animation
             
-            if player.health <= 0 {
-                player.health = 0
-                monsterWins = true
-                
-                //game over: you lose...
-                player.dead() //dying animation
-                
-                let dying = SKAction.waitForDuration(0.6)
+            let dying = SKAction.waitForDuration(0.6)
             
-                let end = SKAction.runBlock {
-                    self.gameOver()
-                }
-                
-                //Let player finish dying before going to gameOver Screen
-                let seq = SKAction.sequence([dying, end])
-                runAction(seq)
+            let end = SKAction.runBlock {
+                self.gameOver()
             }
-            //TODO: Simplify level transitioning
+            
+            //Let player finish dying before going to gameOver Screen
+            let seq = SKAction.sequence([dying, end])
+            runAction(seq)
         }
+    
     }
+    
+    override func touchesBegan(touches: Set<UITouch>, withEvent event: UIEvent?) {
+        /* Called when a touch begins */
+        
+        /*
+         for touch in touches {
+         //yada yada yada implement pause button here eventually
+         }
+         */
+    }
+    
 }
