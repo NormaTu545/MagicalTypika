@@ -19,6 +19,7 @@
 		AD74E1821D5A9B2E007EB40E /* MagicalTypika.atlas in Resources */ = {isa = PBXBuildFile; fileRef = AD74E1811D5A9B2E007EB40E /* MagicalTypika.atlas */; };
 		AD74E1861D5BEA4E007EB40E /* CreditsScene.sks in Resources */ = {isa = PBXBuildFile; fileRef = AD74E1851D5BEA4E007EB40E /* CreditsScene.sks */; };
 		AD74E1881D5BEB10007EB40E /* CreditsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD74E1871D5BEB10007EB40E /* CreditsScene.swift */; };
+		AD74E18A1D5D2605007EB40E /* EndScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD74E1891D5D2605007EB40E /* EndScreen.swift */; };
 		AD8DD28F1D359ECA00A37369 /* MainMenu.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8DD28E1D359ECA00A37369 /* MainMenu.swift */; };
 		AD8DD2911D35A20900A37369 /* MainMenu.sks in Resources */ = {isa = PBXBuildFile; fileRef = AD8DD2901D35A20900A37369 /* MainMenu.sks */; };
 		AD8DD2971D36B2BF00A37369 /* MSButtonNode.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */; };
@@ -45,6 +46,7 @@
 		AD74E1811D5A9B2E007EB40E /* MagicalTypika.atlas */ = {isa = PBXFileReference; lastKnownFileType = folder.skatlas; path = MagicalTypika.atlas; sourceTree = "<group>"; };
 		AD74E1851D5BEA4E007EB40E /* CreditsScene.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; name = CreditsScene.sks; path = ../CreditsScene.sks; sourceTree = "<group>"; };
 		AD74E1871D5BEB10007EB40E /* CreditsScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreditsScene.swift; sourceTree = "<group>"; };
+		AD74E1891D5D2605007EB40E /* EndScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndScreen.swift; sourceTree = "<group>"; };
 		AD8DD28E1D359ECA00A37369 /* MainMenu.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MainMenu.swift; sourceTree = "<group>"; };
 		AD8DD2901D35A20900A37369 /* MainMenu.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = MainMenu.sks; sourceTree = "<group>"; };
 		AD8DD2961D36B2BF00A37369 /* MSButtonNode.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = MSButtonNode.swift; path = ../MSButtonNode.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				ADC02C451D480B6100F9A38D /* Monster.swift */,
 				ADC02C4B1D4A798300F9A38D /* Player.swift */,
 				AD5347671D2CB57B00FBF7B1 /* GameScene.swift */,
+				AD74E1891D5D2605007EB40E /* EndScreen.swift */,
 				AD6B7B171D53ACA300667BC1 /* LevelContent.swift */,
 				ADC02C471D48167900F9A38D /* Boom.sks */,
 				ADC02C481D48167900F9A38D /* spark.png */,
@@ -196,6 +199,7 @@
 				AD5347681D2CB57B00FBF7B1 /* GameScene.swift in Sources */,
 				AD53476A1D2CB57B00FBF7B1 /* GameViewController.swift in Sources */,
 				AD74E1881D5BEB10007EB40E /* CreditsScene.swift in Sources */,
+				AD74E18A1D5D2605007EB40E /* EndScreen.swift in Sources */,
 				AD5347641D2CB57B00FBF7B1 /* AppDelegate.swift in Sources */,
 				AD5C624A1D385FDE00224AEE /* WordsManager.swift in Sources */,
 				AD8DD2971D36B2BF00A37369 /* MSButtonNode.swift in Sources */,

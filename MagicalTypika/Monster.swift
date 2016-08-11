@@ -157,7 +157,7 @@ class Monster: SKSpriteNode {
         
         let waitForAnimation = SKAction.waitForDuration(0.25)
         
-        let sendAttack = SKAction.moveTo(self.target.position, duration: 0.5)
+        let sendAttack = SKAction.moveTo(self.target.position, duration: 0.4)
 
         
         let animateAttack = SKAction.runBlock {

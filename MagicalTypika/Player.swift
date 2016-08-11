@@ -23,8 +23,8 @@ class Player: SKSpriteNode {
     
     var healthBar: HealthBar!
     var damage: CGFloat = 0
-    var health: CGFloat = 700
-    let totalHealth: CGFloat = 700
+    var health: CGFloat = 100//700
+    let totalHealth: CGFloat = 100//700
     
     
     init(name: String, xPos: CGFloat, yPos: CGFloat) {
@@ -96,7 +96,7 @@ class Player: SKSpriteNode {
         let ow = SKTexture(imageNamed: "MT_7")
         textures.append(ow)
         
-        let wait = SKAction.waitForDuration(0.25) //time offset so player flinches when glowball hits player
+        let wait = SKAction.waitForDuration(0.5) //time offset so player flinches when glowball hits player
         let owch = SKAction.animateWithTextures(textures, timePerFrame: 0.3, resize: true, restore: true)
         
         flinchAction = SKAction.sequence([wait, owch])

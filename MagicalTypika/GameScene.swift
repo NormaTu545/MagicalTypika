@@ -222,6 +222,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         background.size = view.frame.size
         background.zPosition = -2
         
+        /*
         endScreen = SKSpriteNode(imageNamed: "endGreen")
         addChild(endScreen)
         endScreen.position.x = view.frame.width / 2
@@ -230,6 +231,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         endScreen.size.height = view.frame.size.height
         endScreen.zPosition = 10
         endScreen.hidden = true
+        */
         
         //Set up correctly typed word score in background of gameplay
         scoreLabel = SKLabelNode(fontNamed: "Helvetica")
@@ -508,9 +510,18 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         
          NSNotificationCenter.defaultCenter().removeObserver(self, name: UIKeyboardWillShowNotification, object: nil)
     }
-
     
     
+    
+    func startNewGame() {
+        
+        //Resets the game
+        let skView = self.view as SKView!
+        
+        let scene = MainMenu(fileNamed: "MainMenu") as MainMenu!
+        scene.scaleMode = .AspectFill
+        skView.presentScene(scene)
+    }
     
     
     func gameOver() {
@@ -519,6 +530,21 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         level = 0
         wordLabel.text = "" //Clears the "~:~" placeholder string
         
+        //Hide Keyboard
+        inputText.resignFirstResponder()
+        
+        let background = playerWins ? "endGreen" : "endRed"
+        let userWin = playerWins ? true : false
+        let endScreen = EndScreen(size: view!.frame.size, background: background,
+                                  score: score, timePassed: timePassed,
+                                  win: userWin, callBack: startNewGame)
+        addChild(endScreen)
+        endScreen.zPosition = 10
+        endScreen.anchorPoint = CGPoint(x: 0, y: 0)
+        
+        //init(size: CGSize, background: String, score: Int, timePassed: Double, win: Bool) {
+
+        /*
         let endLabel = SKLabelNode(fontNamed: "Courier New Bold")
         endLabel.fontSize = 40
         addChild(endLabel)
@@ -561,32 +587,50 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
             let scene = MainMenu(fileNamed: "MainMenu") as MainMenu!
             scene.scaleMode = .AspectFill
             skView.presentScene(scene)
-        }
+        } */
         
-        //Hide Keyboard
-        inputText.resignFirstResponder()
         
         //Show End Results
-        endScreen.hidden = false
-        
+        //endScreen.hidden = false
+        /*
         /* PLAYER LOST SCREEN */
         if monsterWins {
             endScreen.texture = SKTexture(imageNamed: "endRed")
 
             endLabel.fontColor = UIColor.redColor()
             endLabel.text = "You Lost..."
+            
+            // ---------------------------------------------------------------
+            //  Setup losing animation. This action is from textures 11 to 12
+            // ---------------------------------------------------------------
+            
+            var textures = [SKTexture]()
+            
+            for i in 11...12 {
+                let texture = SKTexture(imageNamed: "MT_\(i)")
+                textures.append(texture)
+            }
+            
+            let losingPlayer = SKSpriteNode(texture: textures[0], size: textures[0].size())
+
+            losingPlayer.position.x = okButton.position.x
+            losingPlayer.position.y = okButton.position.y - 200
+            losingPlayer.zPosition = 20
+            addChild(losingPlayer)
+
+            let animateLoser = SKAction.animateWithTextures(textures, timePerFrame: 0.2, resize: true, restore: false)
+            let loserAction = SKAction.repeatActionForever(animateLoser)
+            losingPlayer.runAction(loserAction)
         }
         
-        /* PLAYER WON SCREEN */
+        /* Mark: PLAYER WON SCREEN */
         if playerWins {
-            
-            print("PLAYER JUST WON WOOOHOOOOOOOOOOOOOOOOOOOO")
             
             endLabel.fontColor = UIColor.init(hue: 0.47, saturation: 1, brightness: 0.5, alpha: 1)
             endLabel.text = "You win!"
             
             // ---------------------------------------------------------------
-            // Mark: Setup victory animation. This action is from textures 9 to 10
+            //  Setup victory animation. This action is from textures 9 to 10
             // ---------------------------------------------------------------
             
             var textures = [SKTexture]()
@@ -595,25 +639,27 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
                 let texture = SKTexture(imageNamed: "MT_\(i)")
                 textures.append(texture)
             }
-            
-            let playerIMG = textures[0] //default
-            let happyPlayer = SKSpriteNode(texture: playerIMG, size: playerIMG.size())
-            
+ 
+            let happyPlayer = SKSpriteNode(texture: textures[0], size: textures[0].size())
+ 
             happyPlayer.position.x = okButton.position.x
-            happyPlayer.position.y = okButton.position.y - 50
-            happyPlayer.zPosition = 99999999
+            happyPlayer.position.y = okButton.position.y - 100
+            happyPlayer.zPosition = 20
             
             let animateHappy = SKAction.animateWithTextures(textures, timePerFrame: 0.2, resize: true, restore: false)
             let happyAction = SKAction.repeatActionForever(animateHappy)
-            runAction(happyAction)
-            
-            
+            addChild(happyPlayer)
+            happyPlayer.runAction(happyAction)
+            /*
+            //WHY ISN'T HAPPYPLAYER APPEARING???
             print(happyPlayer.size)
             print(happyPlayer.position)
             print(happyPlayer.texture)
             print(happyPlayer.alpha)
+            //Dang it I just forgot to addChild.
+            */
         }
-        
+        */
         
         /*
         let showEndScreen = SKAction(named: "winScreen")!

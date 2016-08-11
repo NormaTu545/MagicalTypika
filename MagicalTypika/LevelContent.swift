@@ -63,6 +63,8 @@ class LevelContent: SKSpriteNode {
     }
 
     func stopEverything() {
+        print("stop everythaaaaaaaaaaaaaang")
+        monster.removeAllActions()
         removeAllActions()
     }
 
