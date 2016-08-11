@@ -89,7 +89,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
             //proccess a word
             theWord = currentWord
         } else {
-            theWord = "Type & Return"
+            theWord = "~Type & Return~"
         }
     }
     
@@ -337,7 +337,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         
         //[USER INPUT WORD LABEL HERE]******************************//
         wordLabel = SKLabelNode(fontNamed: "Courier New Bold")
-        wordLabel.text = "Type & Return"
+        wordLabel.text = "~Type & Return~"
         wordLabel.fontSize = 30
         addChild(wordLabel)
         
@@ -579,11 +579,14 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         
         /* PLAYER WON SCREEN */
         if playerWins {
+            
+            print("PLAYER JUST WON WOOOHOOOOOOOOOOOOOOOOOOOO")
+            
             endLabel.fontColor = UIColor.init(hue: 0.47, saturation: 1, brightness: 0.5, alpha: 1)
             endLabel.text = "You win!"
             
             // ---------------------------------------------------------------
-            // Setup victory animation. This action is from textures 9 to 10
+            // Mark: Setup victory animation. This action is from textures 9 to 10
             // ---------------------------------------------------------------
             
             var textures = [SKTexture]()
@@ -597,12 +600,18 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
             let happyPlayer = SKSpriteNode(texture: playerIMG, size: playerIMG.size())
             
             happyPlayer.position.x = okButton.position.x
-            happyPlayer.position.y = okButton.position.y + 50
-            happyPlayer.zPosition = 100
+            happyPlayer.position.y = okButton.position.y - 50
+            happyPlayer.zPosition = 99999999
             
-            let animateHappy = SKAction.animateWithTextures(textures, timePerFrame: 0.1, resize: true, restore: false)
+            let animateHappy = SKAction.animateWithTextures(textures, timePerFrame: 0.2, resize: true, restore: false)
             let happyAction = SKAction.repeatActionForever(animateHappy)
             runAction(happyAction)
+            
+            
+            print(happyPlayer.size)
+            print(happyPlayer.position)
+            print(happyPlayer.texture)
+            print(happyPlayer.alpha)
         }
         
         
@@ -646,20 +655,68 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     
     func monsterDied() {
         //MARK: Player defeats level 1 monster
+       
+        levels[level].levelEnded()
+        let wait = SKAction.waitForDuration(1)
         
-        level += 1
-        
-        // Player defeats level 2 BOSS monster
-        if level == levels.count {
-            level = 1 //stay on boss level
+        let check = SKAction.runBlock {
+            self.level += 1
             
-            // Game Over: you win!
-            playerWins = true
-            gameOver()
+            // Player defeats level 2 BOSS monster
+            if self.level == self.levels.count {
+                self.level = 1 //stay on boss level
+                
+                // Game Over: you win!
+                self.playerWins = true
+                self.gameOver()
+            }
+            if self.playerWins == false {
+                self.changeLVL(self.levels[self.level])
+            }
         }
-        if playerWins == false {
-            changeLVL(levels[level])
+        
+        runAction(SKAction.sequence([wait, check]))
+        
+
+        /*
+        
+        let monster = levels[level].monster
+        let deathAnimation = SKAction.runBlock { 
+            monster.dying()
+            canChangeLVL = true
         }
+        let wait = SKAction.waitForDuration(1)
+        
+        monster.runAction(SKAction.sequence([deathAnimation, wait]))
+        //canChangeLVL = true//uncomment above
+        
+        //let seq = SKAction.sequence([deathAnimation, wait])
+        //runAction(seq)
+        
+        if canChangeLVL {
+            level += 1
+            
+            // Player defeats level 2 BOSS monster
+            if level == levels.count {
+                level = 1 //stay on boss level
+                
+                // Game Over: you win!
+                playerWins = true
+                gameOver()
+            }
+            if playerWins == false {
+                changeLVL(levels[level])
+                
+                //Bring in new monster
+                let fadeIn = SKAction.fadeInWithDuration(0.25)
+                monster.runAction(fadeIn)
+            }
+            canChangeLVL = false
+        }
+        
+        
+        
+        */
     }
     
     override func update(currentTime: CFTimeInterval) {
@@ -676,16 +733,16 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
                 //game over: you lose...
                 player.dead() //dying animation
                 
-                let dying = SKAction.waitForDuration(0.5)
+                let dying = SKAction.waitForDuration(0.6)
             
                 let end = SKAction.runBlock {
                     self.gameOver()
                 }
                 
+                //Let player finish dying before going to gameOver Screen
                 let seq = SKAction.sequence([dying, end])
                 runAction(seq)
             }
-
             //TODO: Simplify level transitioning
         }
     }

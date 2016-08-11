@@ -21,6 +21,8 @@ class Monster: SKSpriteNode {
     var monsterName: String = ""
     var idleAction: SKAction!
     var flinchAction: SKAction!
+    var attackAction: SKAction!
+    var deathAction: SKAction!
     
     var healthBar: HealthBar!
     var damage: CGFloat = 0 //How much damage it can inflict
@@ -35,9 +37,6 @@ class Monster: SKSpriteNode {
         }
     }
     var totalHealth: CGFloat = 100
-    
-    //var attackSpeed: Double = 0 //Easy monster attacks faster, Boss attacks slower
-    //var damageRange: Double = 0 //10 - 20 for easy monster, 20 - 25 for boss monster
     var monsterIMG: SKTexture!
     var target: Player!
     var glowBall: SKSpriteNode!
@@ -106,6 +105,21 @@ class Monster: SKSpriteNode {
         
         flinchAction = SKAction.sequence([wait, owch])
 
+        // --------------------------------------------------------------
+        // Setup attack animation. This is made from textures 8 to 11
+        // --------------------------------------------------------------
+        
+        textures = []
+        
+        for i in 8...11 {
+            let texture = SKTexture(imageNamed: "MON_\(i)")
+            textures.append(texture)
+        }
+        
+        // Make an action to play these texture frames
+        let attack = SKAction.animateWithTextures(textures, timePerFrame: 0.1, resize: true, restore: true)
+        
+        attackAction = attack
     }
     
     func idle(){
@@ -116,6 +130,22 @@ class Monster: SKSpriteNode {
         runAction(flinchAction)
     }
     
+    func attack(){
+        runAction(attackAction)
+    }
+    
+    func dying() {
+        // --------------------------------------------------------------
+        // Setup death animation. (Monster gets hit)
+        // --------------------------------------------------------------
+        
+        monsterIMG = SKTexture(imageNamed: "MON_6")
+        
+        let fade = SKAction.fadeOutWithDuration(0.35)
+        
+        self.runAction(fade)
+    }
+    
     func monsterAttack() {
         // self.glowBall.position = self.position //starting position of glowball = monster
         
@@ -124,7 +154,16 @@ class Monster: SKSpriteNode {
         self.glowBall.position = pt!
         
         /* Load attack action */
-        let sendAttack = SKAction.moveTo(self.target.position, duration: 0.25)
+        
+        let waitForAnimation = SKAction.waitForDuration(0.25)
+        
+        let sendAttack = SKAction.moveTo(self.target.position, duration: 0.5)
+
+        
+        let animateAttack = SKAction.runBlock {
+            self.attack() //Monster attacking animation
+        }
+            
         
         /* Create a node removal action */
         let reset = SKAction.runBlock {
@@ -133,7 +172,7 @@ class Monster: SKSpriteNode {
         }
         
         /* Build sequence, flip then remove from scene */
-        let sequence = SKAction.sequence([sendAttack,reset])
+        let sequence = SKAction.sequence([animateAttack, waitForAnimation, sendAttack, reset])
         self.glowBall.hidden = false
         self.glowBall.runAction(sequence)
         
@@ -157,8 +196,8 @@ class DaBug: Monster {
         
         super.init(name: name, xPos: xPosition, yPos: yPosition, attackTarget: attackTarget, attackBall: attackBall)
         
-        self.health = 400
-        self.totalHealth = 400
+        self.health = 10//400
+        self.totalHealth = 10//400
     }
     
     override func monsterAttack() {
@@ -184,8 +223,8 @@ class DeeBug: Monster {
        
         self.size.width = 150
         self.size.height = 85
-        self.health = 600
-        self.totalHealth = 600
+        self.health = 20 //600
+        self.totalHealth = 20
         
         self.healthBar.position.x = 25
         self.healthBar.position.y = self.size.height + 25
@@ -227,6 +266,20 @@ class DeeBug: Monster {
         super.flinch()
     }
     
+    override func attack() {
+        textures = []
+        
+        for i in 12...15 {
+            let texture = SKTexture(imageNamed: "MON_\(i)")
+            textures.append(texture)
+        }
+        
+        let attack = SKAction.animateWithTextures(textures, timePerFrame: 0.15, resize: true, restore: true)
+        
+        attackAction = attack
+        runAction(attackAction)
+    }
+
     override func monsterAttack() {
         print("INSERT BOSS ATTACK HERE")
         

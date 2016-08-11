@@ -28,8 +28,16 @@ class LevelContent: SKSpriteNode {
         anchorPoint = CGPoint(x: 0, y: 0)
         self.addChild(monster)
         
-        
     }
+    
+    
+    
+    func levelEnded() {
+        //monster died
+        monster.dying()
+    }
+    
+    
     
     // TODO: refactor actual monster attack at Monster.swift
     func startEverything() {
