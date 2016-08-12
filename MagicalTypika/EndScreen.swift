@@ -67,7 +67,7 @@ class EndScreen: SKSpriteNode {
         }
         
         okButton.selectedHandler = {
-            self.removeFromParent() //should remove the encscreen
+            self.removeFromParent() //should remove the endscreen
             callBack() //Goes to Main menu
             
         }

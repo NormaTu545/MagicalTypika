@@ -23,7 +23,6 @@ class MainMenu: SKScene {
         
         playButton = self.childNodeWithName("playButton") as! MSButtonNode
         creditsButton = self.childNodeWithName("creditsButton") as! MSButtonNode
-
         
         playButton.selectedHandler =  {
             
@@ -41,6 +40,8 @@ class MainMenu: SKScene {
             scene.scaleMode = .ResizeFill
             
             skView.presentScene(scene)
+            
+            self.playButton.removeFromParent()
         }
         
         creditsButton.selectedHandler = {
@@ -59,6 +60,8 @@ class MainMenu: SKScene {
             scene.scaleMode = .ResizeFill
             
             skView.presentScene(scene)
+            
+            self.creditsButton.removeFromParent()
         }
         
        /*

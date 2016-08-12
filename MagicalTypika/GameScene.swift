@@ -44,9 +44,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
 
     var spawnSpeed: Double = 10 //speed of timer's interval between falling word spawns
     var glowBall: SKSpriteNode!
-    
-    var okButton: ButtonNode!
-    
+        
     var wordCount: Int = 0 //total words that spawned during gameplay
     var endWPM: Int = 0
     var timePassed: Double = 0.0 //minutes
