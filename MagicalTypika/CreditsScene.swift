@@ -36,19 +36,20 @@ class CreditsScene: SKScene {
     
         okButton.selectedHandler = {
             
-            let scene = MainMenu(fileNamed: "MainMenu")
-            
-            // Configure the view.
-            let skView = self.view!
-            skView.showsFPS = false
-            skView.showsNodeCount = false
-            
-            /* Sprite Kit applies additional optimizations to improve rendering performance */
-            skView.ignoresSiblingOrder = true
-            
-            /* Set the scale mode to scale to fit the window */
-            scene!.scaleMode = .ResizeFill
-            skView.presentScene(scene)
+            if let scene = MainMenu(fileNamed:"MainMenu") {
+                // Configure the view.
+                let skView = self.view! as SKView
+                skView.showsFPS = false
+                skView.showsNodeCount = false
+                
+                /* Sprite Kit applies additional optimizations to improve rendering performance */
+                skView.ignoresSiblingOrder = true
+                
+                /* Set the scale mode to scale to fit the window */
+                scene.scaleMode = .AspectFill
+                
+                skView.presentScene(scene)
+            }
             
         }
     }
