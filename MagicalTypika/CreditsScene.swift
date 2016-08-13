@@ -12,6 +12,7 @@ import SpriteKit
 class CreditsScene: SKScene {
     
     var okButton: ButtonNode!
+    var backgroundMusic: SKAudioNode!
     
     override func didMoveToView(view: SKView) {
         
@@ -51,6 +52,13 @@ class CreditsScene: SKScene {
                 skView.presentScene(scene)
             }
             
+        }
+        
+        if let musicURL = NSBundle.mainBundle().URLForResource("creditsBGM", withExtension: "mp3") {
+            backgroundMusic = SKAudioNode(URL: musicURL)
+            backgroundMusic.autoplayLooped = true
+            
+            addChild(backgroundMusic)
         }
     }
 }

@@ -17,7 +17,7 @@ class MainMenu: SKScene {
     
     var playButton: MSButtonNode!
     var creditsButton: MSButtonNode!
-    //var backgroundMusic: SKAudioNode!
+    var backgroundMusic: SKAudioNode!
     
     override func didMoveToView(view: SKView) {
         
@@ -64,11 +64,13 @@ class MainMenu: SKScene {
             self.creditsButton.removeFromParent()
         }
         
-       /*
-        if let musicURL = NSBundle.mainBundle().URLForResource("mainMenu", withExtension: "mp3") {
+       
+        if let musicURL = NSBundle.mainBundle().URLForResource("mainMenuBGM", withExtension: "mp3") {
             backgroundMusic = SKAudioNode(URL: musicURL)
+            backgroundMusic.autoplayLooped = true
+            
             addChild(backgroundMusic)
-        } */
+        }
 
     }
     

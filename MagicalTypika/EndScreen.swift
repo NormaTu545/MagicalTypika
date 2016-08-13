@@ -16,6 +16,10 @@ class EndScreen: SKSpriteNode {
     
     let okButton: ButtonNode
     
+    
+    //let sound = SKAction.playSoundFileNamed("name", waitForCompletion: false)
+    //self.runAction(sound)
+    
     init(size: CGSize, background: String, score: Int, timePassed: Double, win: Bool, callBack: () -> Void) {
         
         print("Initializing End Screen, win is \(win)")
