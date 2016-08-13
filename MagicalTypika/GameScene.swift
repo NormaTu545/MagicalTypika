@@ -150,7 +150,8 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         monster.zPosition = 1
         monster.delegate = self
         
-        let level = LevelContent(color: UIColor.clearColor(), size: size, monster: monster)
+        let level = LevelContent(color: UIColor.clearColor(), size: size,
+                                 monster: monster, song: "lvlOneBGM")
         level.delegate = self
 
         levels.append(level)
@@ -168,7 +169,8 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         monster.zPosition = 1
         monster.delegate = self
         
-        let level = LevelContent(color: UIColor.clearColor(), size: size, monster: monster)
+        let level = LevelContent(color: UIColor.clearColor(), size: size,
+                                 monster: monster, song: "bossLvlBGM")
         level.delegate = self
         
         levels.append(level)
