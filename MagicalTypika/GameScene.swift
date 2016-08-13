@@ -20,7 +20,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     var player: Player!
     
     //TODO: user launches misstyped word -> call self.runaction(wrongSound) when we check for wrong words!
-    let wrongSound = SKAction.playSoundFileNamed("MT_NO", waitForCompletion: false)
+    let wrongSound = SKAction.playSoundFileNamed("MT_no", waitForCompletion: false)
     
     var keyboardVisible = false
     

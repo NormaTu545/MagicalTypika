@@ -79,7 +79,7 @@ class LevelContent: SKSpriteNode {
         print("stop everythaaaaaaaaaaaaaang")
         monster.removeAllActions()
         removeAllActions()
-        backgroundMusic.removeFromParent()
+       // backgroundMusic.removeFromParent()
     }
 
     required init?(coder aDecoder: NSCoder) {
