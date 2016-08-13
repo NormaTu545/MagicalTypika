@@ -18,6 +18,8 @@ class Monster: SKSpriteNode {
     
     var delegate: MonsterDelegate?
     
+    let attackNoise = SKAction.playSoundFileNamed("monAttack", waitForCompletion: true)
+    
     var monsterName: String = ""
     var idleAction: SKAction!
     var flinchAction: SKAction!
@@ -119,7 +121,10 @@ class Monster: SKSpriteNode {
         // Make an action to play these texture frames
         let attack = SKAction.animateWithTextures(textures, timePerFrame: 0.1, resize: true, restore: true)
         
-        attackAction = attack
+        let playAttackSound = SKAction.runBlock {
+            self.runAction(self.attackNoise)
+        }
+        attackAction = SKAction.sequence([attack, playAttackSound])
     }
     
     func idle(){
@@ -147,7 +152,6 @@ class Monster: SKSpriteNode {
     }
     
     func monsterAttack() {
-        // self.glowBall.position = self.position //starting position of glowball = monster
         
         //Fix parent of glowBall
         let pt = self.parent?.convertPoint(self.position, toNode: self.glowBall.parent! )
@@ -179,6 +183,7 @@ class Monster: SKSpriteNode {
         self.target.health -= self.damage
         self.target.healthBar.value = self.target.health / self.target.totalHealth
         self.target.flinch()
+        //MARK: This is where PLAYER IS HIT AND SAYS OW
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -284,10 +289,17 @@ class DeeBug: Monster {
         print("INSERT BOSS ATTACK HERE")
         
         super.monsterAttack()
+        let waitForAnimation = SKAction.waitForDuration(0.25)
+        let makeAttackNoise = SKAction.runBlock {
+            self.runAction(self.attackNoise)
+        }
+        
+        let bossAttack = SKAction.sequence([waitForAnimation, makeAttackNoise])
+        
+        self.runAction(bossAttack)
         
         self.damage = 50
     }
-    
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")

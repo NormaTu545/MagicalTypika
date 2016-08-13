@@ -19,6 +19,9 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     
     var player: Player!
     
+    //TODO: user launches misstyped word -> call self.runaction(wrongSound) when we check for wrong words!
+    let wrongSound = SKAction.playSoundFileNamed("MT_NO", waitForCompletion: false)
+    
     var keyboardVisible = false
     
     var oldLVL: LevelContent?
@@ -31,6 +34,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     //var attackTimer: NSTimer!
     
     var playerWins: Bool = false
+    var correct: Bool = false
     
     var stopGame: Bool = false
     var gameState: GameState = .Loading
@@ -87,6 +91,9 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
             theWord = currentWord
         } else {
             theWord = "~Type & Return~"
+            
+            //When user presses enter on a wrong entry?
+            
         }
     }
     
@@ -97,8 +104,13 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         
         if let tl = getWordFromFirstLetter(wordLabel.text!) {
             targetLabel = tl
+            
+            //MARK: This is where PLAYER LAUNCHES ATTACK
             if targetLabel.text! == theWord {
                 print("WAHOO THEY MATCH YOU DID IT.")
+                
+                correct = true
+                
                 score += 1
                 player.attack()
                 flip(tl)
@@ -106,6 +118,10 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
                 let monster = levels[level].monster
                 player.dealDamage(monster)
                 monster.flinch()
+                //MARK: THIS IS WHERE MONSTER GETS HIT
+            }
+            else {
+                correct = false
             }
         }
     }
@@ -116,10 +132,16 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         
         wordCheck()
         
-        //PRESSING RETURN BLANKS BOTH LABELS AND STRING CONTENT
+        //PRESSING RETURN BLANKS BOTH THE LABELS AND STRING CONTENT
         if wordLabel.text != "" {
             wordLabel.text = ""
             inputText.text = ""
+            
+            if !correct {
+            //PLAY "MT_NO"
+                self.runAction(wrongSound) //DOESN'T WORK AHHHH.
+//MARK: NORMA GO HERE FOR WHERE YOU LEFT OFF
+            }
             
         }
         
@@ -234,14 +256,6 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         
         
         
-        
-        
-        
-
-
-
-
-        
         //MARK: - [Setting up UITextField -> SKLabel conversion]~~~~~~~~~~~~~~~~//
         
         //For finding Keyboard sizes
@@ -328,8 +342,7 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
         player = PlayerFactory.create("Typika", xPosition: keyboardWidth - (keyboardWidth / 3), yPosition: keyboardHeight + keyboardHeight/4)
         addChild(player)
         
-        //player.xScale = -1 //mirror the image
-        player.zPosition = 1 //MARK: HERE IS THE Z POSITION OF THE PLAYAAHHHHHHH
+        player.zPosition = 1
         
         player.delegate = self
         

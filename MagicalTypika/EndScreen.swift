@@ -16,9 +16,6 @@ class EndScreen: SKSpriteNode {
     
     let okButton: ButtonNode
     
-    //var backgroundMusic: SKAudioNode!
-    
-    
     let winSound = SKAction.playSoundFileNamed("winBeep", waitForCompletion: true)
     let loseSound = SKAction.playSoundFileNamed("loseBeep", waitForCompletion: true)
     
@@ -85,17 +82,6 @@ class EndScreen: SKSpriteNode {
         //SOUND HERE
         self.runAction(winSound)
         
-        /*
-        if let musicURL = NSBundle.mainBundle().URLForResource("winBeep", withExtension: "wav") {
-            backgroundMusic = SKAudioNode(URL: musicURL)
-            backgroundMusic.autoplayLooped = false
-            addChild(backgroundMusic)
-            
-            SKAction.waitForDuration(3)
-            backgroundMusic.removeFromParent()
-        } */
-        
-        
         self.endLabel.fontColor = UIColor.init(hue: 0.47, saturation: 1, brightness: 0.5, alpha: 1)
         self.endLabel.text = "You win!"
         
@@ -125,23 +111,8 @@ class EndScreen: SKSpriteNode {
     
     func showLoseScreen() {
         
-        
-        
-        
         //SOUND HERE
         self.runAction(loseSound)
-
-        
-        /*
-        if let musicURL = NSBundle.mainBundle().URLForResource("loseBeep", withExtension: "wav") {
-            backgroundMusic = SKAudioNode(URL: musicURL)
-            backgroundMusic.autoplayLooped = false
-            addChild(backgroundMusic)
-            
-            
-            SKAction.waitForDuration(2)
-            backgroundMusic.removeFromParent()
-        } */
         
         endLabel.fontColor = UIColor.redColor()
         endLabel.text = "You Lost..."
