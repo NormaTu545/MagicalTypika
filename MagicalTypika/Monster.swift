@@ -183,7 +183,6 @@ class Monster: SKSpriteNode {
         self.target.health -= self.damage
         self.target.healthBar.value = self.target.health / self.target.totalHealth
         self.target.flinch()
-        //MARK: This is where PLAYER IS HIT AND SAYS OW
     }
     
     required init?(coder aDecoder: NSCoder) {

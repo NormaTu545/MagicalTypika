@@ -17,6 +17,8 @@ class Player: SKSpriteNode {
     
     var delegate: PlayerDelegate?
     
+    let ouchSoundMT = SKAction.playSoundFileNamed("MT_owch", waitForCompletion: false)
+    
     var playerName: String = "Typika"
     var playerIMG: SKTexture!
     
@@ -118,8 +120,11 @@ class Player: SKSpriteNode {
         
         let wait = SKAction.waitForDuration(0.5) //time offset so player flinches when glowball hits player
         let owch = SKAction.animateWithTextures(textures, timePerFrame: 0.3, resize: true, restore: true)
-        
-        flinchAction = SKAction.sequence([wait, owch])
+        let owSFX = SKAction.runBlock {
+            //When player gets hit
+            self.runAction(self.ouchSoundMT)
+        }
+        flinchAction = SKAction.sequence([wait, owSFX, owch])
         
         // -----------------------------------------------------------------
         // Setup death action.

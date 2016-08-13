@@ -19,8 +19,12 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
     
     var player: Player!
     
-    //TODO: user launches misstyped word -> call self.runaction(wrongSound) when we check for wrong words!
+    //Player SFX
     let wrongSound = SKAction.playSoundFileNamed("MT_no", waitForCompletion: false)
+    let attackSound = SKAction.playSoundFileNamed("MT_attack", waitForCompletion: false)
+    
+    //Monster SFX
+    let ouchSoundMonster = SKAction.playSoundFileNamed("monOW", waitForCompletion: false)
     
     var keyboardVisible = false
     
@@ -113,12 +117,21 @@ class GameScene: SKScene, UITextFieldDelegate, LevelContentDelegate, MonsterDele
                 
                 score += 1
                 player.attack()
+                self.runAction(attackSound)
                 flip(tl)
                 
                 let monster = levels[level].monster
                 player.dealDamage(monster)
                 monster.flinch()
-                //MARK: THIS IS WHERE MONSTER GETS HIT
+                //MARK: THIS IS WHERE MONSTER GETS HIT"
+                
+                let wait = SKAction.waitForDuration(0.5)
+                let monsterReact = SKAction.runBlock({ 
+                    self.runAction(self.ouchSoundMonster)
+                })
+                let animateMonsterOw = SKAction.sequence([wait, monsterReact])
+                self.runAction(animateMonsterOw)
+                
             }
             else {
                 correct = false

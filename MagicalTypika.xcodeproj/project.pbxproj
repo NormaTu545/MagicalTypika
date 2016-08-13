@@ -20,7 +20,6 @@
 		AD74E1881D5BEB10007EB40E /* CreditsScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD74E1871D5BEB10007EB40E /* CreditsScene.swift */; };
 		AD74E18A1D5D2605007EB40E /* EndScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = AD74E1891D5D2605007EB40E /* EndScreen.swift */; };
 		AD74E18F1D5E81B2007EB40E /* monAttack.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD74E18C1D5E81B2007EB40E /* monAttack.wav */; };
-		AD74E1901D5E81B2007EB40E /* monOW.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD74E18D1D5E81B2007EB40E /* monOW.wav */; };
 		AD74E1911D5E81B2007EB40E /* winBeep.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD74E18E1D5E81B2007EB40E /* winBeep.wav */; };
 		AD74E1961D5E81D4007EB40E /* bossLvlBGM.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = AD74E1921D5E81D4007EB40E /* bossLvlBGM.mp3 */; };
 		AD74E1971D5E81D4007EB40E /* loseBeep.wav in Resources */ = {isa = PBXBuildFile; fileRef = AD74E1931D5E81D4007EB40E /* loseBeep.wav */; };
@@ -39,6 +38,7 @@
 		ADF59E021D5EEE5500A26DED /* MT_attack.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = ADF59DFF1D5EEE5500A26DED /* MT_attack.mp3 */; };
 		ADF59E031D5EEE5500A26DED /* MT_no.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = ADF59E001D5EEE5500A26DED /* MT_no.mp3 */; };
 		ADF59E041D5EEE5500A26DED /* MT_owch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = ADF59E011D5EEE5500A26DED /* MT_owch.mp3 */; };
+		ADF59E061D5F8D5200A26DED /* monOW.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = ADF59E051D5F8D5200A26DED /* monOW.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -57,7 +57,6 @@
 		AD74E1871D5BEB10007EB40E /* CreditsScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CreditsScene.swift; sourceTree = "<group>"; };
 		AD74E1891D5D2605007EB40E /* EndScreen.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EndScreen.swift; sourceTree = "<group>"; };
 		AD74E18C1D5E81B2007EB40E /* monAttack.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = monAttack.wav; sourceTree = "<group>"; };
-		AD74E18D1D5E81B2007EB40E /* monOW.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = monOW.wav; sourceTree = "<group>"; };
 		AD74E18E1D5E81B2007EB40E /* winBeep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = winBeep.wav; sourceTree = "<group>"; };
 		AD74E1921D5E81D4007EB40E /* bossLvlBGM.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = bossLvlBGM.mp3; sourceTree = "<group>"; };
 		AD74E1931D5E81D4007EB40E /* loseBeep.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = loseBeep.wav; sourceTree = "<group>"; };
@@ -76,6 +75,7 @@
 		ADF59DFF1D5EEE5500A26DED /* MT_attack.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MT_attack.mp3; sourceTree = "<group>"; };
 		ADF59E001D5EEE5500A26DED /* MT_no.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MT_no.mp3; sourceTree = "<group>"; };
 		ADF59E011D5EEE5500A26DED /* MT_owch.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MT_owch.mp3; sourceTree = "<group>"; };
+		ADF59E051D5F8D5200A26DED /* monOW.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = monOW.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -146,8 +146,8 @@
 				ADF59DFF1D5EEE5500A26DED /* MT_attack.mp3 */,
 				ADF59E001D5EEE5500A26DED /* MT_no.mp3 */,
 				ADF59E011D5EEE5500A26DED /* MT_owch.mp3 */,
+				ADF59E051D5F8D5200A26DED /* monOW.mp3 */,
 				AD74E1951D5E81D4007EB40E /* mainMenuBGM.mp3 */,
-				AD74E18D1D5E81B2007EB40E /* monOW.wav */,
 				AD74E18E1D5E81B2007EB40E /* winBeep.wav */,
 			);
 			path = Sound;
@@ -215,9 +215,9 @@
 				ADC02C491D48167900F9A38D /* Boom.sks in Resources */,
 				AD5347721D2CB57B00FBF7B1 /* LaunchScreen.storyboard in Resources */,
 				AD53476F1D2CB57B00FBF7B1 /* Assets.xcassets in Resources */,
+				ADF59E061D5F8D5200A26DED /* monOW.mp3 in Resources */,
 				AD8DD2911D35A20900A37369 /* MainMenu.sks in Resources */,
 				ADC02C4A1D48167900F9A38D /* spark.png in Resources */,
-				AD74E1901D5E81B2007EB40E /* monOW.wav in Resources */,
 				AD53476D1D2CB57B00FBF7B1 /* Main.storyboard in Resources */,
 				AD74E1991D5E81D4007EB40E /* mainMenuBGM.mp3 in Resources */,
 				ADF59E021D5EEE5500A26DED /* MT_attack.mp3 in Resources */,
