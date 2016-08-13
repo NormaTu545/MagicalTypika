@@ -34,11 +34,11 @@
 		ADC02C4A1D48167900F9A38D /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = ADC02C481D48167900F9A38D /* spark.png */; };
 		ADC02C4C1D4A798300F9A38D /* Player.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC02C4B1D4A798300F9A38D /* Player.swift */; };
 		ADC02C4E1D4ABE7A00F9A38D /* HealthBar.swift in Sources */ = {isa = PBXBuildFile; fileRef = ADC02C4D1D4ABE7A00F9A38D /* HealthBar.swift */; };
-		ADF59DF61D5E8F1C00A26DED /* MT_attack.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = ADF59DF31D5E8F1C00A26DED /* MT_attack.mp3 */; };
-		ADF59DF81D5E8F1C00A26DED /* MT_owch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = ADF59DF51D5E8F1C00A26DED /* MT_owch.mp3 */; };
 		ADF59DFA1D5EDF0A00A26DED /* lvlOneBGM.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = ADF59DF91D5EDF0A00A26DED /* lvlOneBGM.mp3 */; };
 		ADF59DFC1D5EDF1E00A26DED /* creditsBGM.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = ADF59DFB1D5EDF1E00A26DED /* creditsBGM.mp3 */; };
-		ADF59DFE1D5EE3BB00A26DED /* MT_no.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = ADF59DFD1D5EE3BB00A26DED /* MT_no.mp3 */; };
+		ADF59E021D5EEE5500A26DED /* MT_attack.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = ADF59DFF1D5EEE5500A26DED /* MT_attack.mp3 */; };
+		ADF59E031D5EEE5500A26DED /* MT_no.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = ADF59E001D5EEE5500A26DED /* MT_no.mp3 */; };
+		ADF59E041D5EEE5500A26DED /* MT_owch.mp3 in Resources */ = {isa = PBXBuildFile; fileRef = ADF59E011D5EEE5500A26DED /* MT_owch.mp3 */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -71,11 +71,11 @@
 		ADC02C481D48167900F9A38D /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
 		ADC02C4B1D4A798300F9A38D /* Player.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Player.swift; sourceTree = "<group>"; };
 		ADC02C4D1D4ABE7A00F9A38D /* HealthBar.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HealthBar.swift; sourceTree = "<group>"; };
-		ADF59DF31D5E8F1C00A26DED /* MT_attack.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MT_attack.mp3; sourceTree = "<group>"; };
-		ADF59DF51D5E8F1C00A26DED /* MT_owch.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MT_owch.mp3; sourceTree = "<group>"; };
 		ADF59DF91D5EDF0A00A26DED /* lvlOneBGM.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = lvlOneBGM.mp3; sourceTree = "<group>"; };
 		ADF59DFB1D5EDF1E00A26DED /* creditsBGM.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = creditsBGM.mp3; sourceTree = "<group>"; };
-		ADF59DFD1D5EE3BB00A26DED /* MT_no.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MT_no.mp3; sourceTree = "<group>"; };
+		ADF59DFF1D5EEE5500A26DED /* MT_attack.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MT_attack.mp3; sourceTree = "<group>"; };
+		ADF59E001D5EEE5500A26DED /* MT_no.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MT_no.mp3; sourceTree = "<group>"; };
+		ADF59E011D5EEE5500A26DED /* MT_owch.mp3 */ = {isa = PBXFileReference; lastKnownFileType = audio.mp3; path = MT_owch.mp3; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -141,11 +141,11 @@
 				AD74E18C1D5E81B2007EB40E /* monAttack.wav */,
 				AD74E1921D5E81D4007EB40E /* bossLvlBGM.mp3 */,
 				ADF59DFB1D5EDF1E00A26DED /* creditsBGM.mp3 */,
-				ADF59DF31D5E8F1C00A26DED /* MT_attack.mp3 */,
-				ADF59DFD1D5EE3BB00A26DED /* MT_no.mp3 */,
-				ADF59DF51D5E8F1C00A26DED /* MT_owch.mp3 */,
 				AD74E1931D5E81D4007EB40E /* loseBeep.wav */,
 				ADF59DF91D5EDF0A00A26DED /* lvlOneBGM.mp3 */,
+				ADF59DFF1D5EEE5500A26DED /* MT_attack.mp3 */,
+				ADF59E001D5EEE5500A26DED /* MT_no.mp3 */,
+				ADF59E011D5EEE5500A26DED /* MT_owch.mp3 */,
 				AD74E1951D5E81D4007EB40E /* mainMenuBGM.mp3 */,
 				AD74E18D1D5E81B2007EB40E /* monOW.wav */,
 				AD74E18E1D5E81B2007EB40E /* winBeep.wav */,
@@ -219,17 +219,17 @@
 				ADC02C4A1D48167900F9A38D /* spark.png in Resources */,
 				AD74E1901D5E81B2007EB40E /* monOW.wav in Resources */,
 				AD53476D1D2CB57B00FBF7B1 /* Main.storyboard in Resources */,
-				ADF59DF61D5E8F1C00A26DED /* MT_attack.mp3 in Resources */,
 				AD74E1991D5E81D4007EB40E /* mainMenuBGM.mp3 in Resources */,
-				ADF59DFE1D5EE3BB00A26DED /* MT_no.mp3 in Resources */,
+				ADF59E021D5EEE5500A26DED /* MT_attack.mp3 in Resources */,
 				AD74E1971D5E81D4007EB40E /* loseBeep.wav in Resources */,
 				ADF59DFC1D5EDF1E00A26DED /* creditsBGM.mp3 in Resources */,
 				AD74E1961D5E81D4007EB40E /* bossLvlBGM.mp3 in Resources */,
+				ADF59E041D5EEE5500A26DED /* MT_owch.mp3 in Resources */,
 				ADF59DFA1D5EDF0A00A26DED /* lvlOneBGM.mp3 in Resources */,
-				ADF59DF81D5E8F1C00A26DED /* MT_owch.mp3 in Resources */,
 				AD74E18F1D5E81B2007EB40E /* monAttack.wav in Resources */,
 				AD74E1821D5A9B2E007EB40E /* MagicalTypika.atlas in Resources */,
 				ADC02C441D46DD1000F9A38D /* 1000words.txt in Resources */,
+				ADF59E031D5EEE5500A26DED /* MT_no.mp3 in Resources */,
 				AD74E1911D5E81B2007EB40E /* winBeep.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
